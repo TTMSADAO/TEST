@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sadao Hospital Queue V39.11</title>
+  <title>Sadao Hospital Queue V39.8</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#2e7d32">
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -67,7 +67,11 @@
     .header-logo-title { display: flex; align-items: center; gap: 10px; } .header-logo-title img { width: 36px; height: 36px; background: white; border-radius: 50%; padding: 2px; object-fit: contain; } .header-logo-title h1 { margin: 0; font-size: 1.3rem; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.2); }
     .sync-status-container { display: flex; justify-content: center; margin-bottom: 5px; } .sync-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 0, 0, 0.2); padding: 4px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; }
     .spin-active { animation: spin 1s linear infinite; color: #fde047; }
-    .date-scroller { display: flex; overflow-x: auto; padding: 10px 15px 5px 15px; gap: 10px; scrollbar-width: none; } .date-scroller::-webkit-scrollbar { display: none; }
+    
+    /* 🔥 แก้บัคตรงนี้ครับ มีการพิมพ์ชื่อ Class ผิดในรอบที่แล้ว ทำให้ขีดหายไป 🔥 */
+    .date-scroller { display: flex; overflow-x: auto; padding: 10px 15px 5px 15px; gap: 10px; scrollbar-width: none; } 
+    .date-scroller::-webkit-scrollbar { display: none; }
+    
     .date-chip { background: rgba(255,255,255,0.15); color: white; border-radius: 14px; padding: 10px 0; min-width: 60px; text-align: center; cursor: pointer; flex-shrink: 0; position: relative; transition: 0.2s; }
     .date-chip small { font-size: 0.7rem; display: block; margin-bottom: 2px; opacity: 0.9; } .date-chip span { font-size: 1.15rem; display: block; font-weight: 700; line-height: 1; }
     .date-chip.active { background: white; color: var(--primary); transform: scale(1.05); border: none; } .date-chip.active::after { content:''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: #e040fb; border-radius: 0 0 14px 14px; }
@@ -95,7 +99,6 @@
     .circle-progress { fill: none; stroke: var(--primary); stroke-width: 8; stroke-dasharray: 326; stroke-dashoffset: 326; stroke-linecap: round; }
     .percent-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: 700; color: var(--primary); }
     .loading-title { font-size: 1.2rem; font-weight: 700; color: #1e293b; margin-bottom: 5px; }
-    
     .tips-box { background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px dashed #cbd5e1; width: 85%; max-width: 350px; text-align: center; min-height: 120px; display: flex; flex-direction: column; justify-content: center; margin-top:20px; }
     .tips-title { font-weight: 700; color: var(--primary-dark); margin-bottom: 8px; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .tips-text { font-size: 0.85rem; color: #475569; line-height: 1.5; }
@@ -184,9 +187,7 @@
             <span id="t-mu-title">ผู้ใช้งานที่บันทึกไว้</span> 
             <i class="fas fa-users" style="color:var(--primary);"></i>
         </div>
-        
         <div id="mu-list" class="mu-profile-list"></div>
-        
         <button class="btn-add-user" onclick="showAddUserForm()">
             <i class="fas fa-plus-circle"></i> <span id="t-btn-add-user">ลงทะเบียนผู้รับบริการใหม่</span>
         </button>
@@ -224,7 +225,7 @@
             <div class="header-logo-title"><img id="app-logo" src="" style="width:36px; height:36px;"><h1 id="app-title"></h1></div>
         </div>
         <div class="sync-status-container"><div class="sync-badge" id="sync-badge-ui"><i id="sync-icon" class="fas fa-sync-alt"></i> <span id="sync-text">อัปเดตล่าสุด --:--</span></div></div>
-        <div id="dateScroller" class="date-Scroller"></div>
+        <div id="dateScroller" class="date-scroller"></div>
     </div>
     <div class="container"><div id="contentArea"></div></div>
   </div>
@@ -489,7 +490,7 @@
         document.getElementById('t-g-m').innerText = _t('g_m');
 
         document.getElementById('t-mu-title').innerHTML = `${_t('mu_title')} <i class="fas fa-users" style="color:var(--primary);"></i>`;
-        document.getElementById('t-btn-add-user').innerText = _t('btn_add_user');
+        document.getElementById('t-btn-add-user').innerHTML = `<i class="fas fa-plus-circle"></i> ${_t('btn_add_user')}`;
         document.getElementById('t-act-user').innerText = _t('act_user'); 
         document.getElementById('t-switch-user').innerText = _t('change_user');
         document.getElementById('t-aps-hist').innerHTML = `<i class="fas fa-calendar-check"></i> ${_t('aps_hist')}`;
@@ -501,6 +502,11 @@
         document.getElementById('inp-lname').placeholder = currentLang === 'en' ? "Last Name" : "นามสกุล";
         document.getElementById('inp-note').placeholder = currentLang === 'en' ? "Fever / Fracture / Menstruation" : "มีไข้ / กระดูกแตกหัก / ประจำเดือน";
         
+        let staffNode = document.getElementById('staff-display-name');
+        if(staffNode && (staffNode.innerText === 'ไม่ระบุ' || staffNode.innerText === 'Not Specified')) {
+            staffNode.innerText = _t('not_spec');
+        }
+        
         if(currentApp) { document.getElementById('app-title').innerText = _t('app_' + currentApp); }
         toggleForeignerMode();
     }
@@ -509,7 +515,6 @@
     const SERVICE_PRICES_EN = { ttm: { "นวดและประคบเพื่อการรักษา": "250 THB", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)": "200 THB", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)": "200 THB" }, tcm: { "ฝังเข็มเพื่อการรักษา": "200 THB", "ครอบแก้ว": "150 THB", "ฝังเข็มใบหน้า": "300 THB", "เม็ดผักกาดแปะหู": "50 THB", "ปรึกษาแพทย์แผนจีน": "Free" } };
     const APP_CONFIG = { ttm: { title: "แพทย์แผนไทย", logo: "https://img2.pic.in.th/pic/619e72dc2124132ccf4620717d4fa58d.md.png", color: "#2e7d32" }, tcm: { title: "แพทย์แผนจีน", logo: "https://img2.pic.in.th/pic/--06d2d95efaba2074.md.png", color: "#c62828" }, postpartum: { title: "บริการหลังคลอด", logo: "https://img2.pic.in.th/pic/eb06897c542c79b64690c8e794fa84a4.png", color: "#ec4899" }, steam: { title: "อบไอน้ำสมุนไพร", logo: "https://img2.pic.in.th/pic/-3b445847427fcbfd.png", color: "#0288d1" } };
     const SERVICE_OPTIONS = { ttm: ["นวดและประคบเพื่อการรักษา", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)"], tcm: ["ฝังเข็มเพื่อการรักษา", "ครอบแก้ว", "ฝังเข็มใบหน้า", "เม็ดผักกาดแปะหู", "ปรึกษาแพทย์แผนจีน"] };
-    
     const STAFF_IMAGES = { "รจนา M": "https://img2.pic.in.th/pic/-b38b682db8ac596b.png", "อรรถพล B": "https://img5.pic.in.th/file/secure-sv1/6b74e1ebb096c81368605ff43948dab4.png", "ศินารัตน์ C": "https://img2.pic.in.th/pic/-df4e3c6f4a4b331f.png", "จุฑามาศ F": "https://img5.pic.in.th/file/secure-sv1/709dfc05071615eaaf008ea63d1e037e.png", "รัตน์ชนก KW": "https://img2.pic.in.th/pic/-83673d6d528be12a.png", "นิกษ์นิภา T": "https://img5.pic.in.th/file/secure-sv1/-c4fe207fa6c04aa3.png", "ณิชาภัทร W": "https://img2.pic.in.th/pic/1ef0aa325ccac37724897c9f2c10e5f4.png", "จินดา J": "https://img2.pic.in.th/pic/93b060e9e4b3fc9a9070d5ac2768c879.png" };
     const STAFF_NAME_MAP = { "จินดา J": "จินดา (เจี๊ยบ)", "รจนา M": "รจนา (แหม่ม)", "อรรถพล B": "อรรถพล (เบา)", "ศินารัตน์ C": "ศินารัตน์ (ซี)", "จุฑามาศ F": "จุฑามาศ (ฝน)", "รัตน์ชนก KW": "รัตน์ชนก (กวาง)", "นิกษ์นิภา T": "นิกษ์นิภา (การ์ตูน)", "ณิชาภัทร W": "ณิชาภัทร (วาวา)" };
     const STAFF_EN_NAMES = { "จินดา J": "Jinda (Jeab)", "รจนา M": "Rotjana (Maam)", "อรรถพล B": "Attapon (Bao)", "ศินารัตน์ C": "Sinarat (C)", "จุฑามาศ F": "Jutamat (Fon)", "รัตน์ชนก KW": "Ratchanok (Kwang)", "นิกษ์นิภา T": "Niknipha (Kartoon)", "ณิชาภัทร W": "Nichapat (Wawa)" };
@@ -539,7 +544,8 @@
             } else {
                 let listHtml = '';
                 savedProfiles.forEach(p => { 
-                    let mName = getMaskedFullName(p.fname, p.lname); let mTel = getMaskedTel(p.tel); 
+                    let mName = getMaskedFullName(p.fname, p.lname); 
+                    let mTel = getMaskedTel(p.tel); 
                     listHtml += `<div class="mu-profile" onclick="selectUser('${p.id}')"><div class="mu-info"><div class="mu-avatar">${p.fname.substring(0,1)}</div><div class="mu-name">${mName}<span><i class="fas fa-phone"></i> ${mTel}</span></div></div><div class="mu-delete" onclick="event.stopPropagation(); removeUser('${p.id}')"><i class="fas fa-times-circle"></i></div></div>`; 
                 });
                 document.getElementById('mu-list').innerHTML = listHtml;
@@ -551,7 +557,7 @@
     function switchUser() { activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
     function removeUser(id) { savedProfiles = savedProfiles.filter(p => p.id !== id); if(activeProfileId === id) activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
     
-    // 🔥 เด้งหน้าต่างลงทะเบียน 🔥
+    // 🔥 แก้บัคปุ่มลงทะเบียน 🔥
     function showAddUserForm() { 
         Swal.fire({
             title: _t('btn_add_user'),
@@ -594,19 +600,51 @@
     function setupIDBoxes() {
         const boxes = document.querySelectorAll('.otp-box');
         boxes.forEach((box, index) => {
-            box.addEventListener('input', (e) => { box.value = box.value.replace(/[^0-9]/g, ''); if (box.value) { box.classList.add('filled'); if (index < boxes.length - 1) boxes[index + 1].focus(); } else { box.classList.remove('filled'); } updateHiddenID(); });
-            box.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !box.value && index > 0) { boxes[index - 1].focus(); boxes[index - 1].value = ''; boxes[index - 1].classList.remove('filled'); updateHiddenID(); } });
-            box.addEventListener('paste', (e) => { e.preventDefault(); const pastedData = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, ''); if(!pastedData) return; for (let i = 0; i < pastedData.length && index + i < boxes.length; i++) { boxes[index + i].value = pastedData[i]; boxes[index + i].classList.add('filled'); } if (index + pastedData.length < boxes.length) boxes[index + pastedData.length].focus(); else boxes[boxes.length - 1].focus(); updateHiddenID(); });
+            box.addEventListener('input', (e) => { 
+                box.value = box.value.replace(/[^0-9]/g, ''); 
+                if (box.value) { box.classList.add('filled'); if (index < boxes.length - 1) boxes[index + 1].focus(); } 
+                else { box.classList.remove('filled'); } 
+                updateHiddenID(); 
+            });
+            box.addEventListener('keydown', (e) => { 
+                if (e.key === 'Backspace' && !box.value && index > 0) { boxes[index - 1].focus(); boxes[index - 1].value = ''; boxes[index - 1].classList.remove('filled'); updateHiddenID(); } 
+            });
+            box.addEventListener('paste', (e) => { 
+                e.preventDefault(); const pastedData = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, ''); if(!pastedData) return; 
+                for (let i = 0; i < pastedData.length && index + i < boxes.length; i++) { boxes[index + i].value = pastedData[i]; boxes[index + i].classList.add('filled'); } 
+                if (index + pastedData.length < boxes.length) boxes[index + pastedData.length].focus(); else boxes[boxes.length - 1].focus(); updateHiddenID(); 
+            });
         });
     }
 
-    function updateHiddenID() { if(isForeigner) return; const boxes = document.querySelectorAll('.otp-box'); let id = Array.from(boxes).map(b => b.value).join(''); document.getElementById('inp-idcard').value = id; if (id.length === 13) { checkIDCardInput(); } else { document.getElementById('idcard-status').innerHTML = ''; document.getElementById('btn-save-info').disabled = true; document.getElementById('btn-save-info').innerHTML = _t('btn_check'); } }
+    function updateHiddenID() { 
+        if(isForeigner) return; 
+        const boxes = document.querySelectorAll('.otp-box'); let id = Array.from(boxes).map(b => b.value).join(''); 
+        document.getElementById('inp-idcard').value = id; 
+        if (id.length === 13) { checkIDCardInput(); } 
+        else { document.getElementById('idcard-status').innerHTML = ''; document.getElementById('btn-save-info').disabled = true; document.getElementById('btn-save-info').innerHTML = _t('btn_check'); } 
+    }
 
     function toggleForeignerMode() {
-        isForeigner = document.getElementById('chk-foreigner').checked; let hiddenId = document.getElementById('inp-idcard'); let boxContainer = document.getElementById('thai-id-boxes'); let foreignInput = document.getElementById('inp-idcard-foreigner'); let lblId = document.getElementById('lbl-idcard');
-        document.getElementById('idcard-status').innerHTML = ""; document.getElementById('user-details-form').classList.add('hidden'); document.getElementById('existing-user-display').classList.add('hidden'); document.getElementById('btn-save-info').disabled = true;
-        if(isForeigner) { lblId.innerHTML = 'Passport / ID Number <span style="color:red">*</span>'; boxContainer.style.display = 'none'; foreignInput.classList.remove('hidden'); hiddenId.value = ""; foreignInput.value = ""; } 
-        else { lblId.innerHTML = `${_t('id_card')} <span style="color:red">*</span>`; boxContainer.style.display = 'flex'; foreignInput.classList.add('hidden'); hiddenId.value = ""; document.querySelectorAll('.otp-box').forEach(b => { b.value=''; b.classList.remove('filled'); }); }
+        isForeigner = document.getElementById('chk-foreigner').checked; 
+        let hiddenId = document.getElementById('inp-idcard'); 
+        let boxContainer = document.getElementById('thai-id-boxes'); 
+        let foreignInput = document.getElementById('inp-idcard-foreigner'); 
+        let lblId = document.getElementById('lbl-idcard');
+        
+        document.getElementById('idcard-status').innerHTML = ""; 
+        document.getElementById('user-details-form').classList.add('hidden'); 
+        document.getElementById('existing-user-display').classList.add('hidden'); 
+        document.getElementById('btn-save-info').disabled = true;
+        
+        if(isForeigner) { 
+            lblId.innerHTML = 'Passport / ID Number <span style="color:red">*</span>'; 
+            boxContainer.style.display = 'none'; foreignInput.classList.remove('hidden'); hiddenId.value = ""; foreignInput.value = ""; 
+        } else { 
+            lblId.innerHTML = `${_t('id_card')} <span style="color:red">*</span>`; 
+            boxContainer.style.display = 'flex'; foreignInput.classList.add('hidden'); hiddenId.value = ""; 
+            document.querySelectorAll('.otp-box').forEach(b => { b.value=''; b.classList.remove('filled'); }); 
+        }
     }
 
     function validateNameInput(input) { if(isForeigner) { input.value = input.value.replace(/[^a-zA-Z\s]/g, ''); } }
@@ -648,7 +686,8 @@
       if(type === 'imc' || type === 'wellness') { return; }
       currentApp = type; let conf = APP_CONFIG[type];
       document.documentElement.style.setProperty('--primary', conf.color); document.documentElement.style.setProperty('--primary-light', type==='tcm'?'#ffebee':type==='postpartum'?'#fce4ec':type==='steam'?'#e0f2fe':'#e8f5e9');
-      document.getElementById('app-title').innerText = _t('app_' + type); document.getElementById('app-logo').src = conf.logo; document.getElementById('view-home').classList.add('hidden'); document.getElementById('view-dashboard').classList.remove('hidden');
+      document.getElementById('app-title').innerText = _t('app_' + type); document.getElementById('app-logo').src = conf.logo; 
+      document.getElementById('view-home').classList.add('hidden'); document.getElementById('view-dashboard').classList.remove('hidden');
       fetchData(true); if(refreshInterval) clearInterval(refreshInterval); refreshInterval = setInterval(() => { fetchData(false); }, 15000);
     }
     
@@ -673,6 +712,7 @@
       document.getElementById('dateScroller').innerHTML = html;
       if(globalData[selectedIndex]) { let dColor = DAY_COLORS[globalData[selectedIndex].dayOfWeek]; let style = document.getElementById('dynamic-day-color'); if(!style) { style = document.createElement('style'); style.id = 'dynamic-day-color'; document.head.appendChild(style); } style.innerHTML = `.date-chip.active::after { background: ${dColor} !important; }`; }
     }
+    
     function selectDate(index) { selectedIndex = index; renderScroller(); renderSlots(index); }
 
     function renderSlots(index) {
@@ -685,7 +725,9 @@
         if(validSlots.length === 0) { container.innerHTML = `<div style="text-align:center; padding:60px 20px; color:#94a3b8;"><i class="fas fa-clock" style="font-size:3.5rem; margin-bottom:15px; opacity:0.4;"></i><h3 style="margin:0;">${currentLang === 'en' ? 'All slots have passed' : 'รอบบริการวันนี้ผ่านไปหมดแล้ว'}</h3></div>`; return; }
 
         let dtLabel = day.fullLabel;
-        if(currentLang === 'en') { let mEn = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; let dParts = day.sysDate.split("-"); dtLabel = `${dParts[2]} ${mEn[parseInt(dParts[1])-1]} ${dParts[0]}`; }
+        if(currentLang === 'en') {
+            let mEn = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; let dParts = day.sysDate.split("-"); dtLabel = `${dParts[2]} ${mEn[parseInt(dParts[1])-1]} ${dParts[0]}`;
+        }
         let html = `<div class="selected-date-header"><span class="header-bar"></span>${dtLabel}</div><div class="grid-container">`;
         let deptIcon = '<i class="fas fa-calendar-check"></i>'; if (currentApp === 'ttm') deptIcon = '<i class="fas fa-leaf"></i>'; else if (currentApp === 'tcm') deptIcon = '<i class="fas fa-yin-yang"></i>'; else if (currentApp === 'postpartum') deptIcon = '<i class="fas fa-hands-holding-child"></i>'; else if (currentApp === 'steam') deptIcon = '<i class="fas fa-hot-tub-person"></i>';
 
@@ -710,16 +752,28 @@
     }
 
     function toggleStaffDropdown() { document.getElementById('staff-trigger').classList.toggle('open'); }
+    
     function selectStaffNew(sObj, thaiName) { 
         let dName = currentLang === 'en' ? (STAFF_EN_NAMES[thaiName] || thaiName) : (STAFF_NAME_MAP[thaiName] || thaiName);
-        document.getElementById('staff-display-name').innerText = dName; 
+        
+        let staffNode = document.getElementById('staff-display-name');
+        if(staffNode) { staffNode.innerText = dName; } 
+        
         document.getElementById('inp-staff-val').value = thaiName; 
-        selectedSlotData = { sheetName: sObj.sheetName, row: sObj.row, col: sObj.col }; let box = document.getElementById('box-option-2hr'); let chk = document.getElementById('inp-2hr'); let lText = document.getElementById('lbl-2hr-text'); let nText = document.getElementById('note-2hr-text'); if ((currentApp === 'ttm' || currentApp === 'tcm') && sObj.can2Hr) { box.style.display = 'block'; chk.disabled = false; if (currentApp === 'tcm') { lText.innerHTML = currentLang==='en'?'<i class="fas fa-star"></i> Cont. 2Hr: Acu+Cup':'<i class="fas fa-star"></i> จองต่อเนื่อง ฝังเข็ม + ครอบแก้ว'; nText.innerText = currentLang==='en'?'*Auto 2-hour slot':'*ระบบจะลงคิว 2 ชม. ให้ทันที'; } else { lText.innerHTML = currentLang==='en'?'<i class="fas fa-star"></i> Cont. 2Hr':'<i class="fas fa-star"></i> จองต่อเนื่อง 2 ชั่วโมง'; nText.innerText = currentLang==='en'?'*Extra 200 THB':'*ชั่วโมงที่ 2 ชำระเพิ่ม 200 บาท'; } } else { box.style.display = 'none'; chk.checked = false; updatePriceDisplay(); } document.getElementById('staff-trigger').classList.remove('open'); 
+        selectedSlotData = { sheetName: sObj.sheetName, row: sObj.row, col: sObj.col }; 
+        let box = document.getElementById('box-option-2hr'); let chk = document.getElementById('inp-2hr'); let lText = document.getElementById('lbl-2hr-text'); let nText = document.getElementById('note-2hr-text'); 
+        if ((currentApp === 'ttm' || currentApp === 'tcm') && sObj.can2Hr) { 
+            box.style.display = 'block'; chk.disabled = false; 
+            if (currentApp === 'tcm') { lText.innerHTML = currentLang==='en'?'<i class="fas fa-star"></i> Cont. 2Hr: Acu+Cup':'<i class="fas fa-star"></i> จองต่อเนื่อง ฝังเข็ม + ครอบแก้ว'; nText.innerText = currentLang==='en'?'*Auto 2-hour slot':'*ระบบจะลงคิว 2 ชม. ให้ทันที'; } 
+            else { lText.innerHTML = currentLang==='en'?'<i class="fas fa-star"></i> Cont. 2Hr':'<i class="fas fa-star"></i> จองต่อเนื่อง 2 ชั่วโมง'; nText.innerText = currentLang==='en'?'*Extra 200 THB':'*ชั่วโมงที่ 2 ชำระเพิ่ม 200 บาท'; } 
+        } else { box.style.display = 'none'; chk.checked = false; updatePriceDisplay(); } 
+        document.getElementById('staff-trigger').classList.remove('open'); 
     }
     
     function updatePriceDisplay() { 
         let svc = document.getElementById('inp-service').value; let price = "-"; 
-        if (currentLang === 'en') { if (SERVICE_PRICES_EN[currentApp] && SERVICE_PRICES_EN[currentApp][svc]) price = SERVICE_PRICES_EN[currentApp][svc]; } else { if (SERVICE_PRICES[currentApp] && SERVICE_PRICES[currentApp][svc]) price = SERVICE_PRICES[currentApp][svc]; }
+        if (currentLang === 'en') { if (SERVICE_PRICES_EN[currentApp] && SERVICE_PRICES_EN[currentApp][svc]) price = SERVICE_PRICES_EN[currentApp][svc]; } 
+        else { if (SERVICE_PRICES[currentApp] && SERVICE_PRICES[currentApp][svc]) price = SERVICE_PRICES[currentApp][svc]; }
         let tag = document.getElementById('price-tag'); let val = document.getElementById('price-val'); 
         if (price !== "-") { val.innerHTML = price; tag.style.display = 'block'; } else { tag.style.display = 'none'; } 
         if (document.getElementById('inp-2hr') && document.getElementById('inp-2hr').checked) { let addTxt = currentLang === 'en' ? (currentApp === 'ttm' ? "(+200 THB for 2nd hour)" : "(Cont. Cupping in 2nd hour)") : (currentApp === 'ttm' ? "(+200 บาท ชม.ถัดไป)" : "(ต่อเนื่อง: ครอบแก้ว ชม.ถัดไป)"); if (!val.innerHTML.includes(addTxt)) val.innerHTML += ` <br><span style='color:#e65100; display:block; margin-top:4px;'>${addTxt}</span>`; } 
@@ -727,32 +781,68 @@
     document.addEventListener('DOMContentLoaded', () => { let c = document.getElementById('inp-2hr'); if(c) c.addEventListener('change', updatePriceDisplay); });
 
     function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGender) {
-      let staffs = JSON.parse(decodeURIComponent(staffDataEncoded));
-      bookingData = { dept: APP_CONFIG[currentApp].title, date: dateFull, sysDate: sysDate, time: time, appType: currentApp, sheetName: globalData[dayIndex].sheetName };
-      
-      if(activeProfileId) { 
-          document.getElementById('auth-section').style.display = 'none'; 
-          document.getElementById('existing-user-display').classList.remove('hidden'); document.getElementById('masked-name').innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + _t('loading'); document.getElementById('masked-tel').innerHTML = '';
-          document.getElementById('inp-idcard').value = activeProfileId; checkIDCardInput(); 
-      } else { 
-          document.getElementById('auth-section').style.display = 'block'; document.getElementById('inp-idcard').value = ''; document.querySelectorAll('.otp-box').forEach(b => { b.value=''; b.classList.remove('filled'); }); 
-          document.getElementById('idcard-status').innerHTML = ''; document.getElementById('inp-fname').value = ''; document.getElementById('inp-lname').value = ''; document.getElementById('inp-tel').value = ''; 
-          document.getElementById('inp-fname').readOnly = false; document.getElementById('inp-lname').readOnly = false; document.getElementById('name-lock-warning').style.display = 'none';
-          document.getElementById('user-details-form').classList.add('hidden'); document.getElementById('existing-user-display').classList.add('hidden'); 
-          document.getElementById('btn-save-info').disabled = true; document.getElementById('btn-save-info').innerHTML = _t('btn_check'); currentUserDB = null; 
-      }
-      
-      document.getElementById('inp-note').value = ''; document.getElementById('inp-2hr').checked = false;
-      ['normal-fields', 'postpartum-fields', 'steam-fields'].forEach(id => document.getElementById(id).classList.add('hidden'));
+      try {
+          let staffs = JSON.parse(decodeURIComponent(staffDataEncoded));
+          bookingData = { dept: APP_CONFIG[currentApp].title, date: dateFull, sysDate: sysDate, time: time, appType: currentApp, sheetName: globalData[dayIndex].sheetName };
+          
+          if(activeProfileId) { 
+              document.getElementById('auth-section').style.display = 'none'; 
+              document.getElementById('existing-user-display').classList.remove('hidden'); 
+              document.getElementById('masked-name').innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + _t('loading'); 
+              document.getElementById('masked-tel').innerHTML = '';
+              document.getElementById('inp-idcard').value = activeProfileId; 
+              checkIDCardInput(); 
+          } else { 
+              document.getElementById('auth-section').style.display = 'block'; 
+              document.getElementById('inp-idcard').value = ''; 
+              document.querySelectorAll('.otp-box').forEach(b => { b.value=''; b.classList.remove('filled'); }); 
+              document.getElementById('idcard-status').innerHTML = ''; document.getElementById('inp-fname').value = ''; document.getElementById('inp-lname').value = ''; document.getElementById('inp-tel').value = ''; 
+              document.getElementById('inp-fname').readOnly = false; document.getElementById('inp-lname').readOnly = false; document.getElementById('name-lock-warning').style.display = 'none';
+              document.getElementById('user-details-form').classList.add('hidden'); document.getElementById('existing-user-display').classList.add('hidden'); 
+              document.getElementById('btn-save-info').disabled = true; document.getElementById('btn-save-info').innerHTML = _t('btn_check'); currentUserDB = null; 
+          }
+          
+          document.getElementById('inp-note').value = ''; 
+          if(document.getElementById('inp-2hr')) document.getElementById('inp-2hr').checked = false;
+          ['normal-fields', 'postpartum-fields', 'steam-fields'].forEach(id => document.getElementById(id).classList.add('hidden'));
 
-      let lblProv = document.getElementById('lbl_provider_text'); if (currentApp === 'tcm') lblProv.innerText = _t('prov_text_tcm'); else lblProv.innerText = _t('prov_text_ttm');
+          let lblProv = document.getElementById('lbl_provider_text'); if (currentApp === 'tcm') lblProv.innerText = _t('prov_text_tcm'); else lblProv.innerText = _t('prov_text_ttm');
 
-      if (currentApp === 'postpartum') { document.getElementById('postpartum-fields').classList.remove('hidden'); bookingData.service = "บริการหลังคลอด"; } else if (currentApp === 'steam') { document.getElementById('steam-fields').classList.remove('hidden'); bookingData.service = "อบไอน้ำ"; if (slotGender === 'ช' || slotGender === 'ชาย') document.getElementById('inp-gender').value = 'ชาย'; else if (slotGender === 'ญ' || slotGender === 'หญิง') document.getElementById('inp-gender').value = 'หญิง'; } else {
-          document.getElementById('normal-fields').classList.remove('hidden'); let sel = document.getElementById('inp-service'); sel.innerHTML = ''; SERVICE_OPTIONS[currentApp].forEach(s => { let o = document.createElement('option'); o.value=s; o.innerText= _t(s); sel.appendChild(o); }); updatePriceDisplay();
-          let cCont = document.getElementById('staff-options'); cCont.innerHTML = ''; if (staffs.length > 0 && staffs[0].row !== undefined) { document.getElementById('group-staff').style.display = 'block'; let grouped = {}; staffs.forEach(s => { let k = s.name; if(!grouped[k]) grouped[k] = Object.assign({}, s); else if(s.can2Hr) grouped[k] = Object.assign({}, s); }); let unique = Object.values(grouped); if(unique.length > 0) selectStaffNew(unique[0], unique[0].name); unique.forEach(s => { let baseName = s.name; let dName = currentLang === 'en' ? (STAFF_EN_NAMES[baseName] || baseName) : (STAFF_NAME_MAP[baseName] || baseName); let img = STAFF_IMAGES[s.name] || DEFAULT_IMG; let div = document.createElement('div'); div.className = 'select-item'; div.innerHTML = `<img src="${img}" class="select-img"><div style="font-weight:600; flex:1; color:#1e293b;">${dName} ${s.can2Hr?'<span style="color:#f59e0b;font-size:0.75rem;background:#fffbeb;padding:2px 6px;border-radius:6px;margin-left:6px;"><i class="fas fa-bolt"></i> 2Hr</span>':''}</div>`; div.onclick = () => selectStaffNew(s, baseName); cCont.appendChild(div); }); } else { document.getElementById('group-staff').style.display = 'none'; document.getElementById('inp-staff-val').value = "ไม่ระบุ"; }
+          if (currentApp === 'postpartum') { 
+              document.getElementById('postpartum-fields').classList.remove('hidden'); bookingData.service = "บริการหลังคลอด"; 
+          } else if (currentApp === 'steam') { 
+              document.getElementById('steam-fields').classList.remove('hidden'); bookingData.service = "อบไอน้ำ"; 
+              if (slotGender === 'ช' || slotGender === 'ชาย') document.getElementById('inp-gender').value = 'ชาย'; 
+              else if (slotGender === 'ญ' || slotGender === 'หญิง') document.getElementById('inp-gender').value = 'หญิง'; 
+          } else {
+              document.getElementById('normal-fields').classList.remove('hidden'); 
+              let sel = document.getElementById('inp-service'); sel.innerHTML = ''; 
+              SERVICE_OPTIONS[currentApp].forEach(s => { let o = document.createElement('option'); o.value=s; o.innerText= _t(s); sel.appendChild(o); }); 
+              updatePriceDisplay();
+              let cCont = document.getElementById('staff-options'); cCont.innerHTML = ''; 
+              if (staffs.length > 0 && staffs[0].row !== undefined) { 
+                  document.getElementById('group-staff').style.display = 'block'; let grouped = {}; 
+                  staffs.forEach(s => { let k = s.name; if(!grouped[k]) grouped[k] = Object.assign({}, s); else if(s.can2Hr) grouped[k] = Object.assign({}, s); }); 
+                  let unique = Object.values(grouped); 
+                  if(unique.length > 0) selectStaffNew(unique[0], unique[0].name); 
+                  unique.forEach(s => { 
+                      let baseName = s.name; 
+                      let dName = currentLang === 'en' ? (STAFF_EN_NAMES[baseName] || baseName) : (STAFF_NAME_MAP[baseName] || baseName); 
+                      let img = STAFF_IMAGES[s.name] || DEFAULT_IMG; 
+                      let div = document.createElement('div'); div.className = 'select-item'; 
+                      div.innerHTML = `<img src="${img}" class="select-img"><div style="font-weight:600; flex:1; color:#1e293b;">${dName} ${s.can2Hr?'<span style="color:#f59e0b;font-size:0.75rem;background:#fffbeb;padding:2px 6px;border-radius:6px;margin-left:6px;"><i class="fas fa-bolt"></i> 2Hr</span>':''}</div>`; 
+                      div.onclick = () => selectStaffNew(s, baseName); cCont.appendChild(div); 
+                  }); 
+              } else { 
+                  document.getElementById('group-staff').style.display = 'none'; document.getElementById('inp-staff-val').value = "ไม่ระบุ"; 
+              }
+          }
+          switchStep('step-form'); 
+          document.getElementById('bookingModal').classList.add('show');
+          if(!activeProfileId && !isForeigner) { setTimeout(() => { document.querySelector('.otp-box').focus(); }, 300); }
+      } catch(e) {
+          console.error("Error opening booking:", e);
       }
-      switchStep('step-form'); document.getElementById('bookingModal').classList.add('show');
-      if(!activeProfileId && !isForeigner) { setTimeout(() => { document.querySelector('.otp-box').focus(); }, 300); }
     }
 
     async function checkIDCardInput() {
@@ -808,7 +898,8 @@
         document.getElementById('inp-tel').value = tel;
         document.getElementById('masked-name').innerHTML = `<i class="fas fa-user"></i> ${getMaskedFullName(fname, lname)}`; 
         document.getElementById('masked-tel').innerHTML = `<i class="fas fa-phone"></i> ${getMaskedTel(tel)}`;
-        document.getElementById('existing-user-display').classList.remove('hidden'); document.getElementById('user-details-form').classList.add('hidden');
+        document.getElementById('existing-user-display').classList.remove('hidden'); 
+        document.getElementById('user-details-form').classList.add('hidden');
     }
 
     function verifyAndEditPhone() {
@@ -840,9 +931,9 @@
       document.getElementById('summary-content').innerHTML = html; switchStep('step-summary');
     }
 
-    // 🔥 ระบบโหลด 1 นาทีแบบเนียนๆ
+    // 🔥 ระบบ Loader ใหม่ (1 นาทีเนียนๆ)
     let loadInterval; 
-    let tipsInterval; 
+    let tipsInterval;
     let currentPercent = 0;
     
     const loadTips = [ 
@@ -873,6 +964,7 @@
         setTimeout(() => {
             circle.style.transition = 'stroke-dashoffset 0.5s linear';
             loadInterval = setInterval(() => {
+                // วิ่ง 0 -> 95% ภายในประมาณ 60 วินาที (0.8% ทุกๆ 0.5 วินาที)
                 currentPercent += 0.8; 
                 if(currentPercent >= 95) currentPercent = 95; 
                 let offset = 326 - (currentPercent / 100) * 326; 
