@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sadao Hospital Queue V40.0</title>
+  <title>Sadao Hospital Queue V40.1</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#2e7d32">
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -182,28 +182,25 @@
             <span id="t-mu-title">ผู้ใช้งานที่บันทึกไว้</span> 
             <i class="fas fa-users" style="color:var(--primary);"></i>
         </div>
+        <div id="mu-list" class="mu-profile-list"></div>
+        <button class="btn-add-user" onclick="showAddUserForm()">
+            <i class="fas fa-plus-circle"></i> <span id="t-btn-add-user">ลงทะเบียนผู้รับบริการใหม่</span>
+        </button>
+    </div>
 
-        <div id="active-profile-area" style="display:none; margin-bottom:15px; background:rgba(255,255,255,0.9); padding:15px; border-radius:16px; border:2px solid var(--primary); box-shadow:0 4px 15px rgba(74,222,128,0.2);">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <div style="font-size:0.8rem; color:var(--primary-dark); font-weight:bold; text-transform:uppercase;" id="t-act-user">ใช้งานในชื่อ</div>
-                <button style="background:var(--primary-light); border:1px solid #bbf7d0; color:var(--primary-dark); padding:4px 10px; border-radius:8px; font-size:0.75rem; font-weight:bold; cursor:pointer;" onclick="switchUser()" id="t-switch-user">สลับผู้ใช้</button>
-            </div>
-            <div style="font-size:1.3rem; font-weight:bold; display:flex; align-items:center; gap:10px; color:#1e293b;" id="aps-name"></div>
-            
-            <div class="aps-history">
-                <div style="font-size:0.85rem; color:#475569; font-weight:bold; margin-bottom:8px;" id="t-aps-hist"><i class="fas fa-calendar-check"></i> คิวล่าสุดของคุณ</div>
-                <div id="aps-history-content" style="display:flex; gap:10px; align-items:center;">
-                    <div style="color:var(--primary);"><i class="fas fa-spinner fa-spin"></i></div><div style="font-size:0.9rem;" id="t-syncing">กำลังซิงค์ข้อมูล...</div>
-                </div>
-                <div id="btn-cancel-area"></div>
-            </div>
+    <div id="active-patient-status" class="active-patient-status">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div style="font-size:0.8rem; color:#64748b; font-weight:bold; text-transform:uppercase;" id="t-act-user">ใช้งานในชื่อ</div>
+            <button style="background:var(--primary-light); border:1px solid #bbf7d0; color:var(--primary-dark); padding:4px 10px; border-radius:8px; font-size:0.75rem; font-weight:bold; cursor:pointer;" onclick="switchUser()" id="t-switch-user">สลับผู้ใช้</button>
         </div>
-
-        <div id="inactive-profiles-area">
-            <div id="mu-list" class="mu-profile-list"></div>
-            <button class="btn-add-user" onclick="showAddUserForm()">
-                <i class="fas fa-plus-circle"></i> <span id="t-btn-add-user">ลงทะเบียนผู้รับบริการใหม่</span>
-            </button>
+        <div style="font-size:1.4rem; font-weight:bold; display:flex; align-items:center; gap:8px; color:#1e293b;" id="aps-name"></div>
+        
+        <div class="aps-history">
+            <div style="font-size:0.85rem; color:#475569; font-weight:bold; margin-bottom:8px;" id="t-aps-hist"><i class="fas fa-calendar-check"></i> คิวล่าสุดของคุณ</div>
+            <div id="aps-history-content" style="display:flex; gap:10px; align-items:center;">
+                <div style="color:var(--primary);"><i class="fas fa-spinner fa-spin"></i></div><div style="font-size:0.9rem;" id="t-syncing">กำลังซิงค์ข้อมูล...</div>
+            </div>
+            <div id="btn-cancel-area"></div>
         </div>
     </div>
 
@@ -285,7 +282,7 @@
 
             <div class="form-group" id="group-staff" style="display:none; position:relative;">
               <label class="form-label" id="lbl_provider_text">ผู้ให้บริการ</label>
-              <div class="custom-select" id="staff-trigger" onclick="toggleStaffDropdown()"><div style="display:flex; align-items:center; gap:10px;"><img id="staff-display-img" src="https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png" class="select-img" style="width:36px; height:36px;"><span id="staff-display-name" style="font-weight:600; color:#1e293b;" id="t-not-spec">ไม่ระบุ</span></div><i class="fas fa-chevron-down" style="color:#94a3b8;"></i></div>
+              <div class="custom-select" id="staff-trigger" onclick="toggleStaffDropdown()"><div style="display:flex; align-items:center; gap:10px;"><img id="staff-display-img" src="https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png" class="select-img" style="width:36px; height:36px;"><span id="staff-display-name" style="font-weight:600; color:#1e293b;">ไม่ระบุ</span></div><i class="fas fa-chevron-down" style="color:#94a3b8;"></i></div>
               <div class="select-items" id="staff-options"></div>
               <input type="hidden" id="inp-staff-val" value="ไม่ระบุ">
             </div>
@@ -329,6 +326,54 @@
     </div>
   </div>
 
+  <div id="adminModal" class="modal-overlay">
+      <div class="modal-card" style="background: #f0f4f8; padding:0; border-radius:0; height:100vh; max-height:100vh;">
+          <div style="background:white; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.05); display:flex; justify-content:space-between; position:sticky; top:0; z-index:10; font-weight:700; font-size:1.1rem;">
+              <div><i class="fas fa-server" style="color:var(--primary);"></i> Command Center</div>
+              <i class="fas fa-times" style="color:#ef4444; cursor:pointer;" onclick="document.getElementById('adminModal').classList.remove('show')"></i>
+          </div>
+          
+          <div style="padding: 20px;">
+              <div class="admin-tab-container">
+                  <div class="admin-tab active" onclick="switchAdminTab('tab-db')"><i class="fas fa-users"></i> คนไข้</div>
+                  <div class="admin-tab" onclick="switchAdminTab('tab-logs')"><i class="fas fa-calendar-alt"></i> ตารางเวร</div>
+                  <div class="admin-tab" onclick="switchAdminTab('tab-system')"><i class="fas fa-cogs"></i> ระบบ</div>
+              </div>
+              
+              <div id="tab-db" class="admin-panel active">
+                  <div style="display:flex; gap:8px; margin-bottom:15px;"><input type="text" id="adminSearchInp" class="form-control" placeholder="ชื่อ / สกุล / เลขบัตร"><button class="btn btn-confirm" style="flex:none; padding:12px 20px;" onclick="adminSearch()"><i class="fas fa-search"></i></button></div>
+                  <div class="table-responsive"><table class="log-table"><thead><tr><th>ID / ข้อมูลคนไข้</th><th style="text-align:right;">จัดการ</th></tr></thead><tbody id="adminSearchResult"><tr><td colspan="2" style="text-align:center; padding:30px; color:#94a3b8;">ค้นหาเพื่อจัดการข้อมูล</td></tr></tbody></table></div>
+              </div>
+              
+              <div id="tab-logs" class="admin-panel">
+                  <div style="display:flex; gap:10px; margin-bottom:15px; align-items:center;">
+                      <input type="date" id="adminLogDateFilter" class="form-control" style="padding:8px; flex:1;">
+                      <button class="btn btn-confirm" style="padding:8px 15px; font-size:0.9rem;" onclick="loadAdminLogs()"><i class="fas fa-search"></i> ค้นหา</button>
+                      <button class="btn btn-cancel" style="padding:8px 15px; font-size:0.9rem;" onclick="document.getElementById('adminLogDateFilter').value=''; loadAdminLogs()"><i class="fas fa-sync"></i></button>
+                  </div>
+                  <div style="display:flex; gap:10px; margin-bottom:15px;">
+                      <button id="btnSortCreated" class="btn btn-confirm" style="padding:6px; font-size:0.8rem; flex:1; border-radius:8px;" onclick="setAdminSort('created')">เรียงตามเวลาที่กดจอง</button>
+                      <button id="btnSortAppoint" class="btn btn-cancel" style="padding:6px; font-size:0.8rem; flex:1; border-radius:8px;" onclick="setAdminSort('appoint')">เรียงตามเวลานัดหมาย</button>
+                  </div>
+                  <div class="table-responsive"><table class="log-table"><thead><tr><th>เวลาทำรายการ</th><th>ผู้ป่วย/บริการ</th><th>คิววันที่/เวลา</th><th style="text-align:right;"></th></tr></thead><tbody id="adminLogsArea"><tr><td colspan="4" style="text-align:center; padding:20px; color:#94a3b8;">กำลังรอข้อมูล...</td></tr></tbody></table></div>
+              </div>
+
+              <div id="tab-system" class="admin-panel">
+                  <div style="background:white; border-radius:12px; padding:20px; border:1px solid #e2e8f0; margin-bottom:15px;">
+                      <h4 style="margin:0 0 10px 0;"><i class="fas fa-file-csv" style="color:#0ea5e9;"></i> อัปโหลดแผนการรักษา</h4>
+                      <p style="font-size:0.8rem; color:#64748b;">ไฟล์ 4 คอลัมน์: <code>visitDate, idCard, service, planDays</code></p>
+                      <div style="border: 2px dashed #cbd5e1; padding: 20px; text-align: center; border-radius: 12px; background: #f8fafc; cursor: pointer; margin-bottom: 10px;" onclick="document.getElementById('adminFileInput').click()"><i class="fas fa-cloud-upload-alt" style="font-size:2rem; color:var(--primary); margin-bottom:10px;"></i><div id="adminFileName" style="font-weight:600; color:#1e293b; font-size:0.9rem;">เลือกไฟล์ .CSV</div><input type="file" id="adminFileInput" accept=".csv" style="display:none;" onchange="updateAdminFileUI(this)"></div>
+                      <div id="admin-upload-status" style="text-align:center; font-size:0.85rem; margin-bottom:10px; font-weight:bold;"></div><button class="btn btn-confirm" id="btnAdminUpload" onclick="processAdminUpload()" disabled style="width:100%; padding:10px;"><i class="fas fa-save"></i> อัปโหลด</button>
+                  </div>
+                  <div style="background:white; border-radius:12px; padding:20px; border:1px solid #e2e8f0; text-align:center;">
+                      <h4 style="margin:0 0 5px 0;"><i class="fas fa-bolt" style="color:#f59e0b;"></i> บังคับซิงค์ตารางเวร</h4>
+                      <button class="btn" style="width:100%; background:#f59e0b; color:white; padding:10px; margin-top:10px;" onclick="forceSyncSystem(this)">เริ่มซิงค์เดี๋ยวนี้</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
   <script>
     // 🌟 GLOBAL VARIABLES 
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycby0EQfBeg8ylgU9Q7IZDf-weHopsK4EFxXkqBUVvtDsEVKKpsIIDZ7y8fXXVWdyzKkbAw/exec"; 
@@ -361,14 +406,14 @@
         activeProfileId = id; saveProfilesToStorage(); 
     }
 
-    // 🌟 TRANSLATIONS
+    // 🌟 TRANSLATIONS (รวมคำว่า Postpartum แล้ว)
     const I18N = {
         th: {
-            lang_toggle: "EN", app_ttm: "แพทย์แผนไทย", desc_ttm: "นวดรักษา, ประคบ, นวดส่งเสริมฯ", app_tcm: "แพทย์แผนจีน", desc_tcm: "ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า", app_post: "บริการหลังคลอด", desc_post: "หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน", app_steam: "อบไอน้ำสมุนไพร", desc_steam: "ช่วยการไหลเวียนโลหิต ภูมิแพ้", h1: "โรงพยาบาลสะเดา", h2: "กลุ่มงานการแพทย์แผนไทยและการแพทย์ทางเลือก", online: "เปิดให้บริการออนไลน์ 24 ชม.", greeting: "ข้อมูลผู้รับบริการ", change_user: "สลับผู้ใช้", history_title: "คิวที่กำลังจะมาถึง / ล่าสุด", syncing: "กำลังซิงค์ข้อมูล...", fill_info: "กรอกข้อมูลจองคิว", id_card: "เลขประจำตัวประชาชน", foreigner: "ชาวต่างชาติ", pdpa: "ปลอดภัย 100% ตามมาตรฐาน PDPA", fname: "ชื่อจริง", lname: "นามสกุล", phone: "เบอร์โทรศัพท์", lock_warn: "พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้", user_info_title: "ข้อมูลผู้รับบริการ", not_me: "ไม่ใช่ฉัน?", change_phone: "เปลี่ยนเบอร์โทรติดต่อ", sel_svc: "เลือกบริการ", price_title: "อัตราค่าบริการ/สิทธิ:", prov_text_ttm: "ผู้ให้บริการ (ผู้ช่วยแพทย์แผนไทย)", prov_text_tcm: "ผู้ให้บริการ (แพทย์แผนจีน)", not_spec: "ไม่ระบุ", birthdate: "วันคลอด", del_type: "ประเภทการคลอด", hosp: "โรงพยาบาลที่คลอด", gender: "เพศ (สำหรับล็อกรอบ)", note: "หมายเหตุ (ถ้ามี)", btn_cancel: "ยกเลิก", btn_check: "ตรวจสอบข้อมูล", sum_title: "ยืนยันการนัดหมาย", btn_edit: "แก้ไข", btn_confirm: "ยืนยันจองคิว", saving: "ระบบรับข้อมูลแล้ว", saving_sub: "กรุณารอสักครู่ เพื่อยืนยันข้อมูล...", loading: "กำลังโหลด...", steam_price: "อัตราค่าบริการ: 100 บาท/ครั้ง", opt_sel: "-- เลือก --", opt_nat: "คลอดธรรมชาติ", opt_csec: "ผ่าคลอด", g_f: "หญิง", g_m: "ชาย", mu_title: "ผู้ใช้งานที่บันทึกไว้", btn_add_user: "ลงทะเบียนผู้รับบริการใหม่", act_user: "ใช้งานในชื่อ", aps_hist: "คิวล่าสุดของคุณ", cancel_q: "แจ้งยกเลิกนัดหมายนี้",
+            lang_toggle: "EN", app_ttm: "แพทย์แผนไทย", desc_ttm: "นวดรักษา, ประคบ, นวดส่งเสริมฯ", app_tcm: "แพทย์แผนจีน", desc_tcm: "ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า", app_postpartum: "บริการหลังคลอด", desc_post: "หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน", app_steam: "อบไอน้ำสมุนไพร", desc_steam: "ช่วยการไหลเวียนโลหิต ภูมิแพ้", h1: "โรงพยาบาลสะเดา", h2: "กลุ่มงานการแพทย์แผนไทยและการแพทย์ทางเลือก", online: "เปิดให้บริการออนไลน์ 24 ชม.", greeting: "ข้อมูลผู้รับบริการ", change_user: "สลับผู้ใช้", history_title: "คิวที่กำลังจะมาถึง / ล่าสุด", syncing: "กำลังซิงค์ข้อมูล...", fill_info: "กรอกข้อมูลจองคิว", id_card: "เลขประจำตัวประชาชน", foreigner: "ชาวต่างชาติ", pdpa: "ปลอดภัย 100% ตามมาตรฐาน PDPA", fname: "ชื่อจริง", lname: "นามสกุล", phone: "เบอร์โทรศัพท์", lock_warn: "พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้", user_info_title: "ข้อมูลผู้รับบริการ", not_me: "ไม่ใช่ฉัน?", change_phone: "เปลี่ยนเบอร์โทรติดต่อ", sel_svc: "เลือกบริการ", price_title: "อัตราค่าบริการ/สิทธิ:", prov_text_ttm: "ผู้ให้บริการ (ผู้ช่วยแพทย์แผนไทย)", prov_text_tcm: "ผู้ให้บริการ (แพทย์แผนจีน)", not_spec: "ไม่ระบุ", birthdate: "วันคลอด", del_type: "ประเภทการคลอด", hosp: "โรงพยาบาลที่คลอด", gender: "เพศ (สำหรับล็อกรอบ)", note: "หมายเหตุ (ถ้ามี)", btn_cancel: "ยกเลิก", btn_check: "ตรวจสอบข้อมูล", sum_title: "ยืนยันการนัดหมาย", btn_edit: "แก้ไข", btn_confirm: "ยืนยันจองคิว", saving: "ระบบรับข้อมูลแล้ว", saving_sub: "กรุณารอสักครู่ เพื่อยืนยันข้อมูล...", loading: "กำลังโหลด...", steam_price: "อัตราค่าบริการ: 100 บาท/ครั้ง", opt_sel: "-- เลือก --", opt_nat: "คลอดธรรมชาติ", opt_csec: "ผ่าคลอด", g_f: "หญิง", g_m: "ชาย", mu_title: "ผู้ใช้งานที่บันทึกไว้", btn_add_user: "ลงทะเบียนผู้รับบริการใหม่", act_user: "ใช้งานในชื่อ", aps_hist: "คิวล่าสุดของคุณ", cancel_q: "แจ้งยกเลิกนัดหมายนี้",
             "นวดและประคบเพื่อการรักษา": "นวดและประคบเพื่อการรักษา", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)": "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)": "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)", "ฝังเข็มเพื่อการรักษา": "ฝังเข็มเพื่อการรักษา", "ครอบแก้ว": "ครอบแก้ว", "ฝังเข็มใบหน้า": "ฝังเข็มใบหน้า", "เม็ดผักกาดแปะหู": "เม็ดผักกาดแปะหู", "ปรึกษาแพทย์แผนจีน": "ปรึกษาแพทย์แผนจีน", "บริการหลังคลอด": "บริการหลังคลอด", "อบไอน้ำ": "อบไอน้ำ"
         },
         en: {
-            lang_toggle: "TH", app_ttm: "Thai Traditional Med.", desc_ttm: "Massage, Compress, Wellness", app_tcm: "Chinese Medicine", desc_tcm: "Acupuncture, Cupping, Facial", app_post: "Postpartum Care", desc_post: "Normal delivery 7 days / C-Section 1 mo.", app_steam: "Herbal Steam", desc_steam: "Blood circulation, Allergy relief", h1: "Sadao Hospital", h2: "Thai Traditional & Alternative Medicine", online: "Online Booking 24/7", greeting: "Patient Information", change_user: "Switch User", history_title: "Upcoming / Recent Appointments", syncing: "Syncing data...", fill_info: "Booking Details", id_card: "Passport / ID Number", foreigner: "Foreigner", pdpa: "100% Secured by PDPA standard", fname: "First Name", lname: "Last Name", phone: "Phone Number", lock_warn: "Profile found. Name cannot be changed.", user_info_title: "Patient Details", not_me: "Not me?", change_phone: "Change Phone Number", sel_svc: "Select Service", price_title: "Estimated Fee:", prov_text_ttm: "Provider (TTM Assistant)", prov_text_tcm: "Provider (TCM Doctor)", not_spec: "Not Specified", birthdate: "Date of Birth (Baby)", del_type: "Delivery Type", hosp: "Hospital", gender: "Gender (For Room Allocation)", note: "Note (Optional)", btn_cancel: "Cancel", btn_check: "Check Info", sum_title: "Confirm Appointment", btn_edit: "Edit", btn_confirm: "Confirm Booking", saving: "Data Received", saving_sub: "Processing confirmation...", loading: "Loading...", steam_price: "Service Fee: 100 THB/Session", opt_sel: "-- Select --", opt_nat: "Normal Delivery", opt_csec: "C-Section", g_f: "Female", g_m: "Male", mu_title: "Saved Profiles", btn_add_user: "Add New Patient", act_user: "Active Profile", aps_hist: "Your Recent Appointment", cancel_q: "Cancel Appointment",
+            lang_toggle: "TH", app_ttm: "Thai Traditional Med.", desc_ttm: "Massage, Compress, Wellness", app_tcm: "Chinese Medicine", desc_tcm: "Acupuncture, Cupping, Facial", app_postpartum: "Postpartum Care", desc_post: "Normal delivery 7 days / C-Section 1 mo.", app_steam: "Herbal Steam", desc_steam: "Blood circulation, Allergy relief", h1: "Sadao Hospital", h2: "Thai Traditional & Alternative Medicine", online: "Online Booking 24/7", greeting: "Patient Information", change_user: "Switch User", history_title: "Upcoming / Recent Appointments", syncing: "Syncing data...", fill_info: "Booking Details", id_card: "Passport / ID Number", foreigner: "Foreigner", pdpa: "100% Secured by PDPA standard", fname: "First Name", lname: "Last Name", phone: "Phone Number", lock_warn: "Profile found. Name cannot be changed.", user_info_title: "Patient Details", not_me: "Not me?", change_phone: "Change Phone Number", sel_svc: "Select Service", price_title: "Estimated Fee:", prov_text_ttm: "Provider (TTM Assistant)", prov_text_tcm: "Provider (TCM Doctor)", not_spec: "Not Specified", birthdate: "Date of Birth (Baby)", del_type: "Delivery Type", hosp: "Hospital", gender: "Gender (For Room Allocation)", note: "Note (Optional)", btn_cancel: "Cancel", btn_check: "Check Info", sum_title: "Confirm Appointment", btn_edit: "Edit", btn_confirm: "Confirm Booking", saving: "Data Received", saving_sub: "Processing confirmation...", loading: "Loading...", steam_price: "Service Fee: 100 THB/Session", opt_sel: "-- Select --", opt_nat: "Normal Delivery", opt_csec: "C-Section", g_f: "Female", g_m: "Male", mu_title: "Saved Profiles", btn_add_user: "Add New Patient", act_user: "Active Profile", aps_hist: "Your Recent Appointment", cancel_q: "Cancel Appointment",
             "นวดและประคบเพื่อการรักษา": "Therapeutic Massage & Compress", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)": "Relaxing Body Massage", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)": "Foot Massage", "ฝังเข็มเพื่อการรักษา": "Therapeutic Acupuncture", "ครอบแก้ว": "Cupping Therapy", "ฝังเข็มใบหน้า": "Facial Acupuncture", "เม็ดผักกาดแปะหู": "Ear Seed Therapy", "ปรึกษาแพทย์แผนจีน": "TCM Consultation", "บริการหลังคลอด": "Postpartum Care", "อบไอน้ำ": "Herbal Steam"
         }
     };
@@ -393,7 +438,7 @@
         document.getElementById('t-desc-ttm').innerText = _t('desc_ttm');
         document.getElementById('t-menu-tcm').innerText = _t('app_tcm'); 
         document.getElementById('t-desc-tcm').innerText = _t('desc_tcm');
-        document.getElementById('t-menu-post').innerText = _t('app_post'); 
+        document.getElementById('t-menu-post').innerText = _t('app_postpartum'); 
         document.getElementById('t-desc-post').innerText = _t('desc_post');
         document.getElementById('t-menu-steam').innerText = _t('app_steam'); 
         document.getElementById('t-desc-steam').innerText = _t('desc_steam');
@@ -465,6 +510,7 @@
     const STAFF_EN_NAMES = { "จินดา J": "Jinda (Jeab)", "รจนา M": "Rotjana (Maam)", "อรรถพล B": "Attapon (Bao)", "ศินารัตน์ C": "Sinarat (C)", "จุฑามาศ F": "Jutamat (Fon)", "รัตน์ชนก KW": "Ratchanok (Kwang)", "นิกษ์นิภา T": "Niknipha (Kartoon)", "ณิชาภัทร W": "Nichapat (Wawa)" };
     const DEFAULT_IMG = "https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png"; const DAY_COLORS = ["#ef4444", "#eab308", "#ec4899", "#22c55e", "#f97316", "#3b82f6", "#a855f7"];
 
+    // 🌟 ระบบการ์ดครอบครัว
     function renderMultiUserCard() {
         let muCard = document.getElementById('multi-user-card'); 
         let apsCard = document.getElementById('active-patient-status');
@@ -643,7 +689,7 @@
     }
 
     function openApp(type) {
-      if(type === 'imc' || type === 'wellness') { return; } 
+      if(type === 'imc' || type === 'wellness') { return; }
       currentApp = type; let conf = APP_CONFIG[type];
       document.documentElement.style.setProperty('--primary', conf.color); document.documentElement.style.setProperty('--primary-light', type==='tcm'?'#ffebee':type==='postpartum'?'#fce4ec':type==='steam'?'#e0f2fe':'#e8f5e9');
       document.getElementById('app-title').innerText = _t('app_' + type); document.getElementById('app-logo').src = conf.logo; document.getElementById('view-home').classList.add('hidden'); document.getElementById('view-dashboard').classList.remove('hidden');
@@ -739,7 +785,6 @@
     }
     document.addEventListener('DOMContentLoaded', () => { let c = document.getElementById('inp-2hr'); if(c) c.addEventListener('change', updatePriceDisplay); });
 
-    // 🔥 ปลดล็อกการจองเข้าใช้งานให้แผนกหลังคลอด 🔥
     function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGender) {
       try {
           let staffs = [];
@@ -749,7 +794,7 @@
               dept: APP_CONFIG[currentApp].title, 
               date: dateFull, sysDate: sysDate, time: time, appType: currentApp, 
               sheetName: globalData[dayIndex].sheetName,
-              ppExtraData: staffDataEncoded // ส่งต่อให้ backend ใช้เช็คห้องอบ
+              ppExtraData: staffDataEncoded 
           };
           
           if(activeProfileId) { 
@@ -775,7 +820,6 @@
 
           let lblProv = document.getElementById('lbl_provider_text'); if (currentApp === 'tcm') lblProv.innerText = _t('prov_text_tcm'); else lblProv.innerText = _t('prov_text_ttm');
 
-          // แสดงฟอร์มตามแผนก
           if (currentApp === 'postpartum') { 
               document.getElementById('postpartum-fields').classList.remove('hidden'); 
               bookingData.service = "บริการหลังคลอด"; 
@@ -870,8 +914,7 @@
         document.getElementById('inp-tel').value = tel;
         document.getElementById('masked-name').innerHTML = `<i class="fas fa-user"></i> ${getMaskedFullName(fname, lname)}`; 
         document.getElementById('masked-tel').innerHTML = `<i class="fas fa-phone"></i> ${getMaskedTel(tel)}`;
-        document.getElementById('existing-user-display').classList.remove('hidden'); 
-        document.getElementById('user-details-form').classList.add('hidden');
+        document.getElementById('existing-user-display').classList.remove('hidden'); document.getElementById('user-details-form').classList.add('hidden');
     }
 
     function verifyAndEditPhone() {
@@ -905,7 +948,7 @@
           bookingData.extraInfo = currentLang==='en' ? `Birth: ${bDate} (${dType}) Hosp: ${hosp}` : `คลอด: ${bDate} (${dType}) รพ.${hosp}`; 
           bookingData.service = "บริการหลังคลอด";
           bookingData.staff = "ไม่ระบุ";
-          bookingData.is2Hr = true; // หลังคลอดเป็น 2 ชม. เสมอ
+          bookingData.is2Hr = true; 
       } else if (currentApp === 'steam') { 
           bookingData.extraInfo = currentLang==='en' ? `Gender: ${document.getElementById('inp-gender').value}` : `เพศ: ${document.getElementById('inp-gender').value}`; 
           bookingData.service = "อบไอน้ำ";
@@ -927,7 +970,6 @@
       switchStep('step-summary');
     }
 
-    // 🔥 ระบบ Loader 1 นาทีพร้อมกล่องคำแนะนำ
     let loadInterval; 
     let tipsInterval;
     let currentPercent = 0;
