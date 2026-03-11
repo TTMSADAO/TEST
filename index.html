@@ -112,7 +112,8 @@
     .otp-box { width: 100%; aspect-ratio: 1/1.2; text-align: center; font-size: 1.2rem; font-weight: 700; border: 2px solid #cbd5e1; border-radius: 8px; background: #f8fafc; color: var(--primary-dark); transition: all 0.2s; padding: 0; outline: none; font-family: 'Prompt', sans-serif; }
     .otp-box:focus { border-color: #4ade80; background: white; box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2); transform: translateY(-2px); }
     .otp-box.filled { border-color: var(--primary); background: #f0fdf4; }
-    
+    .otp-box:nth-child(1), .otp-box:nth-child(5), .otp-box:nth-child(10), .otp-box:nth-child(12) { margin-right: 6px; }
+
     .id-card-input { background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%) !important; border: 2px solid #4ade80 !important; color: #166534 !important; font-size: 1.3rem !important; font-weight: 700 !important; letter-spacing: 3px !important; text-align: center; transition: all 0.3s ease; }
     
     .custom-select { width: 100%; padding: 10px 15px; border: 2px solid #e2e8f0; border-radius: 12px; background: #f8fafc; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; }
@@ -124,7 +125,21 @@
     .btn-cancel { background: #f1f5f9; color: #64748b; } .btn-cancel:active { transform: scale(0.96); background: #e2e8f0; }
     .btn-confirm { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3); } .btn-confirm:active { transform: scale(0.96); }
     .btn-confirm:disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
+
     .toggle-container { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; background: #f8fafc; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; }
+    .toggle-container input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+
+    /* ADMIN STYLES */
+    .admin-tab-container { display: flex; background: #e2e8f0; border-radius: 14px; padding: 4px; margin-bottom: 20px; }
+    .admin-tab { flex: 1; text-align: center; padding: 10px; font-size: 0.9rem; font-weight: 700; color: #64748b; cursor: pointer; border-radius: 10px; transition: 0.3s; }
+    .admin-tab.active { background: white; color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .admin-panel { display: none; animation: fadeIn 0.3s; } .admin-panel.active { display: block; }
+    .table-responsive { width: 100%; overflow-x: auto; border-radius: 12px; border: 1px solid #e2e8f0; background: white; }
+    .log-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .log-table th { background: #f1f5f9; padding: 12px 10px; text-align: left; color: #475569; font-weight: 700; border-bottom: 2px solid #cbd5e1; white-space: nowrap; }
+    .log-table td { padding: 10px; border-bottom: 1px solid #f1f5f9; color: #1e293b; vertical-align: middle; }
+    .btn-icon { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 6px; transition: 0.2s; font-size: 1rem; }
+    .btn-edit { color: #0ea5e9; background: #e0f2fe; } .btn-delete { color: #ef4444; background: #fee2e2; } .btn-plan { color: #8b5cf6; background: #f3e8ff; } .btn-telebook { color: #16a34a; background: #dcfce7; font-size:0.8rem; font-weight:bold; padding:4px 8px;}
   </style>
 </head>
 <body>
@@ -195,7 +210,9 @@
     <div class="menu-container">
         <div class="dept-card card-ttm" onclick="openApp('ttm')"><img src="https://img2.pic.in.th/pic/619e72dc2124132ccf4620717d4fa58d.md.png" class="dept-icon" style="width:65px; height:65px;"><div class="dept-info"><h3 id="t-menu-ttm">แพทย์แผนไทย</h3><p id="t-desc-ttm">นวดรักษา, ประคบ, นวดส่งเสริมฯ</p></div><div class="arrow-btn"><i class="fas fa-chevron-right"></i></div></div>
         <div class="dept-card card-tcm" onclick="openApp('tcm')"><img src="https://img2.pic.in.th/pic/--06d2d95efaba2074.md.png" class="dept-icon" style="width:65px; height:65px;"><div class="dept-info"><h3 id="t-menu-tcm">แพทย์แผนจีน</h3><p id="t-desc-tcm">ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า</p></div><div class="arrow-btn"><i class="fas fa-chevron-right"></i></div></div>
-        <div class="dept-card card-postpartum" onclick="Swal.fire('Coming Soon','ระบบบริการหลังคลอดกำลังปรับปรุงใน Phase 2 ครับ','info')"><img src="https://img2.pic.in.th/pic/eb06897c542c79b64690c8e794fa84a4.png" class="dept-icon" style="width:65px; height:65px;"><div class="dept-info"><h3 id="t-menu-post">บริการหลังคลอด</h3><p id="t-desc-post">หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน</p></div><div class="arrow-btn"><i class="fas fa-chevron-right"></i></div></div>
+        
+        <div class="dept-card card-postpartum" onclick="openApp('postpartum')"><img src="https://img2.pic.in.th/pic/eb06897c542c79b64690c8e794fa84a4.png" class="dept-icon" style="width:65px; height:65px;"><div class="dept-info"><h3 id="t-menu-post">บริการหลังคลอด</h3><p id="t-desc-post">หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน</p></div><div class="arrow-btn"><i class="fas fa-chevron-right"></i></div></div>
+        
         <div class="dept-card card-steam" onclick="openApp('steam')"><img src="https://img2.pic.in.th/pic/-3b445847427fcbfd.png" class="dept-icon" style="width:65px; height:65px;"><div class="dept-info"><h3 id="t-menu-steam">อบไอน้ำสมุนไพร</h3><p id="t-desc-steam">ช่วยการไหลเวียนโลหิต ภูมิแพ้</p></div><div class="arrow-btn"><i class="fas fa-chevron-right"></i></div></div>
     </div>
   </div>
@@ -268,7 +285,7 @@
 
             <div class="form-group" id="group-staff" style="display:none; position:relative;">
               <label class="form-label" id="lbl_provider_text">ผู้ให้บริการ</label>
-              <div class="custom-select" id="staff-trigger" onclick="toggleStaffDropdown()"><div style="display:flex; align-items:center; gap:10px;"><img id="staff-display-img" src="https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png" class="select-img" style="width:36px; height:36px;"><span id="staff-display-name" style="font-weight:600; color:#1e293b;">ไม่ระบุ</span></div><i class="fas fa-chevron-down" style="color:#94a3b8;"></i></div>
+              <div class="custom-select" id="staff-trigger" onclick="toggleStaffDropdown()"><div style="display:flex; align-items:center; gap:10px;"><img id="staff-display-img" src="https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png" class="select-img" style="width:36px; height:36px;"><span id="staff-display-name" style="font-weight:600; color:#1e293b;" id="t-not-spec">ไม่ระบุ</span></div><i class="fas fa-chevron-down" style="color:#94a3b8;"></i></div>
               <div class="select-items" id="staff-options"></div>
               <input type="hidden" id="inp-staff-val" value="ไม่ระบุ">
             </div>
@@ -277,6 +294,12 @@
                 <label style="display:flex; align-items:center; gap:10px; cursor:pointer; color:#b45309; font-weight:700; margin:0; font-size:1rem;"><input type="checkbox" id="inp-2hr" style="width:20px; height:20px; accent-color:#f59e0b;"><span id="lbl-2hr-text"><i class="fas fa-star"></i> จองต่อเนื่อง 2 ชั่วโมง</span></label>
                 <div style="font-size:0.85rem; color:#dc2626; margin-top:6px; padding-left:30px;" id="note-2hr-text">*ชั่วโมงที่ 2 ชำระเพิ่ม 200 บาท</div>
             </div>
+        </div>
+
+        <div id="postpartum-fields" class="hidden" style="margin-top:15px;">
+            <div class="form-group"><label class="form-label" id="t-birthdate">วันคลอด</label><input type="date" id="inp-birth-date" class="form-control"></div>
+            <div class="form-group"><label class="form-label" id="t-del-type">ประเภทการคลอด</label><select id="inp-delivery-type" class="form-control"><option value="" id="t-opt-sel">-- เลือก --</option><option value="คลอดธรรมชาติ" id="t-opt-nat">คลอดธรรมชาติ</option><option value="ผ่าคลอด" id="t-opt-csec">ผ่าคลอด</option></select></div>
+            <div class="form-group"><label class="form-label" id="t-hosp">โรงพยาบาลที่คลอด</label><input type="text" id="inp-hospital" class="form-control"></div>
         </div>
 
         <div id="steam-fields" class="hidden" style="margin-top:15px;">
@@ -315,6 +338,7 @@
     let currentApp = ''; let globalData = []; let bookingData = {}; let selectedIndex = 0; let typingTimer;
     let currentUserDB = null; let selectedSlotData = null; let refreshInterval; let activeBookingObj = null; let isForeigner = false;
     
+    // 🌟 LOCAL STORAGE MANAGEMENT FOR MULTI-USER
     let savedProfiles = JSON.parse(localStorage.getItem('sdh_saved_profiles') || '[]');
     let activeProfileId = localStorage.getItem('sdh_active_profile_id');
     if (activeProfileId === 'null') activeProfileId = null;
@@ -387,7 +411,6 @@
         document.getElementById('t-sel-svc').innerText = _t('sel_svc'); 
         document.getElementById('t-price-title').innerText = _t('price_title');
         
-        // สำหรับหน้าจอหลังคลอดรออัปเดต
         if(document.getElementById('t-birthdate')) document.getElementById('t-birthdate').innerText = _t('birthdate'); 
         if(document.getElementById('t-del-type')) document.getElementById('t-del-type').innerText = _t('del_type');
         if(document.getElementById('t-hosp')) document.getElementById('t-hosp').innerText = _t('hosp'); 
@@ -411,7 +434,7 @@
         document.getElementById('t-g-m').innerText = _t('g_m');
 
         document.getElementById('t-mu-title').innerHTML = `${_t('mu_title')} <i class="fas fa-users" style="color:var(--primary);"></i>`;
-        document.getElementById('t-btn-add-user').innerText = _t('btn_add_user');
+        document.getElementById('t-btn-add-user').innerHTML = `<i class="fas fa-plus-circle"></i> ${_t('btn_add_user')}`;
         document.getElementById('t-act-user').innerText = _t('act_user'); 
         document.getElementById('t-switch-user').innerText = _t('change_user');
         document.getElementById('t-aps-hist').innerHTML = `<i class="fas fa-calendar-check"></i> ${_t('aps_hist')}`;
@@ -442,7 +465,6 @@
     const STAFF_EN_NAMES = { "จินดา J": "Jinda (Jeab)", "รจนา M": "Rotjana (Maam)", "อรรถพล B": "Attapon (Bao)", "ศินารัตน์ C": "Sinarat (C)", "จุฑามาศ F": "Jutamat (Fon)", "รัตน์ชนก KW": "Ratchanok (Kwang)", "นิกษ์นิภา T": "Niknipha (Kartoon)", "ณิชาภัทร W": "Nichapat (Wawa)" };
     const DEFAULT_IMG = "https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png"; const DAY_COLORS = ["#ef4444", "#eab308", "#ec4899", "#22c55e", "#f97316", "#3b82f6", "#a855f7"];
 
-    // 🌟 ระบบการ์ดครอบครัว
     function renderMultiUserCard() {
         let muCard = document.getElementById('multi-user-card'); 
         let apsCard = document.getElementById('active-patient-status');
@@ -621,7 +643,7 @@
     }
 
     function openApp(type) {
-      if(type === 'imc' || type === 'wellness' || type === 'postpartum') { return; } // ล็อกปุ่มหลังคลอดไว้รอ Phase 2
+      if(type === 'imc' || type === 'wellness') { return; } 
       currentApp = type; let conf = APP_CONFIG[type];
       document.documentElement.style.setProperty('--primary', conf.color); document.documentElement.style.setProperty('--primary-light', type==='tcm'?'#ffebee':type==='postpartum'?'#fce4ec':type==='steam'?'#e0f2fe':'#e8f5e9');
       document.getElementById('app-title').innerText = _t('app_' + type); document.getElementById('app-logo').src = conf.logo; document.getElementById('view-home').classList.add('hidden'); document.getElementById('view-dashboard').classList.remove('hidden');
@@ -717,10 +739,18 @@
     }
     document.addEventListener('DOMContentLoaded', () => { let c = document.getElementById('inp-2hr'); if(c) c.addEventListener('change', updatePriceDisplay); });
 
+    // 🔥 ปลดล็อกการจองเข้าใช้งานให้แผนกหลังคลอด 🔥
     function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGender) {
       try {
-          let staffs = JSON.parse(decodeURIComponent(staffDataEncoded));
-          bookingData = { dept: APP_CONFIG[currentApp].title, date: dateFull, sysDate: sysDate, time: time, appType: currentApp, sheetName: globalData[dayIndex].sheetName };
+          let staffs = [];
+          if(staffDataEncoded) staffs = JSON.parse(decodeURIComponent(staffDataEncoded));
+          
+          bookingData = { 
+              dept: APP_CONFIG[currentApp].title, 
+              date: dateFull, sysDate: sysDate, time: time, appType: currentApp, 
+              sheetName: globalData[dayIndex].sheetName,
+              ppExtraData: staffDataEncoded // ส่งต่อให้ backend ใช้เช็คห้องอบ
+          };
           
           if(activeProfileId) { 
               document.getElementById('auth-section').style.display = 'none'; 
@@ -745,10 +775,15 @@
 
           let lblProv = document.getElementById('lbl_provider_text'); if (currentApp === 'tcm') lblProv.innerText = _t('prov_text_tcm'); else lblProv.innerText = _t('prov_text_ttm');
 
+          // แสดงฟอร์มตามแผนก
           if (currentApp === 'postpartum') { 
-              document.getElementById('postpartum-fields').classList.remove('hidden'); bookingData.service = "บริการหลังคลอด"; 
+              document.getElementById('postpartum-fields').classList.remove('hidden'); 
+              bookingData.service = "บริการหลังคลอด"; 
+              document.getElementById('group-staff').style.display = 'none';
+              document.getElementById('inp-staff-val').value = "ไม่ระบุ";
           } else if (currentApp === 'steam') { 
               document.getElementById('steam-fields').classList.remove('hidden'); bookingData.service = "อบไอน้ำ"; 
+              document.getElementById('group-staff').style.display = 'none';
               if (slotGender === 'ช' || slotGender === 'ชาย') document.getElementById('inp-gender').value = 'ชาย'; 
               else if (slotGender === 'ญ' || slotGender === 'หญิง') document.getElementById('inp-gender').value = 'หญิง'; 
           } else {
@@ -851,21 +886,45 @@
 
     function goToSummary() {
       let id = document.getElementById('inp-idcard').value; let f = document.getElementById('inp-fname').value.trim(); let l = document.getElementById('inp-lname').value.trim(); let tel = document.getElementById('inp-tel').value;
-      if(!id || !f || !tel) return Swal.fire('Warning','Please fill all required fields','warning');
-      bookingData.idCard = id; bookingData.fname = f; bookingData.lname = l; bookingData.name = f + " " + l; bookingData.tel = tel; bookingData.note = document.getElementById('inp-note').value; bookingData.extraInfo = "";
+      if(!id || !f || !tel) return Swal.fire(currentLang==='en'?'Warning':'แจ้งเตือน', currentLang==='en'?'Please fill all required fields':'กรุณากรอกข้อมูลให้ครบถ้วน','warning');
+      
+      bookingData.idCard = id; bookingData.fname = f; bookingData.lname = l; bookingData.name = f + " " + l; bookingData.tel = tel; 
+      bookingData.note = document.getElementById('inp-note').value; 
+      bookingData.extraInfo = "";
       
       let baseStaffName = document.getElementById('inp-staff-val').value;
       let displayStaff = currentLang === 'en' ? (STAFF_EN_NAMES[baseStaffName] || baseStaffName) : (STAFF_NAME_MAP[baseStaffName] || baseStaffName);
 
-      if (currentApp === 'postpartum') bookingData.extraInfo = `DOB: ${document.getElementById('inp-birth-date').value} (${document.getElementById('inp-delivery-type').value})`; else if (currentApp === 'steam') bookingData.extraInfo = `Gender: ${document.getElementById('inp-gender').value}`; else { bookingData.service = document.getElementById('inp-service').value.split(' (')[0]; bookingData.staff = baseStaffName; bookingData.is2Hr = document.getElementById('inp-2hr') ? document.getElementById('inp-2hr').checked : false; }
+      // 🔥 อัปเดตเงื่อนไขให้แผนกหลังคลอด 🔥
+      if (currentApp === 'postpartum') { 
+          let bDate = document.getElementById('inp-birth-date').value;
+          let dType = document.getElementById('inp-delivery-type').value;
+          let hosp = document.getElementById('inp-hospital').value;
+          if(!bDate || !dType || !hosp) return Swal.fire(currentLang==='en'?'Warning':'แจ้งเตือน', currentLang==='en'?'Please fill all delivery details':'กรุณากรอกข้อมูลการคลอดให้ครบ','warning');
+          
+          bookingData.extraInfo = currentLang==='en' ? `Birth: ${bDate} (${dType}) Hosp: ${hosp}` : `คลอด: ${bDate} (${dType}) รพ.${hosp}`; 
+          bookingData.service = "บริการหลังคลอด";
+          bookingData.staff = "ไม่ระบุ";
+          bookingData.is2Hr = true; // หลังคลอดเป็น 2 ชม. เสมอ
+      } else if (currentApp === 'steam') { 
+          bookingData.extraInfo = currentLang==='en' ? `Gender: ${document.getElementById('inp-gender').value}` : `เพศ: ${document.getElementById('inp-gender').value}`; 
+          bookingData.service = "อบไอน้ำ";
+          bookingData.staff = "ไม่ระบุ";
+      } else { 
+          bookingData.service = document.getElementById('inp-service').value.split(' (')[0]; 
+          bookingData.staff = baseStaffName; 
+          bookingData.is2Hr = document.getElementById('inp-2hr') ? document.getElementById('inp-2hr').checked : false; 
+      }
       
       let mName = getMaskedFullName(f, l);
-      let html = `<b><i class="fas fa-user"></i></b> ${mName}<br><b><i class="fas fa-phone"></i></b> ${getMaskedTel(tel)}<br><hr style="border:0;border-top:1px dashed #cbd5e1;margin:10px 0;"><b>Service:</b> ${_t(bookingData.service)}<br><b>Time:</b> ${bookingData.date} [${bookingData.time}]`;
-      if(currentApp === 'ttm' || currentApp === 'tcm') html += `<br><b>Provider:</b> ${displayStaff}`;
-      if(bookingData.is2Hr) html += `<br><b style="color:#b45309;"><i class="fas fa-clock"></i> 2 Hours Session</b>`;
-      if(bookingData.extraInfo) html += `<br>${bookingData.extraInfo}`;
-      if(bookingData.note) html += `<br><b>Note:</b> <span style="color:#ef4444;">${bookingData.note}</span>`;
-      document.getElementById('summary-content').innerHTML = html; switchStep('step-summary');
+      let html = `<b><i class="fas fa-user"></i></b> ${mName}<br><b><i class="fas fa-phone"></i></b> ${getMaskedTel(tel)}<br><hr style="border:0;border-top:1px dashed #cbd5e1;margin:10px 0;"><b>${currentLang==='en'?'Service':'บริการ'}:</b> ${_t(bookingData.service)}<br><b>${currentLang==='en'?'Time':'เวลา'}:</b> ${bookingData.date} [${bookingData.time}]`;
+      if(currentApp === 'ttm' || currentApp === 'tcm') html += `<br><b>${currentLang==='en'?'Provider':'ผู้ให้บริการ'}:</b> ${displayStaff}`;
+      if(bookingData.is2Hr && currentApp !== 'postpartum') html += `<br><b style="color:#b45309;"><i class="fas fa-clock"></i> ${currentLang==='en'?'2 Hours Session':'2 ชั่วโมงต่อเนื่อง'}</b>`;
+      if(bookingData.extraInfo) html += `<br><span style="color:#0ea5e9;"><i class="fas fa-info-circle"></i> ${bookingData.extraInfo}</span>`;
+      if(bookingData.note) html += `<br><b>${currentLang==='en'?'Note':'หมายเหตุ'}:</b> <span style="color:#ef4444;">${bookingData.note}</span>`;
+      
+      document.getElementById('summary-content').innerHTML = html; 
+      switchStep('step-summary');
     }
 
     // 🔥 ระบบ Loader 1 นาทีพร้อมกล่องคำแนะนำ
@@ -901,7 +960,6 @@
         setTimeout(() => {
             circle.style.transition = 'stroke-dashoffset 0.5s linear';
             loadInterval = setInterval(() => {
-                // วิ่ง 0 -> 95% ภายในประมาณ 60 วินาที
                 currentPercent += 0.8; 
                 if(currentPercent >= 95) currentPercent = 95; 
                 let offset = 326 - (currentPercent / 100) * 326; 
@@ -924,49 +982,78 @@
     }
 
     function confirmBooking() {
-      document.getElementById('btn-final-confirm').disabled = true; 
-      showPercentageLoader(); 
-      
-      let fNameCombined = (bookingData.fname + " " + (bookingData.lname || "")).trim();
-      let finalServiceDb = bookingData.service; let lineNoteExtra = "";
-      if(bookingData.is2Hr) {
-          if(currentApp === 'ttm') { finalServiceDb += " (2 ชม.)"; lineNoteExtra = currentLang === 'en' ? "\nNote: 2 Hrs Booking (+200 THB)" : "\nหมายเหตุ: นัดจอง 2 ชม. ชำระเงิน 200 บาท"; }
-          else if(currentApp === 'tcm') { finalServiceDb = "ฝังเข็ม+ครอบแก้ว"; lineNoteExtra = currentLang === 'en' ? "\nNote: Acupuncture + Cupping" : "\nหมายเหตุ: นัดจอง ฝังเข็ม+ครอบแก้ว"; }
-      }
+        document.getElementById('btn-final-confirm').disabled = true; 
+        showPercentageLoader(); 
+        
+        let fNameCombined = (bookingData.fname + " " + (bookingData.lname || "")).trim();
+        let finalServiceDb = bookingData.service; 
+        let lineNoteExtra = "";
+        let finalNote = bookingData.note;
 
-      let payload = { appType: bookingData.appType, sheetName: bookingData.sheetName, idCard: bookingData.idCard, fname: bookingData.fname, lname: bookingData.lname, fullName: fNameCombined, tel: bookingData.tel, service: finalServiceDb, note: "", time: bookingData.time, date: bookingData.date, sysDate: bookingData.sysDate, is2Hr: bookingData.is2Hr };
-      if ((currentApp === 'ttm' || currentApp === 'tcm') && selectedSlotData) { payload.row = selectedSlotData.row; payload.col = selectedSlotData.col; } else if (currentApp === 'steam') { payload.gender = document.getElementById('inp-gender').value; payload.patients = [{name: fNameCombined, tel: bookingData.tel}]; }
-      
-      fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(payload) })
-      .then(async response => {
-          let resText = await response.text();
-          try { return JSON.parse(resText); } catch(err) { return { status: 'error_but_done', penaltyDays: 0 }; } 
-      })
-      .then(res => {
-          finishPercentageLoader(() => {
-              if(res.status === 'success' || res.status === 'error_but_done') { 
-                  addOrUpdateProfile(bookingData.idCard, bookingData.fname, bookingData.lname, bookingData.tel);
-                  Swal.fire({ title: currentLang === 'en' ? 'Success!' : 'จองคิวสำเร็จ!', html: currentLang === 'en' ? '<p>Click below to notify via LINE</p>' : '<p>กรุณากดปุ่มด้านล่างเพื่อรับการยืนยันทาง LINE</p>', icon: 'success', confirmButtonText: '<i class="fab fa-line"></i> LINE Notify', confirmButtonColor: '#00c300', allowOutsideClick: false }).then((r) => {
-                      if(r.isConfirmed) {
-                          let mName = getMaskedFullName(bookingData.fname, bookingData.lname); let mPhone = "******" + bookingData.tel.slice(-4);
-                          let msg = currentLang === 'en' ? `Booking: ${APP_CONFIG[bookingData.appType].title}\nPatient: ${mName}\nPhone: ${mPhone}\n` : `ขอจองคิว${APP_CONFIG[bookingData.appType].title}\nผู้รับบริการ: ${mName}\nเบอร์โทร: ${mPhone}\n`;
-                          if(currentApp === 'ttm' || currentApp === 'tcm') { let sName = currentLang === 'en' ? (STAFF_EN_NAMES[bookingData.staff] || bookingData.staff) : (STAFF_NAME_MAP[bookingData.staff] || bookingData.staff); msg += currentLang === 'en' ? `Provider: ${sName}\n` : `ผู้ให้บริการ: ${sName}\n`; }
-                          msg += currentLang === 'en' ? `Service: ${_t(bookingData.service)}\nDate: ${bookingData.date}\nTime: ${bookingData.time}\nPatient Note: ${bookingData.note || '-'}` : `บริการ: ${bookingData.service}\nวันที่: ${bookingData.date}\nเวลา: ${bookingData.time} น.\nอาการเบื้องต้น: ${bookingData.note || '-'}`;
-                          msg += lineNoteExtra;
-                          let dummy = document.createElement("textarea"); document.body.appendChild(dummy); dummy.value = msg; dummy.select(); document.execCommand("copy"); document.body.removeChild(dummy);
-                          window.location.href = `https://line.me/R/oaMessage/@649dqeft/?${encodeURIComponent(msg)}`;
-                      }
-                  });
-                  closeModal(); renderMultiUserCard(); fetchData(true); fetch(API_ENDPOINT, {method:'POST', body:JSON.stringify({action:'background_sync', dept:currentApp})}); 
-              } else { Swal.fire('Error', res.message || 'Slot unavailable', 'error'); document.getElementById('btn-final-confirm').disabled = false; fetchData(true); }
-          });
-      }).catch(e=>{ 
-          finishPercentageLoader(() => { 
-              addOrUpdateProfile(bookingData.idCard, bookingData.fname, bookingData.lname, bookingData.tel);
-              Swal.fire(currentLang === 'en' ? 'Success!' : 'จองคิวสำเร็จ!', currentLang === 'en' ? 'Appointment saved.' : 'บันทึกข้อมูลเรียบร้อยแล้ว', 'success'); 
-              closeModal(); renderMultiUserCard(); fetchData(true); 
-          }); 
-      });
+        if(bookingData.is2Hr && currentApp !== 'postpartum') {
+            if(currentApp === 'ttm') { finalServiceDb += " (2 ชม.)"; lineNoteExtra = currentLang === 'en' ? "\nNote: 2 Hrs Booking (+200 THB)" : "\nหมายเหตุ: นัดจอง 2 ชม. ชำระเงิน 200 บาท"; }
+            else if(currentApp === 'tcm') { finalServiceDb = "ฝังเข็ม+ครอบแก้ว"; lineNoteExtra = currentLang === 'en' ? "\nNote: Acupuncture + Cupping" : "\nหมายเหตุ: นัดจอง ฝังเข็ม+ครอบแก้ว"; }
+        }
+
+        let payload = { 
+            appType: bookingData.appType, sheetName: bookingData.sheetName, idCard: bookingData.idCard, 
+            fname: bookingData.fname, lname: bookingData.lname, fullName: fNameCombined, 
+            tel: bookingData.tel, service: finalServiceDb, note: finalNote, 
+            time: bookingData.time, date: bookingData.date, sysDate: bookingData.sysDate, is2Hr: bookingData.is2Hr 
+        };
+
+        if ((currentApp === 'ttm' || currentApp === 'tcm') && selectedSlotData) { 
+            payload.row = selectedSlotData.row; payload.col = selectedSlotData.col; 
+        } else if (currentApp === 'steam') { 
+            payload.gender = document.getElementById('inp-gender').value; 
+            payload.patients = [{name: fNameCombined, tel: bookingData.tel}]; 
+        } else if (currentApp === 'postpartum') {
+            // 🔥 ส่งข้อมูลหลังคลอดไปให้ Backend สร้าง Note 🔥
+            payload.ppExtraData = bookingData.ppExtraData; 
+            payload.note = bookingData.extraInfo + (finalNote ? " | อาการ: " + finalNote : "");
+        }
+        
+        fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(payload) })
+        .then(async response => {
+            let resText = await response.text();
+            try { return JSON.parse(resText); } catch(err) { return { status: 'error_but_done', penaltyDays: 0 }; } 
+        })
+        .then(res => {
+            finishPercentageLoader(() => {
+                if(res.status === 'success' || res.status === 'error_but_done') { 
+                    addOrUpdateProfile(bookingData.idCard, bookingData.fname, bookingData.lname, bookingData.tel);
+                    Swal.fire({ title: currentLang === 'en' ? 'Success!' : 'จองคิวสำเร็จ!', html: currentLang === 'en' ? '<p>Click below to notify via LINE</p>' : '<p>กรุณากดปุ่มด้านล่างเพื่อรับการยืนยันทาง LINE</p>', icon: 'success', confirmButtonText: '<i class="fab fa-line"></i> LINE Notify', confirmButtonColor: '#00c300', allowOutsideClick: false }).then((r) => {
+                        if(r.isConfirmed) {
+                            let mName = getMaskedFullName(bookingData.fname, bookingData.lname); let mPhone = "******" + bookingData.tel.slice(-4);
+                            let msg = currentLang === 'en' ? `Booking: ${APP_CONFIG[bookingData.appType].title}\nPatient: ${mName}\nPhone: ${mPhone}\n` : `ขอจองคิว${APP_CONFIG[bookingData.appType].title}\nผู้รับบริการ: ${mName}\nเบอร์โทร: ${mPhone}\n`;
+                            
+                            if(currentApp === 'ttm' || currentApp === 'tcm') { 
+                                let sName = currentLang === 'en' ? (STAFF_EN_NAMES[bookingData.staff] || bookingData.staff) : (STAFF_NAME_MAP[bookingData.staff] || bookingData.staff); 
+                                msg += currentLang === 'en' ? `Provider: ${sName}\n` : `ผู้ให้บริการ: ${sName}\n`; 
+                            }
+                            
+                            msg += currentLang === 'en' ? `Service: ${_t(bookingData.service)}\nDate: ${bookingData.date}\nTime: ${bookingData.time}` : `บริการ: ${_t(bookingData.service)}\nวันที่: ${bookingData.date}\nเวลา: ${bookingData.time} น.`;
+                            
+                            if(currentApp === 'postpartum') { msg += `\n${bookingData.extraInfo}`; }
+                            
+                            if(bookingData.note) { msg += currentLang === 'en' ? `\nPatient Note: ${bookingData.note}` : `\nอาการเบื้องต้น: ${bookingData.note}`; }
+                            
+                            msg += lineNoteExtra;
+                            
+                            let dummy = document.createElement("textarea"); document.body.appendChild(dummy); dummy.value = msg; dummy.select(); document.execCommand("copy"); document.body.removeChild(dummy);
+                            window.location.href = `https://line.me/R/oaMessage/@649dqeft/?${encodeURIComponent(msg)}`;
+                        }
+                    });
+                    closeModal(); renderMultiUserCard(); fetchData(true); fetch(API_ENDPOINT, {method:'POST', body:JSON.stringify({action:'background_sync', dept:currentApp})}); 
+                } else { Swal.fire('Error', res.message || 'Slot unavailable', 'error'); document.getElementById('btn-final-confirm').disabled = false; fetchData(true); }
+            });
+        }).catch(e=>{ 
+            finishPercentageLoader(() => { 
+                addOrUpdateProfile(bookingData.idCard, bookingData.fname, bookingData.lname, bookingData.tel);
+                Swal.fire(currentLang === 'en' ? 'Success!' : 'จองคิวสำเร็จ!', currentLang === 'en' ? 'Appointment saved.' : 'บันทึกข้อมูลเรียบร้อยแล้ว', 'success'); 
+                closeModal(); renderMultiUserCard(); fetchData(true); 
+            }); 
+        });
     }
 
     function closeModal() { document.getElementById('bookingModal').classList.remove('show'); }
