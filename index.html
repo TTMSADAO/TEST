@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sadao Hospital Queue V39.9</title>
+  <title>Sadao Hospital Queue V39.10</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#2e7d32">
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -22,28 +22,39 @@
     @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(255, 126, 95, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 126, 95, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 126, 95, 0); } }
 
     .home-container { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 40px; position: relative; }
-    .hero-banner { width: 100%; height: 280px; background-image: url('https://img2.pic.in.th/pic/2e56ebb3c838125fd55c9db5dcd51baf.png'); background-size: cover; background-position: center; position: relative; border-radius: 0 0 30px 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); margin-bottom: 20px; overflow: hidden; }
-    .hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(46,125,50,0.35), rgba(27,94,32,0.95)); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; padding: 20px; padding-bottom: 40px; }
+    .hero-banner { width: 100%; height: 260px; background-image: url('https://img2.pic.in.th/pic/2e56ebb3c838125fd55c9db5dcd51baf.png'); background-size: cover; background-position: center; position: relative; border-radius: 0 0 30px 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); margin-bottom: 20px; overflow: hidden; }
+    .hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(46,125,50,0.35), rgba(27,94,32,0.95)); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; padding: 20px; }
     .main-logo { width: 80px; height: 80px; object-fit: contain; margin-bottom: 12px; background: white; border-radius: 50%; padding: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.1s; } .main-logo:active { transform: scale(0.9); }
     .online-badge { background: rgba(0,0,0,0.3); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top:12px; }
     .online-dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 8px #4ade80; animation: pulseDot 2s infinite; }
 
-    /* 🔥 BRIGHT GLASSMORPHISM (บังคับโชว์เสมอ ไม่ให้บัคหาย) 🔥 */
-    .glass-card { width: 90%; max-width: 560px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 24px; padding: 20px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); margin-top: -60px; margin-bottom: 25px; border: 2px solid white; z-index: 5; }
-    .mu-title { font-size: 0.95rem; color: #475569; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 0.5px;}
+    /* 🌟 Multi-User Glass Card */
+    .glass-card { width: 90%; max-width: 560px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; padding: 20px; position: relative; overflow: hidden; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); margin-bottom: 25px; margin-top: -45px; display: none; animation: slideUp 0.5s; border: 1px solid rgba(255,255,255,1); z-index: 5; }
+    .mu-title { font-size: 0.9rem; color: #475569; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 0.5px;}
     .mu-profile-list { display: flex; flex-direction: column; gap: 10px; }
-    .mu-profile { display: flex; align-items: center; justify-content: space-between; background: #f8fafc; padding: 12px 15px; border-radius: 16px; border: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s; }
-    .mu-profile:hover { border-color: var(--primary); background: #f0fdf4; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(74, 222, 128, 0.15); }
+    .mu-profile { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.9); padding: 12px 15px; border-radius: 16px; border: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+    .mu-profile:hover, .mu-profile.active { border-color: var(--primary); background: #f0fdf4; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(74, 222, 128, 0.15); }
     .mu-info { display: flex; align-items: center; gap: 12px; }
     .mu-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary-light), #bbf7d0); color: var(--primary-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; box-shadow: inset 0 2px 4px rgba(255,255,255,0.8); }
     .mu-name { font-weight: 700; color: #1e293b; font-size: 1rem; } .mu-name span { display: block; font-size: 0.75rem; color: #64748b; font-weight: 400; margin-top: 2px;}
     .mu-delete { color: #ef4444; padding: 8px; font-size: 1.1rem; cursor: pointer; opacity: 0.5; transition: 0.2s; } .mu-delete:hover { opacity: 1; transform: scale(1.1); }
     
-    .btn-add-user { background: white; border: 2px dashed #cbd5e1; color: #64748b; width: 100%; padding: 12px; border-radius: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top:10px;}
-    .btn-add-user:hover { border-color: var(--primary); color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .btn-add-user { background: rgba(255,255,255,0.6); border: 2px dashed #cbd5e1; color: #64748b; width: 100%; padding: 12px; border-radius: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top:10px;}
+    .btn-add-user:hover { background: white; border-color: var(--primary); color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-    .active-patient-status { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 24px; padding: 20px; color: #1e293b; margin-top: -60px; margin-bottom: 25px; position: relative; border: 2px solid white; width: 90%; max-width: 560px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 5; }
-    .aps-history { background: #f8fafc; border-radius: 16px; padding: 15px; margin-top: 15px; border: 1px solid #e2e8f0; }
+    /* 🌟 ACTIVE PATIENT STATUS CARD */
+    .active-patient-status { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; padding: 20px; color: #1e293b; margin-bottom: 25px; margin-top: -50px; display: none; animation: slideUp 0.4s; position: relative; border: 1px solid rgba(255,255,255,1); width: 90%; max-width: 560px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15); z-index: 5; }
+    .aps-history { background: rgba(248, 250, 252, 0.8); border-radius: 16px; padding: 15px; margin-top: 15px; border: 1px solid #e2e8f0; }
+
+    /* 🔥 ปุ่มยกเลิกคิวสีแดงสด (อัปเดตใหม่) 🔥 */
+    .btn-cancel-q { 
+        background: #fee2e2; color: #ef4444; border: 1px solid #f87171; 
+        padding: 10px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; 
+        cursor:pointer; width:100%; margin-top:12px; transition:0.2s; 
+        display: flex; justify-content: center; align-items: center; gap: 8px;
+    }
+    .btn-cancel-q:hover { background: #fecaca; color: #b91c1c; border-color: #ef4444; }
+    .btn-cancel-q:active { transform: scale(0.97); }
 
     .menu-container { width: 100%; padding: 0 20px; z-index: 2; }
     .dept-card { background: white; border-radius: 22px; padding: 20px; margin-bottom: 16px; display: flex; align-items: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.8); transition: transform 0.2s; }
@@ -172,30 +183,33 @@
         </div>
     </div>
 
-    <div id="multi-user-card" class="glass-card" style="display:block;">
+    <div id="multi-user-card" class="glass-card">
         <div class="mu-title">
             <span id="t-mu-title">ผู้ใช้งานที่บันทึกไว้</span> 
             <i class="fas fa-users" style="color:var(--primary);"></i>
         </div>
-        <div id="mu-list" class="mu-profile-list"></div>
-        <button class="btn-add-user" onclick="showAddUserForm()">
-            <i class="fas fa-plus-circle"></i> <span id="t-btn-add-user">ลงทะเบียนผู้รับบริการใหม่</span>
-        </button>
-    </div>
 
-    <div id="active-patient-status" class="active-patient-status">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <div style="font-size:0.8rem; color:#64748b; font-weight:bold; text-transform:uppercase;" id="t-act-user">ใช้งานในชื่อ</div>
-            <button style="background:var(--primary-light); border:1px solid #bbf7d0; color:var(--primary-dark); padding:4px 10px; border-radius:8px; font-size:0.75rem; font-weight:bold; cursor:pointer;" onclick="switchUser()" id="t-switch-user">สลับผู้ใช้</button>
-        </div>
-        <div style="font-size:1.4rem; font-weight:bold; display:flex; align-items:center; gap:8px; color:#1e293b;" id="aps-name"></div>
-        
-        <div class="aps-history">
-            <div style="font-size:0.85rem; color:#475569; font-weight:bold; margin-bottom:8px;" id="t-aps-hist"><i class="fas fa-calendar-check"></i> คิวล่าสุดของคุณ</div>
-            <div id="aps-history-content" style="display:flex; gap:10px; align-items:center;">
-                <div style="color:var(--primary);"><i class="fas fa-spinner fa-spin"></i></div><div style="font-size:0.9rem;" id="t-syncing">กำลังซิงค์ข้อมูล...</div>
+        <div id="active-profile-area" style="display:none; margin-bottom:15px; background:rgba(255,255,255,0.9); padding:15px; border-radius:16px; border:2px solid var(--primary); box-shadow:0 4px 15px rgba(74,222,128,0.2);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <div style="font-size:0.8rem; color:var(--primary-dark); font-weight:bold; text-transform:uppercase;" id="t-act-user">ใช้งานในชื่อ</div>
+                <button style="background:var(--primary-light); border:1px solid #bbf7d0; color:var(--primary-dark); padding:4px 10px; border-radius:8px; font-size:0.75rem; font-weight:bold; cursor:pointer;" onclick="switchUser()" id="t-switch-user">สลับผู้ใช้</button>
             </div>
-            <div id="btn-cancel-area"></div>
+            <div style="font-size:1.3rem; font-weight:bold; display:flex; align-items:center; gap:10px; color:#1e293b;" id="aps-name"></div>
+            
+            <div class="aps-history">
+                <div style="font-size:0.85rem; color:#475569; font-weight:bold; margin-bottom:8px;" id="t-aps-hist"><i class="fas fa-calendar-check"></i> คิวล่าสุดของคุณ</div>
+                <div id="aps-history-content" style="display:flex; gap:10px; align-items:center;">
+                    <div style="color:var(--primary);"><i class="fas fa-spinner fa-spin"></i></div><div style="font-size:0.9rem;" id="t-syncing">กำลังซิงค์ข้อมูล...</div>
+                </div>
+                <div id="btn-cancel-area"></div>
+            </div>
+        </div>
+
+        <div id="inactive-profiles-area">
+            <div id="mu-list" class="mu-profile-list"></div>
+            <button class="btn-add-user" onclick="showAddUserForm()">
+                <i class="fas fa-plus-circle"></i> <span id="t-btn-add-user">ลงทะเบียนผู้รับบริการใหม่</span>
+            </button>
         </div>
     </div>
 
@@ -275,7 +289,7 @@
 
             <div class="form-group" id="group-staff" style="display:none; position:relative;">
               <label class="form-label" id="lbl_provider_text">ผู้ให้บริการ</label>
-              <div class="custom-select" id="staff-trigger" onclick="toggleStaffDropdown()"><div style="display:flex; align-items:center; gap:10px;"><img id="staff-display-img" src="https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png" class="select-img" style="width:36px; height:36px;"><span id="staff-display-name" style="font-weight:600; color:#1e293b;" id="t-not-spec">ไม่ระบุ</span></div><i class="fas fa-chevron-down" style="color:#94a3b8;"></i></div>
+              <div class="custom-select" id="staff-trigger" onclick="toggleStaffDropdown()"><div style="display:flex; align-items:center; gap:10px;"><img id="staff-display-img" src="https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png" class="select-img" style="width:36px; height:36px;"><span id="staff-display-name" style="font-weight:600; color:#1e293b;">ไม่ระบุ</span></div><i class="fas fa-chevron-down" style="color:#94a3b8;"></i></div>
               <div class="select-items" id="staff-options"></div>
               <input type="hidden" id="inp-staff-val" value="ไม่ระบุ">
             </div>
@@ -367,7 +381,20 @@
       </div>
   </div>
 
+  <div id="duplicateModal" class="modal-overlay">
+      <div class="modal-card" style="text-align: center; padding: 30px 20px;">
+          <div style="font-size: 3.5rem; color: #ef4444; margin-bottom: 15px;"><i class="fas fa-shield-alt"></i></div>
+          <h3 style="color: #b91c1c; font-size: 1.4rem; margin-top: 0; font-weight:700;">พบข้อมูลการจองซ้อน!</h3>
+          <p id="duplicate-msg" style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin-bottom:25px;"></p>
+          <div class="btn-group" style="flex-direction:column; gap:10px; margin-top:0;">
+              <a href="https://lin.ee/Ip6j7HP" class="btn" style="background:#00c300; color:white; text-decoration:none;"><i class="fab fa-line" style="font-size:1.2rem;"></i> แจ้งยกเลิกคิวเดิมทาง LINE</a>
+              <button class="btn btn-cancel" onclick="document.getElementById('duplicateModal').classList.remove('show')">รับทราบ / ปิดหน้าต่าง</button>
+          </div>
+      </div>
+  </div>
+
   <script>
+    // 🌟 GLOBAL VARIABLES 
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycby0EQfBeg8ylgU9Q7IZDf-weHopsK4EFxXkqBUVvtDsEVKKpsIIDZ7y8fXXVWdyzKkbAw/exec"; 
     const FIREBASE_BASE_URL = "https://sadao-queue-999c3-default-rtdb.asia-southeast1.firebasedatabase.app/"; 
     
@@ -386,55 +413,95 @@
         localStorage.removeItem('sdh_patient_id'); localStorage.removeItem('sdh_patient_fname'); localStorage.removeItem('sdh_patient_lname'); localStorage.removeItem('sdh_patient_tel');
     }
 
-    function saveProfilesToStorage() { localStorage.setItem('sdh_saved_profiles', JSON.stringify(savedProfiles)); if (activeProfileId) { localStorage.setItem('sdh_active_profile_id', activeProfileId); } else { localStorage.removeItem('sdh_active_profile_id'); } }
-    function addOrUpdateProfile(id, fname, lname, tel) { let idx = savedProfiles.findIndex(p => p.id === id); if(idx > -1) { savedProfiles[idx] = { id, fname, lname, tel }; } else { savedProfiles.push({ id, fname, lname, tel }); } activeProfileId = id; saveProfilesToStorage(); }
+    function saveProfilesToStorage() { 
+        localStorage.setItem('sdh_saved_profiles', JSON.stringify(savedProfiles)); 
+        if (activeProfileId) { localStorage.setItem('sdh_active_profile_id', activeProfileId); }
+        else { localStorage.removeItem('sdh_active_profile_id'); }
+    }
+    
+    function addOrUpdateProfile(id, fname, lname, tel) { 
+        let idx = savedProfiles.findIndex(p => p.id === id); 
+        if(idx > -1) { savedProfiles[idx] = { id, fname, lname, tel }; } else { savedProfiles.push({ id, fname, lname, tel }); } 
+        activeProfileId = id; saveProfilesToStorage(); 
+    }
 
+    // 🌟 TRANSLATIONS
     const I18N = {
         th: {
-            lang_toggle: "EN", app_ttm: "แพทย์แผนไทย", desc_ttm: "นวดรักษา, ประคบ, นวดส่งเสริมฯ", app_tcm: "แพทย์แผนจีน", desc_tcm: "ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า", app_post: "บริการหลังคลอด", desc_post: "หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน", app_steam: "อบไอน้ำสมุนไพร", desc_steam: "ช่วยการไหลเวียนโลหิต ภูมิแพ้", h1: "โรงพยาบาลสะเดา", h2: "กลุ่มงานการแพทย์แผนไทยและการแพทย์ทางเลือก", online: "เปิดให้บริการออนไลน์ 24 ชม.", greeting: "ข้อมูลผู้รับบริการ", change_user: "สลับผู้ใช้", history_title: "คิวที่กำลังจะมาถึง / ล่าสุด", syncing: "กำลังซิงค์ข้อมูล...", fill_info: "กรอกข้อมูลจองคิว", id_card: "เลขประจำตัวประชาชน", foreigner: "ชาวต่างชาติ", pdpa: "ปลอดภัย 100% ตามมาตรฐาน PDPA", fname: "ชื่อจริง", lname: "นามสกุล", phone: "เบอร์โทรศัพท์", lock_warn: "พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้", user_info_title: "ข้อมูลผู้รับบริการ", not_me: "ไม่ใช่ฉัน?", change_phone: "เปลี่ยนเบอร์โทรติดต่อ", sel_svc: "เลือกบริการ", price_title: "อัตราค่าบริการ/สิทธิ:", prov_text_ttm: "ผู้ให้บริการ (ผู้ช่วยแพทย์แผนไทย)", prov_text_tcm: "ผู้ให้บริการ (แพทย์แผนจีน)", not_spec: "ไม่ระบุ", birthdate: "วันคลอด", del_type: "ประเภทการคลอด", hosp: "โรงพยาบาลที่คลอด", gender: "เพศ (สำหรับล็อกรอบ)", note: "หมายเหตุ (ถ้ามี)", btn_cancel: "ยกเลิก", btn_check: "ตรวจสอบข้อมูล", sum_title: "ยืนยันการนัดหมาย", btn_edit: "แก้ไข", btn_confirm: "ยืนยันจองคิว", saving: "ระบบรับข้อมูลแล้ว", saving_sub: "กรุณารอสักครู่ เพื่อยืนยันข้อมูล...", loading: "กำลังโหลด...", steam_price: "อัตราค่าบริการ: 100 บาท/ครั้ง", opt_sel: "-- เลือก --", opt_nat: "คลอดธรรมชาติ", opt_csec: "ผ่าคลอด", g_f: "หญิง", g_m: "ชาย", mu_title: "ผู้ใช้งานที่บันทึกไว้", btn_add_user: "ลงทะเบียนผู้รับบริการใหม่", act_user: "ใช้งานในชื่อ", aps_hist: "คิวล่าสุดของคุณ",
+            lang_toggle: "EN", app_ttm: "แพทย์แผนไทย", desc_ttm: "นวดรักษา, ประคบ, นวดส่งเสริมฯ", app_tcm: "แพทย์แผนจีน", desc_tcm: "ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า", app_post: "บริการหลังคลอด", desc_post: "หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน", app_steam: "อบไอน้ำสมุนไพร", desc_steam: "ช่วยการไหลเวียนโลหิต ภูมิแพ้", h1: "โรงพยาบาลสะเดา", h2: "กลุ่มงานการแพทย์แผนไทยและการแพทย์ทางเลือก", online: "เปิดให้บริการออนไลน์ 24 ชม.", greeting: "ข้อมูลผู้รับบริการ", change_user: "สลับผู้ใช้", history_title: "คิวที่กำลังจะมาถึง / ล่าสุด", syncing: "กำลังซิงค์ข้อมูล...", fill_info: "กรอกข้อมูลจองคิว", id_card: "เลขประจำตัวประชาชน", foreigner: "ชาวต่างชาติ", pdpa: "ปลอดภัย 100% ตามมาตรฐาน PDPA", fname: "ชื่อจริง", lname: "นามสกุล", phone: "เบอร์โทรศัพท์", lock_warn: "พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้", user_info_title: "ข้อมูลผู้รับบริการ", not_me: "ไม่ใช่ฉัน?", change_phone: "เปลี่ยนเบอร์โทรติดต่อ", sel_svc: "เลือกบริการ", price_title: "อัตราค่าบริการ/สิทธิ:", prov_text_ttm: "ผู้ให้บริการ (ผู้ช่วยแพทย์แผนไทย)", prov_text_tcm: "ผู้ให้บริการ (แพทย์แผนจีน)", not_spec: "ไม่ระบุ", birthdate: "วันคลอด", del_type: "ประเภทการคลอด", hosp: "โรงพยาบาลที่คลอด", gender: "เพศ (สำหรับล็อกรอบ)", note: "หมายเหตุ (ถ้ามี)", btn_cancel: "ยกเลิก", btn_check: "ตรวจสอบข้อมูล", sum_title: "ยืนยันการนัดหมาย", btn_edit: "แก้ไข", btn_confirm: "ยืนยันจองคิว", saving: "ระบบรับข้อมูลแล้ว", saving_sub: "กรุณารอสักครู่ เพื่อยืนยันข้อมูล...", loading: "กำลังโหลด...", steam_price: "อัตราค่าบริการ: 100 บาท/ครั้ง", opt_sel: "-- เลือก --", opt_nat: "คลอดธรรมชาติ", opt_csec: "ผ่าคลอด", g_f: "หญิง", g_m: "ชาย", mu_title: "ผู้ใช้งานที่บันทึกไว้", btn_add_user: "ลงทะเบียนผู้รับบริการใหม่", act_user: "ใช้งานในชื่อ", aps_hist: "คิวล่าสุดของคุณ", cancel_q: "แจ้งยกเลิกนัดหมายนี้",
             "นวดและประคบเพื่อการรักษา": "นวดและประคบเพื่อการรักษา", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)": "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)": "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)", "ฝังเข็มเพื่อการรักษา": "ฝังเข็มเพื่อการรักษา", "ครอบแก้ว": "ครอบแก้ว", "ฝังเข็มใบหน้า": "ฝังเข็มใบหน้า", "เม็ดผักกาดแปะหู": "เม็ดผักกาดแปะหู", "ปรึกษาแพทย์แผนจีน": "ปรึกษาแพทย์แผนจีน", "บริการหลังคลอด": "บริการหลังคลอด", "อบไอน้ำ": "อบไอน้ำ"
         },
         en: {
-            lang_toggle: "TH", app_ttm: "Thai Traditional Med.", desc_ttm: "Massage, Compress, Wellness", app_tcm: "Chinese Medicine", desc_tcm: "Acupuncture, Cupping, Facial", app_post: "Postpartum Care", desc_post: "Normal delivery 7 days / C-Section 1 mo.", app_steam: "Herbal Steam", desc_steam: "Blood circulation, Allergy relief", h1: "Sadao Hospital", h2: "Thai Traditional & Alternative Medicine", online: "Online Booking 24/7", greeting: "Patient Information", change_user: "Switch User", history_title: "Upcoming / Recent Appointments", syncing: "Syncing data...", fill_info: "Booking Details", id_card: "Passport / ID Number", foreigner: "Foreigner", pdpa: "100% Secured by PDPA standard", fname: "First Name", lname: "Last Name", phone: "Phone Number", lock_warn: "Profile found. Name cannot be changed.", user_info_title: "Patient Details", not_me: "Not me?", change_phone: "Change Phone Number", sel_svc: "Select Service", price_title: "Estimated Fee:", prov_text_ttm: "Provider (TTM Assistant)", prov_text_tcm: "Provider (TCM Doctor)", not_spec: "Not Specified", birthdate: "Date of Birth (Baby)", del_type: "Delivery Type", hosp: "Hospital", gender: "Gender (For Room Allocation)", note: "Note (Optional)", btn_cancel: "Cancel", btn_check: "Check Info", sum_title: "Confirm Appointment", btn_edit: "Edit", btn_confirm: "Confirm Booking", saving: "Data Received", saving_sub: "Processing confirmation...", loading: "Loading...", steam_price: "Service Fee: 100 THB/Session", opt_sel: "-- Select --", opt_nat: "Normal Delivery", opt_csec: "C-Section", g_f: "Female", g_m: "Male", mu_title: "Saved Profiles", btn_add_user: "Add New Patient", act_user: "Active Profile", aps_hist: "Your Recent Appointment",
+            lang_toggle: "TH", app_ttm: "Thai Traditional Med.", desc_ttm: "Massage, Compress, Wellness", app_tcm: "Chinese Medicine", desc_tcm: "Acupuncture, Cupping, Facial", app_post: "Postpartum Care", desc_post: "Normal delivery 7 days / C-Section 1 mo.", app_steam: "Herbal Steam", desc_steam: "Blood circulation, Allergy relief", h1: "Sadao Hospital", h2: "Thai Traditional & Alternative Medicine", online: "Online Booking 24/7", greeting: "Patient Information", change_user: "Switch User", history_title: "Upcoming / Recent Appointments", syncing: "Syncing data...", fill_info: "Booking Details", id_card: "Passport / ID Number", foreigner: "Foreigner", pdpa: "100% Secured by PDPA standard", fname: "First Name", lname: "Last Name", phone: "Phone Number", lock_warn: "Profile found. Name cannot be changed.", user_info_title: "Patient Details", not_me: "Not me?", change_phone: "Change Phone Number", sel_svc: "Select Service", price_title: "Estimated Fee:", prov_text_ttm: "Provider (TTM Assistant)", prov_text_tcm: "Provider (TCM Doctor)", not_spec: "Not Specified", birthdate: "Date of Birth (Baby)", del_type: "Delivery Type", hosp: "Hospital", gender: "Gender (For Room Allocation)", note: "Note (Optional)", btn_cancel: "Cancel", btn_check: "Check Info", sum_title: "Confirm Appointment", btn_edit: "Edit", btn_confirm: "Confirm Booking", saving: "Data Received", saving_sub: "Processing confirmation...", loading: "Loading...", steam_price: "Service Fee: 100 THB/Session", opt_sel: "-- Select --", opt_nat: "Normal Delivery", opt_csec: "C-Section", g_f: "Female", g_m: "Male", mu_title: "Saved Profiles", btn_add_user: "Add New Patient", act_user: "Active Profile", aps_hist: "Your Recent Appointment", cancel_q: "Cancel Appointment",
             "นวดและประคบเพื่อการรักษา": "Therapeutic Massage & Compress", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)": "Relaxing Body Massage", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)": "Foot Massage", "ฝังเข็มเพื่อการรักษา": "Therapeutic Acupuncture", "ครอบแก้ว": "Cupping Therapy", "ฝังเข็มใบหน้า": "Facial Acupuncture", "เม็ดผักกาดแปะหู": "Ear Seed Therapy", "ปรึกษาแพทย์แผนจีน": "TCM Consultation", "บริการหลังคลอด": "Postpartum Care", "อบไอน้ำ": "Herbal Steam"
         }
     };
 
     function _t(key) { return I18N[currentLang][key] || key; }
 
-    function toggleLanguage() { currentLang = currentLang === 'th' ? 'en' : 'th'; localStorage.setItem('sdh_lang', currentLang); applyLanguageToUI(); if(globalData.length > 0) renderSlots(selectedIndex); renderMultiUserCard(); }
+    function toggleLanguage() { 
+        currentLang = currentLang === 'th' ? 'en' : 'th'; 
+        localStorage.setItem('sdh_lang', currentLang); 
+        applyLanguageToUI(); 
+        if(globalData.length > 0) renderSlots(selectedIndex); 
+        renderMultiUserCard(); 
+    }
 
     function applyLanguageToUI() {
-        document.getElementById('current-lang-text').innerText = _t('lang_toggle'); document.getElementById('current-lang-dash').innerText = _t('lang_toggle');
-        document.getElementById('t-h2').innerText = _t('h2'); document.getElementById('t-h1').innerText = _t('h1'); document.getElementById('t-online').innerText = _t('online');
-        document.getElementById('t-menu-ttm').innerText = _t('app_ttm'); document.getElementById('t-desc-ttm').innerText = _t('desc_ttm');
-        document.getElementById('t-menu-tcm').innerText = _t('app_tcm'); document.getElementById('t-desc-tcm').innerText = _t('desc_tcm');
-        document.getElementById('t-menu-post').innerText = _t('app_post'); document.getElementById('t-desc-post').innerText = _t('desc_post');
-        document.getElementById('t-menu-steam').innerText = _t('app_steam'); document.getElementById('t-desc-steam').innerText = _t('desc_steam');
+        document.getElementById('current-lang-text').innerText = _t('lang_toggle'); 
+        document.getElementById('current-lang-dash').innerText = _t('lang_toggle');
+        document.getElementById('t-h2').innerText = _t('h2'); 
+        document.getElementById('t-h1').innerText = _t('h1'); 
+        document.getElementById('t-online').innerText = _t('online');
+        document.getElementById('t-menu-ttm').innerText = _t('app_ttm'); 
+        document.getElementById('t-desc-ttm').innerText = _t('desc_ttm');
+        document.getElementById('t-menu-tcm').innerText = _t('app_tcm'); 
+        document.getElementById('t-desc-tcm').innerText = _t('desc_tcm');
+        document.getElementById('t-menu-post').innerText = _t('app_post'); 
+        document.getElementById('t-desc-post').innerText = _t('desc_post');
+        document.getElementById('t-menu-steam').innerText = _t('app_steam'); 
+        document.getElementById('t-desc-steam').innerText = _t('desc_steam');
         
-        document.getElementById('t-fill-info').innerText = _t('fill_info'); document.getElementById('t-foreigner-chk').innerText = _t('foreigner');
+        document.getElementById('t-fill-info').innerText = _t('fill_info'); 
+        document.getElementById('t-foreigner-chk').innerText = _t('foreigner');
         document.getElementById('t-pdpa').innerHTML = `<i class="fas fa-shield-alt" style="color:#4caf50;"></i> ${_t('pdpa')}`;
-        document.getElementById('t-fname').innerHTML = `${_t('fname')} <span style="color:red">*</span>`; document.getElementById('t-lname').innerText = _t('lname');
-        document.getElementById('t-phone').innerHTML = `${_t('phone')} <span style="color:red">*</span>`; document.getElementById('t-lock-warn').innerText = _t('lock_warn');
+        document.getElementById('t-fname').innerHTML = `${_t('fname')} <span style="color:red">*</span>`; 
+        document.getElementById('t-lname').innerText = _t('lname');
+        document.getElementById('t-phone').innerHTML = `${_t('phone')} <span style="color:red">*</span>`; 
+        document.getElementById('t-lock-warn').innerText = _t('lock_warn');
         document.getElementById('t-user-info-title').innerHTML = `<i class="fas fa-user-check"></i> ${_t('user_info_title')}`;
-        document.getElementById('t-not-me').innerText = _t('not_me'); document.getElementById('t-change-phone').innerText = _t('change_phone');
-        document.getElementById('t-sel-svc').innerText = _t('sel_svc'); document.getElementById('t-price-title').innerText = _t('price_title');
-        document.getElementById('t-birthdate').innerText = _t('birthdate'); document.getElementById('t-del-type').innerText = _t('del_type');
-        document.getElementById('t-hosp').innerText = _t('hosp'); document.getElementById('t-gender').innerText = _t('gender');
+        document.getElementById('t-not-me').innerText = _t('not_me'); 
+        document.getElementById('t-change-phone').innerText = _t('change_phone');
+        document.getElementById('t-sel-svc').innerText = _t('sel_svc'); 
+        document.getElementById('t-price-title').innerText = _t('price_title');
+        document.getElementById('t-birthdate').innerText = _t('birthdate'); 
+        document.getElementById('t-del-type').innerText = _t('del_type');
+        document.getElementById('t-hosp').innerText = _t('hosp'); 
+        document.getElementById('t-gender').innerText = _t('gender');
         document.getElementById('t-note').innerText = _t('note');
-        document.getElementById('btn-cancel-modal').innerText = _t('btn_cancel'); document.getElementById('t-sum-title').innerText = _t('sum_title');
-        document.getElementById('btn-edit-sum').innerText = _t('btn_edit'); document.getElementById('btn-final-confirm').innerText = _t('btn_confirm');
-        document.getElementById('t-saving').innerText = _t('saving'); document.getElementById('t-saving-sub').innerText = _t('saving_sub'); document.getElementById('t-loading').innerText = _t('loading');
+        document.getElementById('btn-cancel-modal').innerText = _t('btn_cancel'); 
+        document.getElementById('t-sum-title').innerText = _t('sum_title');
+        document.getElementById('btn-edit-sum').innerText = _t('btn_edit'); 
+        document.getElementById('btn-final-confirm').innerText = _t('btn_confirm');
+        document.getElementById('t-saving').innerText = _t('saving'); 
+        document.getElementById('t-saving-sub').innerText = _t('saving_sub'); 
+        document.getElementById('t-loading').innerText = _t('loading');
         document.getElementById('t-steam-price').innerText = _t('steam_price');
-        document.getElementById('t-opt-sel').innerText = _t('opt_sel'); document.getElementById('t-opt-nat').innerText = _t('opt_nat'); document.getElementById('t-opt-csec').innerText = _t('opt_csec');
-        document.getElementById('t-g-f').innerText = _t('g_f'); document.getElementById('t-g-m').innerText = _t('g_m');
+        document.getElementById('t-opt-sel').innerText = _t('opt_sel'); 
+        document.getElementById('t-opt-nat').innerText = _t('opt_nat'); 
+        document.getElementById('t-opt-csec').innerText = _t('opt_csec');
+        document.getElementById('t-g-f').innerText = _t('g_f'); 
+        document.getElementById('t-g-m').innerText = _t('g_m');
 
         document.getElementById('t-mu-title').innerHTML = `${_t('mu_title')} <i class="fas fa-users" style="color:var(--primary);"></i>`;
         document.getElementById('t-btn-add-user').innerHTML = `<i class="fas fa-plus-circle"></i> ${_t('btn_add_user')}`;
-        document.getElementById('t-act-user').innerText = _t('act_user'); document.getElementById('t-switch-user').innerText = _t('change_user');
+        document.getElementById('t-act-user').innerText = _t('act_user'); 
+        document.getElementById('t-switch-user').innerText = _t('change_user');
         document.getElementById('t-aps-hist').innerHTML = `<i class="fas fa-calendar-check"></i> ${_t('aps_hist')}`;
 
-        let btnSave = document.getElementById('btn-save-info'); if(!btnSave.disabled) btnSave.innerText = _t('btn_check');
+        let btnSave = document.getElementById('btn-save-info'); 
+        if(!btnSave.disabled) btnSave.innerText = _t('btn_check');
+        
         document.getElementById('inp-fname').placeholder = currentLang === 'en' ? "First Name" : "ชื่อ";
         document.getElementById('inp-lname').placeholder = currentLang === 'en' ? "Last Name" : "นามสกุล";
         document.getElementById('inp-note').placeholder = currentLang === 'en' ? "Fever / Fracture / Menstruation" : "มีไข้ / กระดูกแตกหัก / ประจำเดือน";
@@ -447,20 +514,15 @@
     const SERVICE_PRICES_EN = { ttm: { "นวดและประคบเพื่อการรักษา": "250 THB", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)": "200 THB", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)": "200 THB" }, tcm: { "ฝังเข็มเพื่อการรักษา": "200 THB", "ครอบแก้ว": "150 THB", "ฝังเข็มใบหน้า": "300 THB", "เม็ดผักกาดแปะหู": "50 THB", "ปรึกษาแพทย์แผนจีน": "Free" } };
     const APP_CONFIG = { ttm: { title: "แพทย์แผนไทย", logo: "https://img2.pic.in.th/pic/619e72dc2124132ccf4620717d4fa58d.md.png", color: "#2e7d32" }, tcm: { title: "แพทย์แผนจีน", logo: "https://img2.pic.in.th/pic/--06d2d95efaba2074.md.png", color: "#c62828" }, postpartum: { title: "บริการหลังคลอด", logo: "https://img2.pic.in.th/pic/eb06897c542c79b64690c8e794fa84a4.png", color: "#ec4899" }, steam: { title: "อบไอน้ำสมุนไพร", logo: "https://img2.pic.in.th/pic/-3b445847427fcbfd.png", color: "#0288d1" } };
     const SERVICE_OPTIONS = { ttm: ["นวดและประคบเพื่อการรักษา", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)"], tcm: ["ฝังเข็มเพื่อการรักษา", "ครอบแก้ว", "ฝังเข็มใบหน้า", "เม็ดผักกาดแปะหู", "ปรึกษาแพทย์แผนจีน"] };
-    
     const STAFF_IMAGES = { "รจนา M": "https://img2.pic.in.th/pic/-b38b682db8ac596b.png", "อรรถพล B": "https://img5.pic.in.th/file/secure-sv1/6b74e1ebb096c81368605ff43948dab4.png", "ศินารัตน์ C": "https://img2.pic.in.th/pic/-df4e3c6f4a4b331f.png", "จุฑามาศ F": "https://img5.pic.in.th/file/secure-sv1/709dfc05071615eaaf008ea63d1e037e.png", "รัตน์ชนก KW": "https://img2.pic.in.th/pic/-83673d6d528be12a.png", "นิกษ์นิภา T": "https://img5.pic.in.th/file/secure-sv1/-c4fe207fa6c04aa3.png", "ณิชาภัทร W": "https://img2.pic.in.th/pic/1ef0aa325ccac37724897c9f2c10e5f4.png", "จินดา J": "https://img2.pic.in.th/pic/93b060e9e4b3fc9a9070d5ac2768c879.png" };
     const STAFF_NAME_MAP = { "จินดา J": "จินดา (เจี๊ยบ)", "รจนา M": "รจนา (แหม่ม)", "อรรถพล B": "อรรถพล (เบา)", "ศินารัตน์ C": "ศินารัตน์ (ซี)", "จุฑามาศ F": "จุฑามาศ (ฝน)", "รัตน์ชนก KW": "รัตน์ชนก (กวาง)", "นิกษ์นิภา T": "นิกษ์นิภา (การ์ตูน)", "ณิชาภัทร W": "ณิชาภัทร (วาวา)" };
     const STAFF_EN_NAMES = { "จินดา J": "Jinda (Jeab)", "รจนา M": "Rotjana (Maam)", "อรรถพล B": "Attapon (Bao)", "ศินารัตน์ C": "Sinarat (C)", "จุฑามาศ F": "Jutamat (Fon)", "รัตน์ชนก KW": "Ratchanok (Kwang)", "นิกษ์นิภา T": "Niknipha (Kartoon)", "ณิชาภัทร W": "Nichapat (Wawa)" };
     const DEFAULT_IMG = "https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png"; const DAY_COLORS = ["#ef4444", "#eab308", "#ec4899", "#22c55e", "#f97316", "#3b82f6", "#a855f7"];
 
     function renderMultiUserCard() {
-        let muCard = document.getElementById('multi-user-card'); let apsCard = document.getElementById('active-patient-status');
-        if (savedProfiles.length === 0) { 
-            apsCard.style.display = 'none'; muCard.style.display = 'block'; 
-            document.getElementById('mu-list').innerHTML = `<div style="text-align:center; padding:10px; color:#64748b; font-size:0.85rem;">${currentLang==='en'?'No profiles saved':'ยังไม่มีประวัติในเครื่องนี้'}</div>`;
-            return; 
-        }
-
+        let muCard = document.getElementById('multi-user-card'); 
+        let apsCard = document.getElementById('active-patient-status');
+        
         if (activeProfileId) {
             let activeUser = savedProfiles.find(p => p.id === activeProfileId);
             if (activeUser) { 
@@ -469,9 +531,17 @@
                 fetchPatientHistory(activeUser.id);
             } else { activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
         } else {
-            apsCard.style.display = 'none'; muCard.style.display = 'block'; let listHtml = '';
-            savedProfiles.forEach(p => { let mName = getMaskedFullName(p.fname, p.lname); let mTel = getMaskedTel(p.tel); listHtml += `<div class="mu-profile" onclick="selectUser('${p.id}')"><div class="mu-info"><div class="mu-avatar">${p.fname.substring(0,1)}</div><div class="mu-name">${mName}<span><i class="fas fa-phone"></i> ${mTel}</span></div></div><div class="mu-delete" onclick="event.stopPropagation(); removeUser('${p.id}')"><i class="fas fa-times-circle"></i></div></div>`; });
-            document.getElementById('mu-list').innerHTML = listHtml;
+            apsCard.style.display = 'none'; muCard.style.display = 'block'; 
+            if (savedProfiles.length === 0) { 
+                document.getElementById('mu-list').innerHTML = `<div style="text-align:center; padding:10px; color:#64748b; font-size:0.85rem;">${currentLang==='en'?'No profiles saved':'ยังไม่มีประวัติในเครื่องนี้'}</div>`;
+            } else {
+                let listHtml = '';
+                savedProfiles.forEach(p => { 
+                    let mName = getMaskedFullName(p.fname, p.lname); let mTel = getMaskedTel(p.tel); 
+                    listHtml += `<div class="mu-profile" onclick="selectUser('${p.id}')"><div class="mu-info"><div class="mu-avatar">${p.fname.substring(0,1)}</div><div class="mu-name">${mName}<span><i class="fas fa-phone"></i> ${mTel}</span></div></div><div class="mu-delete" onclick="event.stopPropagation(); removeUser('${p.id}')"><i class="fas fa-times-circle"></i></div></div>`; 
+                });
+                document.getElementById('mu-list').innerHTML = listHtml;
+            }
         }
     }
 
@@ -547,7 +617,11 @@
             if (data.status === 'success' && data.history) {
                 let h = data.history; let icon = h.service.includes('ฝังเข็ม') ? '<i class="fas fa-yin-yang"></i>' : (h.service.includes('อบ') ? '<i class="fas fa-hot-tub-person"></i>' : '<i class="fas fa-leaf"></i>');
                 document.getElementById('aps-history-content').innerHTML = `<div class="pc-h-icon" style="background:rgba(255,255,255,0.1); color:#38bdf8; width:35px; height:35px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem;">${icon}</div><div style="flex:1;"><div style="color:#1e293b; font-weight:bold; font-size:0.95rem;">${_t(h.service)}</div><div style="color:#475569; font-size:0.8rem;"><i class="far fa-calendar-alt"></i> ${h.date} | ${h.time} น.</div></div>`;
-                if(h.sysDate) { activeBookingObj = { idCard: idCard, service: h.service, date: h.date, sysDate: h.sysDate, time: h.time }; document.getElementById('btn-cancel-area').innerHTML = `<button class="btn-cancel-q" onclick="reqCancelBooking()"><i class="fas fa-times-circle"></i> Cancel Appointment</button>`; } 
+                if(h.sysDate) { 
+                    activeBookingObj = { idCard: idCard, service: h.service, date: h.date, sysDate: h.sysDate, time: h.time }; 
+                    // 🔥 ปุ่มสีแดงเด่นๆ ตามที่สถาปนิกขอครับ 🔥
+                    document.getElementById('btn-cancel-area').innerHTML = `<button class="btn-cancel-q" onclick="reqCancelBooking()"><i class="fas fa-times-circle"></i> ${_t('cancel_q')}</button>`; 
+                } 
                 else { document.getElementById('btn-cancel-area').innerHTML = `<div style="text-align:right; font-size:0.8rem; color:#4ade80; margin-top:5px; font-weight:bold;"><i class="fas fa-check-circle"></i> ${h.status || 'Completed'}</div>`; activeBookingObj = null; }
             } else { document.getElementById('aps-history-content').innerHTML = `<div style="color:#64748b; font-size:0.85rem; width:100%; text-align:center; padding:10px 0;">No record found</div>`; document.getElementById('btn-cancel-area').innerHTML = ''; }
         }).catch(e=>{});
@@ -608,7 +682,9 @@
         if(validSlots.length === 0) { container.innerHTML = `<div style="text-align:center; padding:60px 20px; color:#94a3b8;"><i class="fas fa-clock" style="font-size:3.5rem; margin-bottom:15px; opacity:0.4;"></i><h3 style="margin:0;">${currentLang === 'en' ? 'All slots have passed' : 'รอบบริการวันนี้ผ่านไปหมดแล้ว'}</h3></div>`; return; }
 
         let dtLabel = day.fullLabel;
-        if(currentLang === 'en') { let mEn = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; let dParts = day.sysDate.split("-"); dtLabel = `${dParts[2]} ${mEn[parseInt(dParts[1])-1]} ${dParts[0]}`; }
+        if(currentLang === 'en') {
+            let mEn = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; let dParts = day.sysDate.split("-"); dtLabel = `${dParts[2]} ${mEn[parseInt(dParts[1])-1]} ${dParts[0]}`;
+        }
         let html = `<div class="selected-date-header"><span class="header-bar"></span>${dtLabel}</div><div class="grid-container">`;
         let deptIcon = '<i class="fas fa-calendar-check"></i>'; if (currentApp === 'ttm') deptIcon = '<i class="fas fa-leaf"></i>'; else if (currentApp === 'tcm') deptIcon = '<i class="fas fa-yin-yang"></i>'; else if (currentApp === 'postpartum') deptIcon = '<i class="fas fa-hands-holding-child"></i>'; else if (currentApp === 'steam') deptIcon = '<i class="fas fa-hot-tub-person"></i>';
 
@@ -763,13 +839,24 @@
       document.getElementById('summary-content').innerHTML = html; switchStep('step-summary');
     }
 
-    // 🔥 ระบบโหลด 1 นาทีแบบเนียนๆ
-    let loadInterval; let tipsInterval; let currentPercent = 0;
+    let loadInterval; 
+    let tipsInterval;
+    let currentPercent = 0;
     
+    const loadTips = [ 
+        { icon: 'fa-clock', title: {th: 'มาก่อนเวลา 15 นาที', en: 'Arrive 15 mins early'}, text: {th: 'หากไม่มาติดต่อภายในเวลาที่กำหนด<br>ถือว่าท่านสละสิทธิ์', en: 'Failure to arrive on time<br>may result in cancellation.'} }, 
+        { icon: 'fa-id-card', title: {th: 'สิ่งที่ต้องเตรียม', en: 'What to bring'}, text: {th: '1. บัตรประจำตัวประชาชนตัวจริง<br>2. หน้ากากอนามัย (สวมตลอดเวลา)', en: '1. Original ID Card/Passport<br>2. Face Mask'} }, 
+        { icon: 'fa-calendar-times', title: {th: 'เลื่อน/ยกเลิกนัด', en: 'Reschedule/Cancel'}, text: {th: 'ล่วงหน้าอย่างน้อย 2 วัน<br>หากไม่ปฏิบัติตามแนวทาง<br>ขอสงวนสิทธิ์ไม่รับนัดครั้งถัดไป', en: 'At least 2 days in advance.<br>Otherwise, future bookings<br>may be restricted.'} } 
+    ];
+
     function showPercentageLoader() {
         document.getElementById('saveLoader').classList.remove('hidden');
-        currentPercent = 0; const circle = document.getElementById('progress-circle'); const txt = document.getElementById('progress-text');
-        circle.style.transition = 'none'; circle.style.strokeDashoffset = '326'; txt.innerText = "0%";
+        currentPercent = 0; 
+        const circle = document.getElementById('progress-circle'); 
+        const txt = document.getElementById('progress-text');
+        circle.style.transition = 'none'; 
+        circle.style.strokeDashoffset = '326'; 
+        txt.innerText = "0%";
         
         let tipIdx = 0;
         document.getElementById('tip-title').innerHTML = `<i class="fas ${loadTips[0].icon}"></i> ${loadTips[0].title[currentLang]}`; 
@@ -784,7 +871,7 @@
         setTimeout(() => {
             circle.style.transition = 'stroke-dashoffset 0.5s linear';
             loadInterval = setInterval(() => {
-                currentPercent += 0.8; // วิ่งประมาณ 1 นาที
+                currentPercent += 0.8; 
                 if(currentPercent >= 95) currentPercent = 95; 
                 let offset = 326 - (currentPercent / 100) * 326; 
                 circle.style.strokeDashoffset = offset; 
@@ -794,10 +881,14 @@
     }
 
     function finishPercentageLoader(callback) {
-        clearInterval(loadInterval); clearInterval(tipsInterval);
-        const circle = document.getElementById('progress-circle'); const txt = document.getElementById('progress-text');
+        clearInterval(loadInterval);
+        clearInterval(tipsInterval);
+        const circle = document.getElementById('progress-circle'); 
+        const txt = document.getElementById('progress-text');
         currentPercent = 100;
-        circle.style.transition = 'stroke-dashoffset 0.4s ease-out'; circle.style.strokeDashoffset = '0'; txt.innerText = "100%";
+        circle.style.transition = 'stroke-dashoffset 0.4s ease-out'; 
+        circle.style.strokeDashoffset = '0'; 
+        txt.innerText = "100%";
         setTimeout(() => { document.getElementById('saveLoader').classList.add('hidden'); if(callback) callback(); }, 500); 
     }
 
@@ -861,7 +952,16 @@
                     if(p.service === 'BANNED') plansHtml += `<div style="background:#fee2e2; color:#b91c1c; padding:4px 8px; border-radius:4px; font-size:0.75rem; margin-top:4px;"><i class="fas fa-ban"></i> BANNED ${p.date} <button onclick="adminManagePlan('${u.idCard}', 'BANNED', 'CLEAR')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold; float:right;">[X]</button></div>`;
                     else plansHtml += `<div class="plan-tag">${p.service}: ${p.date} <button onclick="adminManagePlan('${u.idCard}', '${p.service}', 'CLEAR')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold;">[X]</button></div>`; 
                 }); }
-                html += `<tr><td><div style="font-weight:700; color:var(--primary-dark); font-size:1.05rem;">${u.fname} ${u.lname||''}</div><div style="font-family:monospace; color:#64748b;">${u.idCard}</div><div style="font-size:0.8rem; color:#64748b;">📞 ${u.tel}</div><div style="margin-top:5px;">${plansHtml}</div></td><td style="text-align:right; vertical-align:top;"><button class="btn-icon btn-telebook" onclick="adminTeleBook('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')"><i class="fas fa-calendar-check"></i> Book</button><br><br><button class="btn-icon btn-edit" onclick="editPatientUI('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')"><i class="fas fa-edit"></i></button><button class="btn-icon btn-plan" onclick="openPlanModal('${u.idCard}')"><i class="fas fa-calendar-plus"></i></button><button class="btn-icon btn-delete" onclick="deletePatientConfirm('${u.idCard}')"><i class="fas fa-trash-alt"></i></button></td></tr>`;
+
+                html += `<tr>
+                    <td><div style="font-weight:700; color:var(--primary-dark); font-size:1.05rem;">${u.fname} ${u.lname||''}</div><div style="font-family:monospace; color:#64748b;">${u.idCard}</div><div style="font-size:0.8rem; color:#64748b;">📞 ${u.tel}</div><div style="margin-top:5px;">${plansHtml}</div></td>
+                    <td style="text-align:right; vertical-align:top;">
+                        <button class="btn-icon btn-telebook" onclick="adminTeleBook('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')"><i class="fas fa-calendar-check"></i> Book</button><br><br>
+                        <button class="btn-icon btn-edit" onclick="editPatientUI('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn-icon btn-plan" onclick="openPlanModal('${u.idCard}')"><i class="fas fa-calendar-plus"></i></button>
+                        <button class="btn-icon btn-delete" onclick="deletePatientConfirm('${u.idCard}')"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>`;
             }); resArea.innerHTML = html;
         }
     }
