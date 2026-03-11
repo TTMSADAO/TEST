@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sadao Hospital Queue V40.4</title>
+  <title>Sadao Hospital Queue V40.5</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#2e7d32">
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -28,12 +28,20 @@
     .online-badge { background: rgba(0,0,0,0.3); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top:12px; }
     .online-dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 8px #4ade80; animation: pulseDot 2s infinite; }
 
-    /* 🌟 Multi-User Glass Card */
-    .glass-card { width: 90%; max-width: 560px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; padding: 20px; position: relative; overflow: hidden; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); margin-bottom: 25px; margin-top: -45px; border: 1px solid rgba(255,255,255,1); z-index: 5; }
-    .mu-title { font-size: 0.9rem; color: #475569; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 0.5px;}
+    /* 🔥 PREMIUM GLASS LOGIN CARD (บังคับโชว์เสมอ ไม่หาย 100%) 🔥 */
+    .premium-glass-card {
+        width: 90%; max-width: 560px;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,1); border-radius: 24px;
+        padding: 20px; position: relative; overflow: hidden;
+        box-shadow: 0 10px 30px rgba(31, 38, 135, 0.1);
+        margin-top: -50px; margin-bottom: 25px; z-index: 5;
+    }
+    
     .mu-profile-list { display: flex; flex-direction: column; gap: 10px; }
     .mu-profile { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.9); padding: 12px 15px; border-radius: 16px; border: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-    .mu-profile:hover, .mu-profile.active { border-color: var(--primary); background: #f0fdf4; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(74, 222, 128, 0.15); }
+    .mu-profile:hover { border-color: var(--primary); background: #f0fdf4; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(74, 222, 128, 0.15); }
     .mu-info { display: flex; align-items: center; gap: 12px; }
     .mu-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary-light), #bbf7d0); color: var(--primary-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; box-shadow: inset 0 2px 4px rgba(255,255,255,0.8); }
     .mu-name { font-weight: 700; color: #1e293b; font-size: 1rem; } .mu-name span { display: block; font-size: 0.75rem; color: #64748b; font-weight: 400; margin-top: 2px;}
@@ -42,9 +50,7 @@
     .btn-add-user { background: rgba(255,255,255,0.6); border: 2px dashed #cbd5e1; color: #64748b; width: 100%; padding: 12px; border-radius: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top:10px;}
     .btn-add-user:hover { background: white; border-color: var(--primary); color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-    /* 🌟 ACTIVE PATIENT STATUS CARD */
-    .active-patient-status { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; padding: 20px; color: #1e293b; margin-bottom: 25px; margin-top: -50px; display: none; animation: slideUp 0.4s; position: relative; border: 1px solid rgba(255,255,255,1); width: 90%; max-width: 560px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15); z-index: 5; }
-    .aps-history { background: rgba(248, 250, 252, 0.8); border-radius: 16px; padding: 15px; margin-top: 15px; border: 1px solid #e2e8f0; }
+    .aps-history { background: rgba(255, 255, 255, 0.7); border-radius: 16px; padding: 15px; margin-top: 15px; border: 1px solid rgba(46, 125, 50, 0.15); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
 
     .btn-cancel-q { background: #fee2e2; color: #ef4444; border: 1px solid #f87171; padding: 10px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; cursor:pointer; width:100%; margin-top:12px; transition:0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
     .btn-cancel-q:hover { background: #fecaca; color: #b91c1c; border-color: #ef4444; }
@@ -94,8 +100,6 @@
     .circle-progress { fill: none; stroke: var(--primary); stroke-width: 8; stroke-dasharray: 326; stroke-dashoffset: 326; stroke-linecap: round; }
     .percent-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: 700; color: var(--primary); }
     .loading-title { font-size: 1.2rem; font-weight: 700; color: #1e293b; margin-bottom: 5px; }
-    
-    /* 🔥 TIPS BOX 🔥 */
     .tips-box { background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px dashed #cbd5e1; width: 85%; max-width: 350px; text-align: center; min-height: 120px; display: flex; flex-direction: column; justify-content: center; margin-top:20px; }
     .tips-title { font-weight: 700; color: var(--primary-dark); margin-bottom: 8px; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .tips-text { font-size: 0.85rem; color: #475569; line-height: 1.5; }
@@ -159,6 +163,7 @@
       </div>
       <div class="loading-title" id="t-saving">ระบบรับข้อมูลแล้ว</div>
       <div style="color:var(--primary); font-weight:bold; font-size:0.95rem; margin-top:5px;" id="t-saving-sub">กรุณารอสักครู่ เพื่อยืนยันข้อมูล...</div>
+      
       <div class="tips-box">
           <div class="tips-title" id="tip-title"><i class="fas fa-clock"></i> มาก่อนเวลา 15 นาที</div>
           <div class="tips-text" id="tip-text">หากไม่มาติดต่อภายในเวลาที่กำหนด<br>ถือว่าท่านสละสิทธิ์</div>
@@ -184,35 +189,8 @@
         </div>
     </div>
 
-    <div id="multi-user-card" class="glass-card" style="display:block;">
-        <div class="mu-title">
-            <span id="t-mu-title">ผู้ใช้งานที่บันทึกไว้</span> 
-            <i class="fas fa-users" style="color:var(--primary);"></i>
+    <div id="main-auth-card" class="premium-glass-card">
         </div>
-
-        <div id="active-profile-area" style="display:none; margin-bottom:15px; background:rgba(255,255,255,0.9); padding:15px; border-radius:16px; border:2px solid var(--primary); box-shadow:0 4px 15px rgba(74,222,128,0.2);">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <div style="font-size:0.8rem; color:var(--primary-dark); font-weight:bold; text-transform:uppercase;" id="t-act-user">ใช้งานในชื่อ</div>
-                <button style="background:var(--primary-light); border:1px solid #bbf7d0; color:var(--primary-dark); padding:4px 10px; border-radius:8px; font-size:0.75rem; font-weight:bold; cursor:pointer;" onclick="switchUser()" id="t-switch-user">สลับผู้ใช้</button>
-            </div>
-            <div style="font-size:1.3rem; font-weight:bold; display:flex; align-items:center; gap:10px; color:#1e293b;" id="aps-name"></div>
-            
-            <div class="aps-history">
-                <div style="font-size:0.85rem; color:#475569; font-weight:bold; margin-bottom:8px;" id="t-aps-hist"><i class="fas fa-calendar-check"></i> คิวล่าสุดของคุณ</div>
-                <div id="aps-history-content" style="display:flex; gap:10px; align-items:center;">
-                    <div style="color:var(--primary);"><i class="fas fa-spinner fa-spin"></i></div><div style="font-size:0.9rem;" id="t-syncing">กำลังซิงค์ข้อมูล...</div>
-                </div>
-                <div id="btn-cancel-area"></div>
-            </div>
-        </div>
-
-        <div id="inactive-profiles-area">
-            <div id="mu-list" class="mu-profile-list"></div>
-            <button class="btn-add-user" onclick="showAddUserForm()">
-                <i class="fas fa-plus-circle"></i> <span id="t-btn-add-user">ลงทะเบียนผู้รับบริการใหม่</span>
-            </button>
-        </div>
-    </div>
 
     <div class="menu-container">
         <div class="dept-card card-ttm" onclick="openApp('ttm')"><img src="https://img2.pic.in.th/pic/619e72dc2124132ccf4620717d4fa58d.md.png" class="dept-icon" style="width:65px; height:65px;"><div class="dept-info"><h3 id="t-menu-ttm">แพทย์แผนไทย</h3><p id="t-desc-ttm">นวดรักษา, ประคบ, นวดส่งเสริมฯ</p></div><div class="arrow-btn"><i class="fas fa-chevron-right"></i></div></div>
@@ -400,12 +378,23 @@
       </div>
   </div>
 
+  <div id="duplicateModal" class="modal-overlay">
+      <div class="modal-card" style="text-align: center; padding: 30px 20px;">
+          <div style="font-size: 3.5rem; color: #ef4444; margin-bottom: 15px;"><i class="fas fa-shield-alt"></i></div>
+          <h3 style="color: #b91c1c; font-size: 1.4rem; margin-top: 0; font-weight:700;">พบข้อมูลการจองซ้อน!</h3>
+          <p id="duplicate-msg" style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin-bottom:25px;"></p>
+          <div class="btn-group" style="flex-direction:column; gap:10px; margin-top:0;">
+              <a href="https://lin.ee/Ip6j7HP" class="btn" style="background:#00c300; color:white; text-decoration:none;"><i class="fab fa-line" style="font-size:1.2rem;"></i> แจ้งยกเลิกคิวเดิมทาง LINE</a>
+              <button class="btn btn-cancel" onclick="document.getElementById('duplicateModal').classList.remove('show')">รับทราบ / ปิดหน้าต่าง</button>
+          </div>
+      </div>
+  </div>
+
   <script>
     // 🌟 GLOBAL VARIABLES 
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycby0EQfBeg8ylgU9Q7IZDf-weHopsK4EFxXkqBUVvtDsEVKKpsIIDZ7y8fXXVWdyzKkbAw/exec"; 
     const FIREBASE_BASE_URL = "https://sadao-queue-999c3-default-rtdb.asia-southeast1.firebasedatabase.app/"; 
     
-    // 🔥 MAP สำหรับเช็คเวลาอบไอน้ำต่อเนื่อง
     const STEAM_NEXT_1HR = {"08:30":"09:30", "09:30":"10:30", "13:00":"14:00", "14:00":"15:00", "17:00":"18:00"};
     const STEAM_NEXT_2HR = {"08:30":"10:30", "13:00":"15:00"};
 
@@ -441,10 +430,10 @@
     // 🌟 TRANSLATIONS 
     const I18N = {
         th: {
-            lang_toggle: "EN", app_ttm: "แพทย์แผนไทย", desc_ttm: "นวดรักษา, ประคบ, นวดส่งเสริมฯ", app_tcm: "แพทย์แผนจีน", desc_tcm: "ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า", app_postpartum: "บริการหลังคลอด", desc_post: "หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน", app_steam: "อบไอน้ำสมุนไพร", desc_steam: "ช่วยการไหลเวียนโลหิต ภูมิแพ้", h1: "โรงพยาบาลสะเดา", h2: "กลุ่มงานการแพทย์แผนไทยและการแพทย์ทางเลือก", online: "เปิดให้บริการออนไลน์ 24 ชม.", greeting: "ข้อมูลผู้รับบริการ", change_user: "สลับผู้ใช้", history_title: "คิวที่กำลังจะมาถึง / ล่าสุด", syncing: "กำลังซิงค์ข้อมูล...", fill_info: "กรอกข้อมูลจองคิว", id_card: "เลขประจำตัวประชาชน", foreigner: "ชาวต่างชาติ", pdpa: "ปลอดภัย 100% ตามมาตรฐาน PDPA", fname: "ชื่อจริง", lname: "นามสกุล", phone: "เบอร์โทรศัพท์", lock_warn: "พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้", user_info_title: "ข้อมูลผู้รับบริการ", not_me: "ไม่ใช่ฉัน?", change_phone: "เปลี่ยนเบอร์โทรติดต่อ", sel_svc: "เลือกบริการ", price_title: "อัตราค่าบริการ/สิทธิ:", prov_text_ttm: "ผู้ให้บริการ (ผู้ช่วยแพทย์แผนไทย)", prov_text_tcm: "ผู้ให้บริการ (แพทย์แผนจีน)", not_spec: "ไม่ระบุ", birthdate: "วันคลอด", del_type: "ประเภทการคลอด", hosp: "โรงพยาบาลที่คลอด", gender: "เพศ (สำหรับล็อกรอบ)", note: "หมายเหตุ (ถ้ามี)", btn_cancel: "ยกเลิก", btn_check: "ตรวจสอบข้อมูล", sum_title: "ยืนยันการนัดหมาย", btn_edit: "แก้ไข", btn_confirm: "ยืนยันจองคิว", saving: "ระบบรับข้อมูลแล้ว", saving_sub: "กรุณารอสักครู่ เพื่อยืนยันข้อมูล...", loading: "กำลังโหลด...", steam_price: "อัตราค่าบริการ: 100 บาท/ครั้ง", opt_sel: "-- เลือก --", opt_nat: "คลอดธรรมชาติ", opt_csec: "ผ่าคลอด", g_f: "หญิง", g_m: "ชาย", mu_title: "ผู้ใช้งานที่บันทึกไว้", btn_add_user: "ลงทะเบียนผู้รับบริการใหม่", act_user: "ใช้งานในชื่อ", aps_hist: "คิวล่าสุดของคุณ", cancel_q: "แจ้งยกเลิกนัดหมายนี้", addon_title: "🌿 รับบริการอบไอน้ำสมุนไพรต่อเนื่อง", addon_gender: "ระบุเพศเพื่อเข้าห้องอบ"
+            lang_toggle: "EN", app_ttm: "แพทย์แผนไทย", desc_ttm: "นวดรักษา, ประคบ, นวดส่งเสริมฯ", app_tcm: "แพทย์แผนจีน", desc_tcm: "ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า", app_postpartum: "บริการหลังคลอด", desc_post: "หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน", app_steam: "อบไอน้ำสมุนไพร", desc_steam: "ช่วยการไหลเวียนโลหิต ภูมิแพ้", h1: "โรงพยาบาลสะเดา", h2: "กลุ่มงานการแพทย์แผนไทยและการแพทย์ทางเลือก", online: "เปิดให้บริการออนไลน์ 24 ชม.", greeting: "ข้อมูลผู้รับบริการ", change_user: "สลับผู้ใช้", history_title: "คิวที่กำลังจะมาถึง / ล่าสุด", syncing: "กำลังซิงค์ข้อมูล...", fill_info: "กรอกข้อมูลจองคิว", id_card: "เลขประจำตัวประชาชน", foreigner: "ชาวต่างชาติ", pdpa: "ปลอดภัย 100% ตามมาตรฐาน PDPA", fname: "ชื่อจริง", lname: "นามสกุล", phone: "เบอร์โทรศัพท์", lock_warn: "พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้", user_info_title: "ข้อมูลผู้รับบริการ", not_me: "ไม่ใช่ฉัน?", change_phone: "เปลี่ยนเบอร์โทรติดต่อ", sel_svc: "เลือกบริการ", price_title: "อัตราค่าบริการ/สิทธิ:", prov_text_ttm: "ผู้ให้บริการ (ผู้ช่วยแพทย์แผนไทย)", prov_text_tcm: "ผู้ให้บริการ (แพทย์แผนจีน)", not_spec: "ไม่ระบุ", birthdate: "วันคลอด", del_type: "ประเภทการคลอด", hosp: "โรงพยาบาลที่คลอด", gender: "เพศ (สำหรับล็อกรอบ)", note: "หมายเหตุ (ถ้ามี)", btn_cancel: "ยกเลิก", btn_check: "ตรวจสอบข้อมูล", sum_title: "ยืนยันการนัดหมาย", btn_edit: "แก้ไข", btn_confirm: "ยืนยันจองคิว", saving: "ระบบรับข้อมูลแล้ว", saving_sub: "กรุณารอสักครู่ เพื่อยืนยันข้อมูล...", loading: "กำลังโหลด...", steam_price: "อัตราค่าบริการ: 100 บาท/ครั้ง", opt_sel: "-- เลือก --", opt_nat: "คลอดธรรมชาติ", opt_csec: "ผ่าคลอด", g_f: "หญิง", g_m: "ชาย", mu_title: "ผู้ใช้งานที่บันทึกไว้", btn_add_user: "ลงทะเบียนผู้รับบริการใหม่", act_user: "ใช้งานในชื่อ", aps_hist: "คิวล่าสุดของคุณ", cancel_q: "แจ้งยกเลิกนัดหมายนี้", addon_title: "🌿 รับบริการอบไอน้ำสมุนไพรต่อเนื่อง", addon_gender: "ระบุเพศเพื่อเข้าห้องอบ", no_profile: "ยังไม่มีประวัติในเครื่องนี้"
         },
         en: {
-            lang_toggle: "TH", app_ttm: "Thai Traditional Med.", desc_ttm: "Massage, Compress, Wellness", app_tcm: "Chinese Medicine", desc_tcm: "Acupuncture, Cupping, Facial", app_postpartum: "Postpartum Care", desc_post: "Normal delivery 7 days / C-Section 1 mo.", app_steam: "Herbal Steam", desc_steam: "Blood circulation, Allergy relief", h1: "Sadao Hospital", h2: "Thai Traditional & Alternative Medicine", online: "Online Booking 24/7", greeting: "Patient Information", change_user: "Switch User", history_title: "Upcoming / Recent Appointments", syncing: "Syncing data...", fill_info: "Booking Details", id_card: "Passport / ID Number", foreigner: "Foreigner", pdpa: "100% Secured by PDPA standard", fname: "First Name", lname: "Last Name", phone: "Phone Number", lock_warn: "Profile found. Name cannot be changed.", user_info_title: "Patient Details", not_me: "Not me?", change_phone: "Change Phone Number", sel_svc: "Select Service", price_title: "Estimated Fee:", prov_text_ttm: "Provider (TTM Assistant)", prov_text_tcm: "Provider (TCM Doctor)", not_spec: "Not Specified", birthdate: "Date of Birth (Baby)", del_type: "Delivery Type", hosp: "Hospital", gender: "Gender (For Room Allocation)", note: "Note (Optional)", btn_cancel: "Cancel", btn_check: "Check Info", sum_title: "Confirm Appointment", btn_edit: "Edit", btn_confirm: "Confirm Booking", saving: "Data Received", saving_sub: "Processing confirmation...", loading: "Loading...", steam_price: "Service Fee: 100 THB/Session", opt_sel: "-- Select --", opt_nat: "Normal Delivery", opt_csec: "C-Section", g_f: "Female", g_m: "Male", mu_title: "Saved Profiles", btn_add_user: "Add New Patient", act_user: "Active Profile", aps_hist: "Your Recent Appointment", cancel_q: "Cancel Appointment", addon_title: "🌿 Add Continuous Steam Therapy", addon_gender: "Select gender for steam room"
+            lang_toggle: "TH", app_ttm: "Thai Traditional Med.", desc_ttm: "Massage, Compress, Wellness", app_tcm: "Chinese Medicine", desc_tcm: "Acupuncture, Cupping, Facial", app_postpartum: "Postpartum Care", desc_post: "Normal delivery 7 days / C-Section 1 mo.", app_steam: "Herbal Steam", desc_steam: "Blood circulation, Allergy relief", h1: "Sadao Hospital", h2: "Thai Traditional & Alternative Medicine", online: "Online Booking 24/7", greeting: "Patient Information", change_user: "Switch User", history_title: "Upcoming / Recent Appointments", syncing: "Syncing data...", fill_info: "Booking Details", id_card: "Passport / ID Number", foreigner: "Foreigner", pdpa: "100% Secured by PDPA standard", fname: "First Name", lname: "Last Name", phone: "Phone Number", lock_warn: "Profile found. Name cannot be changed.", user_info_title: "Patient Details", not_me: "Not me?", change_phone: "Change Phone Number", sel_svc: "Select Service", price_title: "Estimated Fee:", prov_text_ttm: "Provider (TTM Assistant)", prov_text_tcm: "Provider (TCM Doctor)", not_spec: "Not Specified", birthdate: "Date of Birth (Baby)", del_type: "Delivery Type", hosp: "Hospital", gender: "Gender (For Room Allocation)", note: "Note (Optional)", btn_cancel: "Cancel", btn_check: "Check Info", sum_title: "Confirm Appointment", btn_edit: "Edit", btn_confirm: "Confirm Booking", saving: "Data Received", saving_sub: "Processing confirmation...", loading: "Loading...", steam_price: "Service Fee: 100 THB/Session", opt_sel: "-- Select --", opt_nat: "Normal Delivery", opt_csec: "C-Section", g_f: "Female", g_m: "Male", mu_title: "Saved Profiles", btn_add_user: "Add New Patient", act_user: "Active Profile", aps_hist: "Your Recent Appointment", cancel_q: "Cancel Appointment", addon_title: "🌿 Add Continuous Steam Therapy", addon_gender: "Select gender for steam room", no_profile: "No profiles saved"
         }
     };
 
@@ -489,10 +478,13 @@
             if(document.getElementById('t-opt-csec')) document.getElementById('t-opt-csec').innerText = _t('opt_csec');
             
             document.getElementById('t-g-f').innerText = _t('g_f'); document.getElementById('t-g-m').innerText = _t('g_m');
-            document.getElementById('t-mu-title').innerHTML = `${_t('mu_title')} <i class="fas fa-users" style="color:var(--primary);"></i>`;
-            document.getElementById('t-btn-add-user').innerHTML = `<i class="fas fa-plus-circle"></i> ${_t('btn_add_user')}`;
-            document.getElementById('t-act-user').innerText = _t('act_user'); document.getElementById('t-switch-user').innerText = _t('change_user');
-            document.getElementById('t-aps-hist').innerHTML = `<i class="fas fa-calendar-check"></i> ${_t('aps_hist')}`;
+            
+            // ป้องกัน Error สำหรับหน้าแรก
+            if(document.getElementById('t-mu-title')) document.getElementById('t-mu-title').innerText = _t('mu_title');
+            if(document.getElementById('t-btn-add-user')) document.getElementById('t-btn-add-user').innerText = _t('btn_add_user');
+            if(document.getElementById('t-act-user')) document.getElementById('t-act-user').innerText = _t('act_user'); 
+            if(document.getElementById('t-switch-user')) document.getElementById('t-switch-user').innerText = _t('change_user');
+            if(document.getElementById('t-aps-hist')) document.getElementById('t-aps-hist').innerText = _t('aps_hist');
 
             let btnSave = document.getElementById('btn-save-info'); if(!btnSave.disabled) btnSave.innerText = _t('btn_check');
             document.getElementById('inp-fname').placeholder = currentLang === 'en' ? "First Name" : "ชื่อ";
@@ -512,43 +504,62 @@
     const APP_CONFIG = { ttm: { title: "แพทย์แผนไทย", logo: "https://img2.pic.in.th/pic/619e72dc2124132ccf4620717d4fa58d.md.png", color: "#2e7d32" }, tcm: { title: "แพทย์แผนจีน", logo: "https://img2.pic.in.th/pic/--06d2d95efaba2074.md.png", color: "#c62828" }, postpartum: { title: "บริการหลังคลอด", logo: "https://img2.pic.in.th/pic/eb06897c542c79b64690c8e794fa84a4.png", color: "#ec4899" }, steam: { title: "อบไอน้ำสมุนไพร", logo: "https://img2.pic.in.th/pic/-3b445847427fcbfd.png", color: "#0288d1" } };
     const SERVICE_OPTIONS = { ttm: ["นวดและประคบเพื่อการรักษา", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)"], tcm: ["ฝังเข็มเพื่อการรักษา", "ครอบแก้ว", "ฝังเข็มใบหน้า", "เม็ดผักกาดแปะหู", "ปรึกษาแพทย์แผนจีน"] };
     
+    // 🔥 แก้ชื่อจาก เบา เป็น "บ่าว"
     const STAFF_IMAGES = { "รจนา M": "https://img2.pic.in.th/pic/-b38b682db8ac596b.png", "อรรถพล B": "https://img5.pic.in.th/file/secure-sv1/6b74e1ebb096c81368605ff43948dab4.png", "ศินารัตน์ C": "https://img2.pic.in.th/pic/-df4e3c6f4a4b331f.png", "จุฑามาศ F": "https://img5.pic.in.th/file/secure-sv1/709dfc05071615eaaf008ea63d1e037e.png", "รัตน์ชนก KW": "https://img2.pic.in.th/pic/-83673d6d528be12a.png", "นิกษ์นิภา T": "https://img5.pic.in.th/file/secure-sv1/-c4fe207fa6c04aa3.png", "ณิชาภัทร W": "https://img2.pic.in.th/pic/1ef0aa325ccac37724897c9f2c10e5f4.png", "จินดา J": "https://img2.pic.in.th/pic/93b060e9e4b3fc9a9070d5ac2768c879.png" };
-    const STAFF_NAME_MAP = { "จินดา J": "จินดา (เจี๊ยบ)", "รจนา M": "รจนา (แหม่ม)", "อรรถพล B": "อรรถพล (เบา)", "ศินารัตน์ C": "ศินารัตน์ (ซี)", "จุฑามาศ F": "จุฑามาศ (ฝน)", "รัตน์ชนก KW": "รัตน์ชนก (กวาง)", "นิกษ์นิภา T": "นิกษ์นิภา (การ์ตูน)", "ณิชาภัทร W": "ณิชาภัทร (วาวา)" };
+    const STAFF_NAME_MAP = { "จินดา J": "จินดา (เจี๊ยบ)", "รจนา M": "รจนา (แหม่ม)", "อรรถพล B": "อรรถพล (บ่าว)", "ศินารัตน์ C": "ศินารัตน์ (ซี)", "จุฑามาศ F": "จุฑามาศ (ฝน)", "รัตน์ชนก KW": "รัตน์ชนก (กวาง)", "นิกษ์นิภา T": "นิกษ์นิภา (การ์ตูน)", "ณิชาภัทร W": "ณิชาภัทร (วาวา)" };
     const STAFF_EN_NAMES = { "จินดา J": "Jinda (Jeab)", "รจนา M": "Rotjana (Maam)", "อรรถพล B": "Attapon (Bao)", "ศินารัตน์ C": "Sinarat (C)", "จุฑามาศ F": "Jutamat (Fon)", "รัตน์ชนก KW": "Ratchanok (Kwang)", "นิกษ์นิภา T": "Niknipha (Kartoon)", "ณิชาภัทร W": "Nichapat (Wawa)" };
     const DEFAULT_IMG = "https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png"; const DAY_COLORS = ["#ef4444", "#eab308", "#ec4899", "#22c55e", "#f97316", "#3b82f6", "#a855f7"];
 
-    // 🌟 ระบบการ์ดครอบครัว (ป้องกันบัค Card หาย 100%)
+    // 🌟 ระบบการ์ดครอบครัว (รับประกันบัค Card ไม่ล่องหนแน่นอน)
     function renderMultiUserCard() {
         try {
-            let muCard = document.getElementById('multi-user-card'); 
-            let apsCard = document.getElementById('active-patient-status');
+            let container = document.getElementById('main-auth-card');
+            if(!container) return; // เกราะป้องกันที่ 1
             
             if (activeProfileId) {
                 let activeUser = savedProfiles.find(p => p.id === activeProfileId);
                 if (activeUser) { 
-                    muCard.style.display = 'none'; 
-                    apsCard.style.display = 'block'; 
-                    document.getElementById('aps-name').innerHTML = `<div class="mu-avatar">${activeUser.fname.substring(0,1)}</div> ${getMaskedFullName(activeUser.fname, activeUser.lname)}`; 
+                    // แสดงเมื่อมีคนกำลังเข้าสู่ระบบ
+                    container.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <div style="font-size:0.8rem; color:#2e7d32; font-weight:700; text-transform:uppercase;"><i class="fas fa-check-circle"></i> ${_t('act_user')}</div>
+                            <button style="background:rgba(46,125,50,0.1); border:1px solid #bbf7d0; color:#2e7d32; padding:4px 12px; border-radius:12px; font-size:0.75rem; font-weight:700; cursor:pointer; transition:0.2s;" onclick="switchUser()">${_t('change_user')}</button>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="mu-avatar">${activeUser.fname.substring(0,1)}</div>
+                            <div style="font-size:1.15rem; font-weight:700; color:#1e293b;">${getMaskedFullName(activeUser.fname, activeUser.lname)}</div>
+                        </div>
+                        <div class="aps-history">
+                            <div style="font-size:0.85rem; color:#475569; font-weight:700; margin-bottom:8px;"><i class="fas fa-calendar-check"></i> ${_t('aps_hist')}</div>
+                            <div id="aps-history-content" style="display:flex; gap:10px; align-items:center;">
+                                <div style="color:var(--primary);"><i class="fas fa-spinner fa-spin"></i></div><div style="font-size:0.9rem;">${_t('syncing')}</div>
+                            </div>
+                            <div id="btn-cancel-area"></div>
+                        </div>
+                    `;
                     fetchPatientHistory(activeUser.id);
                 } else { 
                     activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); 
                 }
             } else {
-                apsCard.style.display = 'none'; 
-                muCard.style.display = 'block'; 
-                
+                // แสดงเมื่อยังไม่มีคนเข้าระบบ (โชว์ลิสต์ครอบครัว)
+                let listHtml = '';
                 if (!savedProfiles || savedProfiles.length === 0) { 
-                    document.getElementById('mu-list').innerHTML = `<div style="text-align:center; padding:10px; color:#64748b; font-size:0.85rem;">${currentLang==='en'?'No profiles saved':'ยังไม่มีประวัติในเครื่องนี้'}</div>`;
+                    listHtml = `<div style="text-align:center; padding:10px; color:#64748b; font-size:0.85rem;">${_t('no_profile')}</div>`;
                 } else {
-                    let listHtml = '';
                     savedProfiles.forEach(p => { 
                         let mName = getMaskedFullName(p.fname, p.lname); let mTel = getMaskedTel(p.tel); 
                         listHtml += `<div class="mu-profile" onclick="selectUser('${p.id}')"><div class="mu-info"><div class="mu-avatar">${p.fname.substring(0,1)}</div><div class="mu-name">${mName}<span><i class="fas fa-phone"></i> ${mTel}</span></div></div><div class="mu-delete" onclick="event.stopPropagation(); removeUser('${p.id}')"><i class="fas fa-times-circle"></i></div></div>`; 
                     });
-                    document.getElementById('mu-list').innerHTML = listHtml;
                 }
+                
+                container.innerHTML = `
+                    <div class="mu-title"><span>${_t('mu_title')}</span> <i class="fas fa-users" style="color:var(--primary);"></i></div>
+                    <div class="mu-profile-list">${listHtml}</div>
+                    <button class="btn-add-user" onclick="showAddUserForm()"><i class="fas fa-plus-circle"></i> ${_t('btn_add_user')}</button>
+                `;
             }
-        } catch(e) { console.error("Error in renderMultiUserCard:", e); }
+        } catch(e) { console.error("Card UI Error:", e); }
     }
 
     function selectUser(id) { activeProfileId = id; saveProfilesToStorage(); renderMultiUserCard(); }
@@ -606,17 +617,25 @@
     function getMaskedTel(tel) { if(!tel || tel.length < 10) return tel; return tel.substring(0,3) + "-xxx-x" + tel.substring(8); }
 
     function fetchPatientHistory(idCard) {
-        document.getElementById('t-syncing').innerText = _t('syncing');
+        let scText = document.getElementById('t-syncing'); if(scText) scText.innerText = _t('syncing');
         fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'get_my_history', idCard: idCard }) }).then(r=>r.json()).then(data => {
             if (data.status === 'success' && data.history) {
                 let h = data.history; let icon = h.service.includes('ฝังเข็ม') ? '<i class="fas fa-yin-yang"></i>' : (h.service.includes('อบ') ? '<i class="fas fa-hot-tub-person"></i>' : '<i class="fas fa-leaf"></i>');
-                document.getElementById('aps-history-content').innerHTML = `<div class="pc-h-icon" style="background:rgba(255,255,255,0.1); color:#38bdf8; width:35px; height:35px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem;">${icon}</div><div style="flex:1;"><div style="color:#1e293b; font-weight:bold; font-size:0.95rem;">${_t(h.service)}</div><div style="color:#475569; font-size:0.8rem;"><i class="far fa-calendar-alt"></i> ${h.date} | ${h.time} น.</div></div>`;
-                if(h.sysDate) { 
+                let apsCont = document.getElementById('aps-history-content');
+                if(apsCont) apsCont.innerHTML = `<div class="pc-h-icon" style="background:rgba(46,125,50,0.1); color:#2e7d32; width:35px; height:35px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem;">${icon}</div><div style="flex:1;"><div style="color:#1e293b; font-weight:bold; font-size:0.95rem;">${_t(h.service)}</div><div style="color:#475569; font-size:0.8rem;"><i class="far fa-calendar-alt"></i> ${h.date} | ${h.time} น.</div></div>`;
+                
+                let btnArea = document.getElementById('btn-cancel-area');
+                if(h.sysDate && btnArea) { 
                     activeBookingObj = { idCard: idCard, service: h.service, date: h.date, sysDate: h.sysDate, time: h.time }; 
-                    document.getElementById('btn-cancel-area').innerHTML = `<button class="btn-cancel-q" onclick="reqCancelBooking()"><i class="fas fa-times-circle"></i> ${_t('cancel_q')}</button>`; 
+                    btnArea.innerHTML = `<button class="btn-cancel-q" onclick="reqCancelBooking()"><i class="fas fa-times-circle"></i> ${_t('cancel_q')}</button>`; 
                 } 
-                else { document.getElementById('btn-cancel-area').innerHTML = `<div style="text-align:right; font-size:0.8rem; color:#4ade80; margin-top:5px; font-weight:bold;"><i class="fas fa-check-circle"></i> ${h.status || 'Completed'}</div>`; activeBookingObj = null; }
-            } else { document.getElementById('aps-history-content').innerHTML = `<div style="color:#64748b; font-size:0.85rem; width:100%; text-align:center; padding:10px 0;">No record found</div>`; document.getElementById('btn-cancel-area').innerHTML = ''; }
+                else if(btnArea) { btnArea.innerHTML = `<div style="text-align:right; font-size:0.8rem; color:#4ade80; margin-top:5px; font-weight:bold;"><i class="fas fa-check-circle"></i> ${h.status || 'Completed'}</div>`; activeBookingObj = null; }
+            } else { 
+                let apsCont = document.getElementById('aps-history-content');
+                let btnArea = document.getElementById('btn-cancel-area');
+                if(apsCont) apsCont.innerHTML = `<div style="color:#64748b; font-size:0.85rem; width:100%; text-align:center; padding:10px 0;">No record found</div>`; 
+                if(btnArea) btnArea.innerHTML = ''; 
+            }
         }).catch(e=>{});
     }
 
@@ -657,7 +676,7 @@
       fetch("https://sadao-queue-999c3-default-rtdb.asia-southeast1.firebasedatabase.app/sadaoData.json?t=" + new Date().getTime(), { cache: 'no-store' }).then(res => res.json()).then(data => {
             let now = new Date(); let timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
             syncIcon.classList.remove('spin-active'); syncText.innerText = (currentLang === 'en' ? 'Updated ' : 'อัปเดตล่าสุด ') + timeStr; 
-            fullFirebaseData = data; // เก็บไว้ใช้ตอนเช็คอบไอน้ำพ่วง
+            fullFirebaseData = data; 
             globalData = currentApp==='ttm'?data.ttm:currentApp==='tcm'?data.tcm:currentApp==='postpartum'?data.postpartum:data.steam;
             renderScroller(); renderSlots(selectedIndex);
             if(showLoader) document.getElementById('pageLoader').classList.add('hidden');
@@ -724,7 +743,11 @@
         
         document.getElementById('staff-trigger').classList.remove('open'); 
         updatePriceDisplay();
-        updateSteamAddonUI(); 
+        
+        // 🛡️ ป้องกัน Error ถ้าเปิดแผนกที่ไม่มี Add-on (แก้บัคช็อค 100%)
+        if(typeof updateSteamAddonUI === "function") {
+            try { updateSteamAddonUI(); } catch(err) { console.error("Addon err:", err); }
+        }
     }
     
     function updatePriceDisplay() { 
@@ -733,38 +756,31 @@
         else { if (SERVICE_PRICES[currentApp] && SERVICE_PRICES[currentApp][svc]) price = SERVICE_PRICES[currentApp][svc]; }
         let tag = document.getElementById('price-tag'); let val = document.getElementById('price-val'); 
         if (price !== "-") { val.innerHTML = price; tag.style.display = 'block'; } else { tag.style.display = 'none'; } 
-        if (document.getElementById('inp-2hr') && document.getElementById('inp-2hr').checked) { let addTxt = currentLang === 'en' ? (currentApp === 'ttm' ? "(+200 THB for 2nd hour)" : "(Cont. Cupping in 2nd hour)") : (currentApp === 'ttm' ? "(+200 บาท ชม.ถัดไป)" : "(ต่อเนื่อง: ครอบแก้ว ชม.ถัดไป)"); if (!val.innerHTML.includes(addTxt)) val.innerHTML += ` <br><span style='color:#e65100; display:block; margin-top:4px;'>${addTxt}</span>`; } 
+        let is2hrChk = document.getElementById('inp-2hr');
+        if (is2hrChk && is2hrChk.checked) { let addTxt = currentLang === 'en' ? (currentApp === 'ttm' ? "(+200 THB for 2nd hour)" : "(Cont. Cupping in 2nd hour)") : (currentApp === 'ttm' ? "(+200 บาท ชม.ถัดไป)" : "(ต่อเนื่อง: ครอบแก้ว ชม.ถัดไป)"); if (!val.innerHTML.includes(addTxt)) val.innerHTML += ` <br><span style='color:#e65100; display:block; margin-top:4px;'>${addTxt}</span>`; } 
     }
     document.addEventListener('DOMContentLoaded', () => { let c = document.getElementById('inp-2hr'); if(c) c.addEventListener('change', updatePriceDisplay); });
 
-    // 🔥 THE SMART ADD-ON: ฟังก์ชันคำนวณห้องอบไอน้ำต่อเนื่อง (ใส่เกราะป้องกันการ Crash 100%) 🔥
+    // 🔥 THE SMART ADD-ON 🔥
     function toggleSteamAddon() {
         let chk = document.getElementById('chk-addon-steam'); let box = document.getElementById('steam-addon-container'); let details = document.getElementById('addon-steam-details');
+        if(!chk || !box || !details) return; // 🛡️ ป้องกันบัคถ้าเปิดแผนกอื่น
         if(chk.checked) { box.classList.add('active'); details.classList.add('show'); } else { box.classList.remove('active'); details.classList.remove('show'); }
     }
 
     function updateSteamAddonUI() {
         if(currentApp !== 'ttm') return;
         let container = document.getElementById('steam-addon-container'); let infoBadge = document.getElementById('addon-steam-info'); let chkAddon = document.getElementById('chk-addon-steam');
+        if(!container || !chkAddon) return;
         
-        let is2HrObj = document.getElementById('inp-2hr');
-        if(!is2HrObj) return;
-        let is2Hr = is2HrObj.checked;
-        let baseTime = bookingData.time;
+        let is2HrObj = document.getElementById('inp-2hr'); let is2Hr = is2HrObj ? is2HrObj.checked : false;
+        let baseTime = bookingData.time; let targetTime = is2Hr ? STEAM_NEXT_2HR[baseTime] : STEAM_NEXT_1HR[baseTime];
         
-        let targetTime = is2Hr ? STEAM_NEXT_2HR[baseTime] : STEAM_NEXT_1HR[baseTime];
-        
-        // 🛡️ เกราะป้องกันที่ 1: ถ้าไม่มีเวลาต่อเนื่อง (เช่น จองบ่าย 3) ให้ซ่อน
-        if(!targetTime) { container.style.display = 'none'; chkAddon.checked = false; toggleSteamAddon(); bookingData.steamTime = null; return; }
+        if(!targetTime || !fullFirebaseData || !fullFirebaseData.steam) { container.style.display = 'none'; chkAddon.checked = false; toggleSteamAddon(); bookingData.steamTime = null; return; }
 
-        // 🛡️ เกราะป้องกันที่ 2: ถ้าข้อมูล Firebase โหลดมาไม่ทัน หรือไม่มีแผนกอบสมุนไพรในระบบ ให้ซ่อนไว้ก่อน (หน้าเว็บจะได้ไม่ช็อค)
-        if (!fullFirebaseData || !fullFirebaseData.steam) { container.style.display = 'none'; chkAddon.checked = false; toggleSteamAddon(); bookingData.steamTime = null; return; }
-
-        let dayData = fullFirebaseData.steam.find(d => d.sysDate === bookingData.sysDate);
-        let steamSlot = null;
+        let dayData = fullFirebaseData.steam.find(d => d.sysDate === bookingData.sysDate); let steamSlot = null;
         if(dayData && dayData.slots) { steamSlot = dayData.slots.find(s => s.time === targetTime); }
 
-        // 🛡️ เกราะป้องกันที่ 3: เช็คว่า slots ของห้องอบมี rawSpots ไหม (เพื่อป้องกันบัคคิวเก่า)
         if(steamSlot && steamSlot.count > 0 && steamSlot.rawSpots && !steamSlot.rawSpots.isHoliday) {
             container.style.display = 'block'; bookingData.steamTime = targetTime;
             let gText = steamSlot.gender === "" ? (currentLang==='en'?'Any Gender':'ไม่จำกัดเพศ') : (steamSlot.gender === "ชาย" || steamSlot.gender === "ช" ? (currentLang==='en'?'Male Round':'รอบผู้ชาย') : (currentLang==='en'?'Female Round':'รอบผู้หญิง'));
@@ -792,13 +808,15 @@
               document.getElementById('auth-section').style.display = 'block'; document.getElementById('inp-idcard').value = ''; document.querySelectorAll('.otp-box').forEach(b => { b.value=''; b.classList.remove('filled'); }); document.getElementById('idcard-status').innerHTML = ''; document.getElementById('inp-fname').value = ''; document.getElementById('inp-lname').value = ''; document.getElementById('inp-tel').value = ''; document.getElementById('inp-fname').readOnly = false; document.getElementById('inp-lname').readOnly = false; document.getElementById('name-lock-warning').style.display = 'none'; document.getElementById('user-details-form').classList.add('hidden'); document.getElementById('existing-user-display').classList.add('hidden'); document.getElementById('btn-save-info').disabled = true; document.getElementById('btn-save-info').innerHTML = _t('btn_check'); currentUserDB = null; 
           }
           
-          document.getElementById('inp-note').value = ''; if(document.getElementById('inp-2hr')) document.getElementById('inp-2hr').checked = false;
-          ['normal-fields', 'postpartum-fields', 'steam-fields'].forEach(id => document.getElementById(id).classList.add('hidden'));
+          document.getElementById('inp-note').value = ''; 
+          let hrChk = document.getElementById('inp-2hr'); if(hrChk) hrChk.checked = false;
+          ['normal-fields', 'postpartum-fields', 'steam-fields'].forEach(id => { let el = document.getElementById(id); if(el) el.classList.add('hidden'); });
 
-          let lblProv = document.getElementById('lbl_provider_text'); if (currentApp === 'tcm') lblProv.innerText = _t('prov_text_tcm'); else lblProv.innerText = _t('prov_text_ttm');
+          let lblProv = document.getElementById('lbl_provider_text'); if (lblProv) { if (currentApp === 'tcm') lblProv.innerText = _t('prov_text_tcm'); else lblProv.innerText = _t('prov_text_ttm'); }
 
-          // รีเซ็ต Add-on box
-          if(document.getElementById('steam-addon-container')) { document.getElementById('steam-addon-container').style.display = 'none'; document.getElementById('chk-addon-steam').checked = false; toggleSteamAddon(); }
+          let addonCont = document.getElementById('steam-addon-container');
+          let addonChk = document.getElementById('chk-addon-steam');
+          if(addonCont) { addonCont.style.display = 'none'; if(addonChk) addonChk.checked = false; toggleSteamAddon(); }
 
           if (currentApp === 'postpartum') { 
               document.getElementById('postpartum-fields').classList.remove('hidden'); bookingData.service = "บริการหลังคลอด"; document.getElementById('group-staff').style.display = 'none'; document.getElementById('inp-staff-val').value = "ไม่ระบุ";
@@ -811,14 +829,15 @@
               if (staffs.length > 0 && staffs[0].row !== undefined) { 
                   document.getElementById('group-staff').style.display = 'block'; let grouped = {}; staffs.forEach(s => { let k = s.name; if(!grouped[k]) grouped[k] = Object.assign({}, s); else if(s.can2Hr) grouped[k] = Object.assign({}, s); }); let unique = Object.values(grouped); if(unique.length > 0) selectStaffNew(unique[0], unique[0].name); 
                   unique.forEach(s => { let baseName = s.name; let dName = currentLang === 'en' ? (STAFF_EN_NAMES[baseName] || baseName) : (STAFF_NAME_MAP[baseName] || baseName); let img = STAFF_IMAGES[s.name] || DEFAULT_IMG; let div = document.createElement('div'); div.className = 'select-item'; div.innerHTML = `<img src="${img}" class="select-img"><div style="font-weight:600; flex:1; color:#1e293b;">${dName} ${s.can2Hr?'<span style="color:#f59e0b;font-size:0.75rem;background:#fffbeb;padding:2px 6px;border-radius:6px;margin-left:6px;"><i class="fas fa-bolt"></i> 2Hr</span>':''}</div>`; div.onclick = () => selectStaffNew(s, baseName); cCont.appendChild(div); }); 
-                  setTimeout(updateSteamAddonUI, 100);
+                  
+                  // 🛡️ ป้องกัน Error เวลาเข้าหน้า TTM 
+                  if(typeof updateSteamAddonUI === "function") { setTimeout(updateSteamAddonUI, 100); }
               } else { document.getElementById('group-staff').style.display = 'none'; document.getElementById('inp-staff-val').value = "ไม่ระบุ"; }
           }
       } catch(e) { console.error("Setup error:", e); }
       
-      // 🛡️ เอามาไว้ข้างนอก try-catch การันตีว่าหน้าต่างต้องเปิดขึ้นมา 100%
       switchStep('step-form'); document.getElementById('bookingModal').classList.add('show');
-      if(!activeProfileId && !isForeigner) { setTimeout(() => { document.querySelector('.otp-box').focus(); }, 300); }
+      if(!activeProfileId && !isForeigner) { setTimeout(() => { let oBox = document.querySelector('.otp-box'); if(oBox) oBox.focus(); }, 300); }
     }
 
     async function checkIDCardInput() {
@@ -862,9 +881,10 @@
       } else if (currentApp === 'steam') { 
           bookingData.extraInfo = currentLang==='en' ? `Gender: ${document.getElementById('inp-gender').value}` : `เพศ: ${document.getElementById('inp-gender').value}`; bookingData.service = "อบไอน้ำ"; bookingData.staff = "ไม่ระบุ";
       } else { 
-          bookingData.service = document.getElementById('inp-service').value.split(' (')[0]; bookingData.staff = baseStaffName; bookingData.is2Hr = document.getElementById('inp-2hr') ? document.getElementById('inp-2hr').checked : false; 
-          bookingData.addSteam = document.getElementById('chk-addon-steam') ? document.getElementById('chk-addon-steam').checked : false;
-          if(bookingData.addSteam) { bookingData.steamGender = document.getElementById('inp-addon-gender').value; }
+          bookingData.service = document.getElementById('inp-service').value.split(' (')[0]; bookingData.staff = baseStaffName; 
+          let is2HrObj = document.getElementById('inp-2hr'); bookingData.is2Hr = is2HrObj ? is2HrObj.checked : false; 
+          let addonObj = document.getElementById('chk-addon-steam'); bookingData.addSteam = addonObj ? addonObj.checked : false;
+          if(bookingData.addSteam) { let gObj = document.getElementById('inp-addon-gender'); bookingData.steamGender = gObj ? gObj.value : "หญิง"; }
       }
       
       let mName = getMaskedFullName(f, l); let html = `<b><i class="fas fa-user"></i></b> ${mName}<br><b><i class="fas fa-phone"></i></b> ${getMaskedTel(tel)}<br><hr style="border:0;border-top:1px dashed #cbd5e1;margin:10px 0;"><b>${currentLang==='en'?'Service':'บริการ'}:</b> ${_t(bookingData.service)}<br><b>${currentLang==='en'?'Time':'เวลา'}:</b> ${bookingData.date} [${bookingData.time}]`;
@@ -922,23 +942,8 @@
     function closeModal() { document.getElementById('bookingModal').classList.remove('show'); }
     function switchStep(id) { document.getElementById('step-form').classList.add('hidden'); document.getElementById('step-summary').classList.add('hidden'); document.getElementById(id).classList.remove('hidden'); }
 
-    // 🔥 แก้บัคปุ่มแอดมินให้เสถียร 🔥
     let logoTaps = 0; let tapTimer; let currentAdminSort = 'created';
-    function handleAdminTap() { 
-        logoTaps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => { logoTaps = 0; }, 2000); 
-        if (logoTaps >= 7) { 
-            logoTaps = 0; 
-            Swal.fire({ title: '🛡️ Restricted Access', input: 'password', inputLabel: 'Admin Code', showCancelButton: true, confirmButtonColor: '#2e7d32' }).then((result) => { 
-                if (result.isConfirmed && result.value === "11395") { 
-                    document.getElementById('adminModal').classList.add('show'); 
-                    setTimeout(() => { loadAdminLogs(); }, 100);
-                } else if(result.isConfirmed) {
-                    Swal.fire('Error', 'รหัสผ่านไม่ถูกต้อง', 'error');
-                }
-            }); 
-        } 
-    }
-
+    function handleAdminTap() { logoTaps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => { logoTaps = 0; }, 2000); if (logoTaps >= 7) { logoTaps = 0; Swal.fire({ title: '🛡️ Restricted Access', input: 'password', inputLabel: 'Admin Code', showCancelButton: true, confirmButtonColor: '#2e7d32' }).then((result) => { if (result.value === "11395") { document.getElementById('adminModal').classList.add('show'); loadAdminLogs(); } }); } }
     function switchAdminTab(tabId) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById(tabId).classList.add('active'); }
     async function adminSearch() { let q = document.getElementById('adminSearchInp').value; if(!q) return; let resArea = document.getElementById('adminSearchResult'); resArea.innerHTML = "<tr><td colspan='2' style='text-align:center;'><i class='fas fa-spinner fa-spin'></i> Loading...</td></tr>"; let res = await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_search', pass: '11395', query: q }) }); let data = await res.json(); if(data.status === 'success') { let html = ''; if(data.data.length === 0) { resArea.innerHTML = "<tr><td colspan='2' style='text-align:center; color:red;'>No data</td></tr>"; return; } data.data.forEach(u => { let plansHtml = ''; if(u.plans.length > 0) { u.plans.forEach(p => { if(p.service === 'BANNED') plansHtml += `<div style="background:#fee2e2; color:#b91c1c; padding:4px 8px; border-radius:4px; font-size:0.75rem; margin-top:4px;"><i class="fas fa-ban"></i> BANNED ${p.date} <button onclick="adminManagePlan('${u.idCard}', 'BANNED', 'CLEAR')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold; float:right;">[X]</button></div>`; else plansHtml += `<div class="plan-tag">${p.service}: ${p.date} <button onclick="adminManagePlan('${u.idCard}', '${p.service}', 'CLEAR')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold;">[X]</button></div>`; }); } html += `<tr><td><div style="font-weight:700; color:var(--primary-dark); font-size:1.05rem;">${u.fname} ${u.lname||''}</div><div style="font-family:monospace; color:#64748b;">${u.idCard}</div><div style="font-size:0.8rem; color:#64748b;">📞 ${u.tel}</div><div style="margin-top:5px;">${plansHtml}</div></td><td style="text-align:right; vertical-align:top;"><button class="btn-icon btn-telebook" onclick="adminTeleBook('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')"><i class="fas fa-calendar-check"></i> Book</button><br><br><button class="btn-icon btn-edit" onclick="editPatientUI('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')"><i class="fas fa-edit"></i></button><button class="btn-icon btn-plan" onclick="openPlanModal('${u.idCard}')"><i class="fas fa-calendar-plus"></i></button><button class="btn-icon btn-delete" onclick="deletePatientConfirm('${u.idCard}')"><i class="fas fa-trash-alt"></i></button></td></tr>`; }); resArea.innerHTML = html; } }
     function adminTeleBook(id, fname, lname, tel) { addOrUpdateProfile(id, fname, lname, tel); document.getElementById('adminModal').classList.remove('show'); Swal.fire({ title: 'Tele-Booking Mode', html: `Login as <b>${fname} ${lname}</b>`, icon: 'info' }).then(() => { renderMultiUserCard(); }); }
@@ -953,7 +958,20 @@
     function adminCancelQueue(idCard, sysDate, time, dept) { Swal.fire({ title: 'Cancel Queue?', html: `Ban duration for this account:<br><select id="swal-ban-days" class="form-control" style="margin-top:10px;"><option value="0">No Ban</option><option value="2">Ban 2 days</option><option value="5">Ban 5 days</option></select>`, icon: 'warning', showCancelButton: true, confirmButtonText: 'Cancel Booking', confirmButtonColor: '#ef4444' }).then(async (result) => { if (result.isConfirmed) { let bDays = document.getElementById('swal-ban-days').value; Swal.fire({title:'Processing...', didOpen:()=>{Swal.showLoading()}}); await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_cancel_booking', pass: '11395', idCard: idCard, sysDate: sysDate, time: time, dept: dept, banDays: bDays }) }); Swal.fire('Success', 'Cancelled', 'success'); loadAdminLogs(); } }); }
     function updateAdminFileUI(input) { if(input.files.length > 0) { document.getElementById('adminFileName').innerText = input.files[0].name; document.getElementById('btnAdminUpload').disabled = false; } }
     function processAdminUpload() { const fileInp = document.getElementById('adminFileInput'); const reader = new FileReader(); reader.onload = async function(e) { const rows = e.target.result.split('\n').slice(1); const payload = []; rows.forEach(row => { const cols = row.split(','); if(cols.length >= 4) { payload.push({ visitDate: cols[0].trim(), idCard: cols[1].trim(), service: cols[2].trim(), planDays: cols[3].trim() }); } }); await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_batch_upload', pass: '11395', payload: payload }) }); Swal.fire('Success', '', 'success'); }; reader.readAsText(fileInp.files[0]); }
-    function forceSyncSystem() { fetch(API_ENDPOINT + "?action=syncFirebase").then(()=>{ Swal.fire('Success', '', 'success'); }); }
+    
+    // 🔥 แก้บัคปุ่มหมุนโหลดตอน Sync หน้าแอดมิน 🔥
+    function forceSyncSystem(btn) { 
+        let orig = btn.innerHTML; 
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังซิงค์ข้อมูล...'; 
+        btn.disabled = true; 
+        fetch(API_ENDPOINT + "?action=syncFirebase").then(()=>{ 
+            Swal.fire('Success', 'ซิงค์ข้อมูลสำเร็จ', 'success'); 
+            btn.innerHTML = orig; btn.disabled = false; 
+        }).catch(e=>{ 
+            Swal.fire('Error', 'เชื่อมต่อล้มเหลว', 'error'); 
+            btn.innerHTML = orig; btn.disabled = false; 
+        }); 
+    }
   </script>
 </body>
 </html>
