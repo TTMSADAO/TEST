@@ -1,6 +1,6 @@
 // Service Worker สำหรับจองคิวออนไลน์ รพ.สะเดา
 // ⚠️ กฎเหล็ก: อัปเดตเวอร์ชัน CACHE_NAME ทุกครั้งที่มีการแก้โค้ดใน index.html
-const CACHE_NAME = 'sadao-queue-v2.11';
+const CACHE_NAME = 'sadao-queue-v2.12';
 
 const ASSETS_TO_CACHE = [
   './',
