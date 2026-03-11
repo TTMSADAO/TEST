@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sadao Hospital Queue V39.6</title>
+  <title>Sadao Hospital Queue V39.7</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#2e7d32">
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -17,61 +17,35 @@
     .hidden { display: none !important; }
     .fade-in { animation: fadeIn 0.4s ease-in-out; }
 
-    /* 🔥 VIP LANGUAGE TOGGLE BUTTON */
-    .lang-toggle-btn { 
-        position: absolute; top: 15px; right: 15px; 
-        background: linear-gradient(135deg, #ff7e5f, #feb47b);
-        border: 2px solid rgba(255,255,255,0.8); color: white; 
-        padding: 8px 16px; border-radius: 25px; font-size: 0.95rem; font-weight: 800; 
-        cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 10; 
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
-        box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4);
-        animation: pulseGlow 2s infinite; 
-    }
-    .lang-toggle-btn i { font-size: 1.1rem; }
-    .lang-toggle-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 20px rgba(255, 126, 95, 0.6); }
-    .lang-toggle-btn:active { transform: scale(0.95); animation: none; }
+    .lang-toggle-btn { position: absolute; top: 15px; right: 15px; background: linear-gradient(135deg, #ff7e5f, #feb47b); border: 2px solid rgba(255,255,255,0.8); color: white; padding: 8px 16px; border-radius: 25px; font-size: 0.95rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 10; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4); animation: pulseGlow 2s infinite; }
+    .lang-toggle-btn i { font-size: 1.1rem; } .lang-toggle-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 20px rgba(255, 126, 95, 0.6); } .lang-toggle-btn:active { transform: scale(0.95); animation: none; }
     @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(255, 126, 95, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 126, 95, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 126, 95, 0); } }
 
-    /* --- HOME MENU --- */
     .home-container { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 40px; position: relative; }
     .hero-banner { width: 100%; height: 260px; background-image: url('https://img2.pic.in.th/pic/2e56ebb3c838125fd55c9db5dcd51baf.png'); background-size: cover; background-position: center; position: relative; border-radius: 0 0 30px 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); margin-bottom: 20px; overflow: hidden; }
     .hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(46,125,50,0.35), rgba(27,94,32,0.95)); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; padding: 20px; }
-    .main-logo { width: 80px; height: 80px; object-fit: contain; margin-bottom: 12px; background: white; border-radius: 50%; padding: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.1s; }
-    .main-logo:active { transform: scale(0.9); }
+    .main-logo { width: 80px; height: 80px; object-fit: contain; margin-bottom: 12px; background: white; border-radius: 50%; padding: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.1s; } .main-logo:active { transform: scale(0.9); }
     .online-badge { background: rgba(0,0,0,0.3); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top:12px; }
     .online-dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 8px #4ade80; animation: pulseDot 2s infinite; }
-    @keyframes pulseDot { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); } }
 
-    /* 🔥 BRIGHT GLASSMORPHISM UI สำหรับหน้าแรก (แสดงตลอดเวลา) 🔥 */
-    .glass-card { 
-        width: 90%; max-width: 560px; 
-        background: rgba(255, 255, 255, 0.85); 
-        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-        border-radius: 24px; padding: 20px; position: relative; overflow: hidden; 
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); 
-        margin-bottom: 25px; margin-top: -45px; 
-        border: 1px solid rgba(255,255,255,1); z-index: 5; 
-        animation: slideUp 0.5s;
-    }
-    
+    /* 🌟 Multi-User Glass Card */
+    .glass-card { width: 90%; max-width: 560px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; padding: 20px; position: relative; overflow: hidden; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); margin-bottom: 25px; margin-top: -45px; display: none; animation: slideUp 0.5s; border: 1px solid rgba(255,255,255,1); z-index: 5; }
     .mu-title { font-size: 0.9rem; color: #475569; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 0.5px;}
     .mu-profile-list { display: flex; flex-direction: column; gap: 10px; }
     .mu-profile { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.9); padding: 12px 15px; border-radius: 16px; border: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
     .mu-profile:hover, .mu-profile.active { border-color: var(--primary); background: #f0fdf4; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(74, 222, 128, 0.15); }
     .mu-info { display: flex; align-items: center; gap: 12px; }
     .mu-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary-light), #bbf7d0); color: var(--primary-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; box-shadow: inset 0 2px 4px rgba(255,255,255,0.8); }
-    .mu-name { font-weight: 700; color: #1e293b; font-size: 1rem; } 
-    .mu-name span { display: block; font-size: 0.75rem; color: #64748b; font-weight: 400; margin-top: 2px;}
-    .mu-delete { color: #ef4444; padding: 8px; font-size: 1.1rem; cursor: pointer; opacity: 0.5; transition: 0.2s; } 
-    .mu-delete:hover { opacity: 1; transform: scale(1.1); }
+    .mu-name { font-weight: 700; color: #1e293b; font-size: 1rem; } .mu-name span { display: block; font-size: 0.75rem; color: #64748b; font-weight: 400; margin-top: 2px;}
+    .mu-delete { color: #ef4444; padding: 8px; font-size: 1.1rem; cursor: pointer; opacity: 0.5; transition: 0.2s; } .mu-delete:hover { opacity: 1; transform: scale(1.1); }
     
     .btn-add-user { background: rgba(255,255,255,0.6); border: 2px dashed #cbd5e1; color: #64748b; width: 100%; padding: 12px; border-radius: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top:10px;}
     .btn-add-user:hover { background: white; border-color: var(--primary); color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
+    /* 🌟 ACTIVE PATIENT STATUS CARD */
+    .active-patient-status { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; padding: 20px; color: #1e293b; margin-bottom: 25px; margin-top: -50px; display: none; animation: slideUp 0.4s; position: relative; border: 1px solid rgba(255,255,255,1); width: 90%; max-width: 560px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15); z-index: 5; }
     .aps-history { background: rgba(248, 250, 252, 0.8); border-radius: 16px; padding: 15px; margin-top: 15px; border: 1px solid #e2e8f0; }
 
-    /* MENU CARDS */
     .menu-container { width: 100%; padding: 0 20px; z-index: 2; }
     .dept-card { background: white; border-radius: 22px; padding: 20px; margin-bottom: 16px; display: flex; align-items: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.8); transition: transform 0.2s; }
     .dept-card:active { transform: scale(0.97); }
@@ -107,15 +81,20 @@
     .queue-icons { display: flex; gap: 3px; color: var(--primary); font-size: 0.9rem; opacity: 0.9; } .status-text { font-size: 0.95rem; font-weight: 700; color: var(--primary); line-height: 1; } .is-full .status-text { color: #64748b; }
     .badge-2hr { background: #f59e0b; color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
 
-    /* LOADING SCREEN */
+    /* LOADING SCREEN (แก้ไขบัคหาย) */
     .loading-screen, .page-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; backdrop-filter: blur(5px); } 
     .loading-screen.hidden, .page-loader.hidden { opacity: 0; pointer-events: none; }
     .circle-wrap { position: relative; width: 120px; height: 120px; margin-bottom: 20px; }
     .circle-wrap svg { transform: rotate(-90deg); width: 120px; height: 120px; }
     .circle-bg { fill: none; stroke: #e2e8f0; stroke-width: 8; }
-    .circle-progress { fill: none; stroke: var(--primary); stroke-width: 8; stroke-dasharray: 326; stroke-dashoffset: 326; transition: stroke-dashoffset 0.1s linear; stroke-linecap: round; }
+    .circle-progress { fill: none; stroke: var(--primary); stroke-width: 8; stroke-dasharray: 326; stroke-dashoffset: 326; stroke-linecap: round; }
     .percent-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: 700; color: var(--primary); }
     .loading-title { font-size: 1.2rem; font-weight: 700; color: #1e293b; margin-bottom: 5px; }
+
+    /* 🔥 กล่องคำแนะนำ (เอากลับมาแล้ว) */
+    .tips-box { background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px dashed #cbd5e1; width: 85%; max-width: 350px; text-align: center; min-height: 120px; display: flex; flex-direction: column; justify-content: center; margin-top: 20px;}
+    .tips-title { font-weight: 700; color: var(--primary-dark); margin-bottom: 8px; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .tips-text { font-size: 0.85rem; color: #475569; line-height: 1.5; }
 
     @keyframes spin { 100% { transform: rotate(360deg); } } @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } } @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -169,7 +148,12 @@
           <div class="percent-text" id="progress-text">0%</div>
       </div>
       <div class="loading-title" id="t-saving">ระบบรับข้อมูลแล้ว</div>
-      <div style="color:var(--primary); font-weight:bold; font-size:0.95rem; margin-top:5px;" id="t-saving-sub">กำลังประมวลผลเพื่อยืนยันคิว...</div>
+      <div style="color:var(--primary); font-weight:bold; font-size:0.95rem; margin-top:5px;" id="t-saving-sub">กรุณารอสักครู่ เพื่อยืนยันข้อมูล...</div>
+      
+      <div class="tips-box">
+          <div class="tips-title" id="tip-title"><i class="fas fa-clock"></i> มาก่อนเวลา 15 นาที</div>
+          <div class="tips-text" id="tip-text">หากไม่มาติดต่อภายในเวลาที่กำหนด<br>ถือว่าท่านสละสิทธิ์</div>
+      </div>
   </div>
 
   <div id="pageLoader" class="page-loader hidden">
@@ -180,10 +164,7 @@
   </div>
 
   <div id="view-home" class="home-container fade-in">
-    
-    <div class="lang-toggle-btn" onclick="toggleLanguage()">
-        <i class="fas fa-globe"></i> <span id="current-lang-text">EN</span>
-    </div>
+    <div class="lang-toggle-btn" onclick="toggleLanguage()"><i class="fas fa-globe"></i> <span id="current-lang-text">EN</span></div>
 
     <div class="hero-banner">
         <div class="hero-overlay">
@@ -195,7 +176,6 @@
     </div>
 
     <div id="multi-user-card" class="glass-card">
-        
         <div class="mu-title">
             <span id="t-mu-title">ผู้ใช้งานที่บันทึกไว้</span> 
             <i class="fas fa-users" style="color:var(--primary);"></i>
@@ -219,11 +199,10 @@
 
         <div id="inactive-profiles-area">
             <div id="mu-list" class="mu-profile-list"></div>
-            <button class="btn-add-user" onclick="showAddUserGuide()" id="t-btn-add-user">
+            <button class="btn-add-user" onclick="showAddUserForm()" id="t-btn-add-user">
                 <i class="fas fa-plus-circle"></i> ลงทะเบียนผู้รับบริการใหม่
             </button>
         </div>
-
     </div>
 
     <div class="menu-container">
@@ -279,16 +258,6 @@
             </div>
             <div class="form-group" style="margin-bottom:0;"><label class="form-label" id="t-phone">เบอร์โทรศัพท์ <span style="color:red">*</span></label><input type="tel" id="inp-tel" class="form-control" placeholder="08x-xxx-xxxx" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')"></div>
             <div id="name-lock-warning" style="display:none; font-size:0.75rem; color:#eab308; margin-top:8px;"><i class="fas fa-lock"></i> <span id="t-lock-warn">พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้</span></div>
-        </div>
-
-        <div id="existing-user-display" class="hidden" style="background:var(--primary-light); padding:15px; border-radius:16px; margin-bottom:15px; border:1px solid #a5d6a7;">
-            <div style="color:var(--primary-dark); font-weight:700; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;">
-                <span id="t-user-info-title"><i class="fas fa-user-check"></i> ข้อมูลผู้รับบริการ</span>
-                <button onclick="logoutPatient(true)" style="background:none; border:none; color:#ef4444; font-size:0.8rem; cursor:pointer; font-family:'Prompt'; text-decoration:underline;" id="t-not-me">ไม่ใช่ฉัน?</button>
-            </div>
-            <div id="masked-name" style="font-size:1.1rem; color:#1e293b; margin-bottom:4px; font-weight:700;"></div>
-            <div id="masked-tel" style="font-size:0.95rem; color:#475569;"></div>
-            <button type="button" class="btn-cancel" style="padding:8px; font-size:0.85rem; margin-top:12px; width:100%; border:1px solid #cbd5e1; background:white; color:#475569; border-radius:10px; font-weight:600;" onclick="verifyAndEditPhone()"><i class="fas fa-mobile-alt"></i> <span id="t-change-phone">เปลี่ยนเบอร์โทรติดต่อ</span></button>
         </div>
         
         <div id="normal-fields" class="hidden" style="margin-top:15px;">
@@ -435,7 +404,7 @@
 
     const I18N = {
         th: {
-            lang_toggle: "EN", app_ttm: "แพทย์แผนไทย", desc_ttm: "นวดรักษา, ประคบ, นวดส่งเสริมฯ", app_tcm: "แพทย์แผนจีน", desc_tcm: "ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า", app_post: "บริการหลังคลอด", desc_post: "หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน", app_steam: "อบไอน้ำสมุนไพร", desc_steam: "ช่วยการไหลเวียนโลหิต ภูมิแพ้", h1: "โรงพยาบาลสะเดา", h2: "กลุ่มงานการแพทย์แผนไทยและการแพทย์ทางเลือก", online: "เปิดให้บริการออนไลน์ 24 ชม.", greeting: "ข้อมูลผู้รับบริการ", change_user: "สลับผู้ใช้", history_title: "คิวที่กำลังจะมาถึง / ล่าสุด", syncing: "กำลังซิงค์ข้อมูล...", fill_info: "กรอกข้อมูลจองคิว", id_card: "เลขประจำตัวประชาชน", foreigner: "ชาวต่างชาติ", pdpa: "ปลอดภัย 100% ตามมาตรฐาน PDPA", fname: "ชื่อจริง", lname: "นามสกุล", phone: "เบอร์โทรศัพท์", lock_warn: "พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้", user_info_title: "ข้อมูลผู้รับบริการ", not_me: "ไม่ใช่ฉัน?", change_phone: "เปลี่ยนเบอร์โทรติดต่อ", sel_svc: "เลือกบริการ", price_title: "อัตราค่าบริการ/สิทธิ:", prov_text_ttm: "ผู้ให้บริการ (ผู้ช่วยแพทย์แผนไทย)", prov_text_tcm: "ผู้ให้บริการ (แพทย์แผนจีน)", not_spec: "ไม่ระบุ", birthdate: "วันคลอด", del_type: "ประเภทการคลอด", hosp: "โรงพยาบาลที่คลอด", gender: "เพศ (สำหรับล็อกรอบ)", note: "หมายเหตุ (ถ้ามี)", btn_cancel: "ยกเลิก", btn_check: "ตรวจสอบข้อมูล", sum_title: "ยืนยันการนัดหมาย", btn_edit: "แก้ไข", btn_confirm: "ยืนยันจองคิว", saving: "ระบบรับข้อมูลแล้ว", saving_sub: "กำลังประมวลผลเพื่อยืนยันคิว...", loading: "กำลังโหลด...", steam_price: "อัตราค่าบริการ: 100 บาท/ครั้ง", opt_sel: "-- เลือก --", opt_nat: "คลอดธรรมชาติ", opt_csec: "ผ่าคลอด", g_f: "หญิง", g_m: "ชาย", mu_title: "ผู้ใช้งานที่บันทึกไว้", btn_add_user: "ลงทะเบียนผู้รับบริการใหม่", act_user: "ใช้งานในชื่อ", aps_hist: "คิวล่าสุดของคุณ",
+            lang_toggle: "EN", app_ttm: "แพทย์แผนไทย", desc_ttm: "นวดรักษา, ประคบ, นวดส่งเสริมฯ", app_tcm: "แพทย์แผนจีน", desc_tcm: "ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า", app_post: "บริการหลังคลอด", desc_post: "หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน", app_steam: "อบไอน้ำสมุนไพร", desc_steam: "ช่วยการไหลเวียนโลหิต ภูมิแพ้", h1: "โรงพยาบาลสะเดา", h2: "กลุ่มงานการแพทย์แผนไทยและการแพทย์ทางเลือก", online: "เปิดให้บริการออนไลน์ 24 ชม.", greeting: "ข้อมูลผู้รับบริการ", change_user: "สลับผู้ใช้", history_title: "คิวที่กำลังจะมาถึง / ล่าสุด", syncing: "กำลังซิงค์ข้อมูล...", fill_info: "กรอกข้อมูลจองคิว", id_card: "เลขประจำตัวประชาชน", foreigner: "ชาวต่างชาติ", pdpa: "ปลอดภัย 100% ตามมาตรฐาน PDPA", fname: "ชื่อจริง", lname: "นามสกุล", phone: "เบอร์โทรศัพท์", lock_warn: "พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้", user_info_title: "ข้อมูลผู้รับบริการ", not_me: "ไม่ใช่ฉัน?", change_phone: "เปลี่ยนเบอร์โทรติดต่อ", sel_svc: "เลือกบริการ", price_title: "อัตราค่าบริการ/สิทธิ:", prov_text_ttm: "ผู้ให้บริการ (ผู้ช่วยแพทย์แผนไทย)", prov_text_tcm: "ผู้ให้บริการ (แพทย์แผนจีน)", not_spec: "ไม่ระบุ", birthdate: "วันคลอด", del_type: "ประเภทการคลอด", hosp: "โรงพยาบาลที่คลอด", gender: "เพศ (สำหรับล็อกรอบ)", note: "หมายเหตุ (ถ้ามี)", btn_cancel: "ยกเลิก", btn_check: "ตรวจสอบข้อมูล", sum_title: "ยืนยันการนัดหมาย", btn_edit: "แก้ไข", btn_confirm: "ยืนยันจองคิว", saving: "ระบบรับข้อมูลแล้ว", saving_sub: "กรุณารอสักครู่ เพื่อยืนยันข้อมูล...", loading: "กำลังโหลด...", steam_price: "อัตราค่าบริการ: 100 บาท/ครั้ง", opt_sel: "-- เลือก --", opt_nat: "คลอดธรรมชาติ", opt_csec: "ผ่าคลอด", g_f: "หญิง", g_m: "ชาย", mu_title: "ผู้ใช้งานที่บันทึกไว้", btn_add_user: "ลงทะเบียนผู้รับบริการใหม่", act_user: "ใช้งานในชื่อ", aps_hist: "คิวล่าสุดของคุณ",
             "นวดและประคบเพื่อการรักษา": "นวดและประคบเพื่อการรักษา", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)": "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)": "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)", "ฝังเข็มเพื่อการรักษา": "ฝังเข็มเพื่อการรักษา", "ครอบแก้ว": "ครอบแก้ว", "ฝังเข็มใบหน้า": "ฝังเข็มใบหน้า", "เม็ดผักกาดแปะหู": "เม็ดผักกาดแปะหู", "ปรึกษาแพทย์แผนจีน": "ปรึกษาแพทย์แผนจีน", "บริการหลังคลอด": "บริการหลังคลอด", "อบไอน้ำ": "อบไอน้ำ"
         },
         en: {
@@ -490,8 +459,6 @@
     const SERVICE_PRICES = { ttm: { "นวดและประคบเพื่อการรักษา": "เบิกได้ตามสิทธิ (สิทธิอื่นชำระเอง 250บ.)", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)": "200 บาท (เพิ่มประคบ +50บ.)", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)": "200 บาท" }, tcm: { "ฝังเข็มเพื่อการรักษา": "สิทธิข้าราชการเบิกได้ / อื่นๆ 150-200บ.", "ครอบแก้ว": "150 บาท", "ฝังเข็มใบหน้า": "300 บาท", "เม็ดผักกาดแปะหู": "50 บาท", "ปรึกษาแพทย์แผนจีน": "ฟรี" } };
     const SERVICE_PRICES_EN = { ttm: { "นวดและประคบเพื่อการรักษา": "250 THB", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)": "200 THB", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)": "200 THB" }, tcm: { "ฝังเข็มเพื่อการรักษา": "200 THB", "ครอบแก้ว": "150 THB", "ฝังเข็มใบหน้า": "300 THB", "เม็ดผักกาดแปะหู": "50 THB", "ปรึกษาแพทย์แผนจีน": "Free" } };
     const APP_CONFIG = { ttm: { title: "แพทย์แผนไทย", logo: "https://img2.pic.in.th/pic/619e72dc2124132ccf4620717d4fa58d.md.png", color: "#2e7d32" }, tcm: { title: "แพทย์แผนจีน", logo: "https://img2.pic.in.th/pic/--06d2d95efaba2074.md.png", color: "#c62828" }, postpartum: { title: "บริการหลังคลอด", logo: "https://img2.pic.in.th/pic/eb06897c542c79b64690c8e794fa84a4.png", color: "#ec4899" }, steam: { title: "อบไอน้ำสมุนไพร", logo: "https://img2.pic.in.th/pic/-3b445847427fcbfd.png", color: "#0288d1" } };
-    
-    // 🔥 เพิ่ม "เม็ดผักกาดแปะหู" ในตัวเลือก TCM
     const SERVICE_OPTIONS = { ttm: ["นวดและประคบเพื่อการรักษา", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)"], tcm: ["ฝังเข็มเพื่อการรักษา", "ครอบแก้ว", "ฝังเข็มใบหน้า", "เม็ดผักกาดแปะหู", "ปรึกษาแพทย์แผนจีน"] };
     
     const STAFF_IMAGES = { "รจนา M": "https://img2.pic.in.th/pic/-b38b682db8ac596b.png", "อรรถพล B": "https://img5.pic.in.th/file/secure-sv1/6b74e1ebb096c81368605ff43948dab4.png", "ศินารัตน์ C": "https://img2.pic.in.th/pic/-df4e3c6f4a4b331f.png", "จุฑามาศ F": "https://img5.pic.in.th/file/secure-sv1/709dfc05071615eaaf008ea63d1e037e.png", "รัตน์ชนก KW": "https://img2.pic.in.th/pic/-83673d6d528be12a.png", "นิกษ์นิภา T": "https://img5.pic.in.th/file/secure-sv1/-c4fe207fa6c04aa3.png", "ณิชาภัทร W": "https://img2.pic.in.th/pic/1ef0aa325ccac37724897c9f2c10e5f4.png", "จินดา J": "https://img2.pic.in.th/pic/93b060e9e4b3fc9a9070d5ac2768c879.png" };
@@ -499,7 +466,7 @@
     const STAFF_EN_NAMES = { "จินดา J": "Jinda (Jeab)", "รจนา M": "Rotjana (Maam)", "อรรถพล B": "Attapon (Bao)", "ศินารัตน์ C": "Sinarat (C)", "จุฑามาศ F": "Jutamat (Fon)", "รัตน์ชนก KW": "Ratchanok (Kwang)", "นิกษ์นิภา T": "Niknipha (Kartoon)", "ณิชาภัทร W": "Nichapat (Wawa)" };
     const DEFAULT_IMG = "https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png"; const DAY_COLORS = ["#ef4444", "#eab308", "#ec4899", "#22c55e", "#f97316", "#3b82f6", "#a855f7"];
 
-    // 🌟 ระบบการ์ดครอบครัว
+    // 🌟 ระบบการ์ดครอบครัว 
     function renderMultiUserCard() {
         let muCard = document.getElementById('multi-user-card'); let apsCard = document.getElementById('active-patient-status');
         if (savedProfiles.length === 0) { 
@@ -526,12 +493,40 @@
     function switchUser() { activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
     function removeUser(id) { savedProfiles = savedProfiles.filter(p => p.id !== id); if(activeProfileId === id) activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
     
-    function showAddUserGuide() { 
-        activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); 
+    // 🔥 แก้บัคปุ่มลงทะเบียน: ให้เด้งหน้าต่างกรอกแล้วเซฟลง LocalStorage โดยตรง
+    function showAddUserForm() { 
         Swal.fire({
-            title: currentLang === 'en' ? 'Add New Profile' : 'ลงทะเบียนผู้ใช้ใหม่',
-            text: currentLang === 'en' ? 'Please select a clinic and time slot below. You will be prompted to enter details during booking.' : 'กรุณาเลือกแผนกและเวลาคิวที่ต้องการด้านล่าง ระบบจะให้ท่านกรอกประวัติในขั้นตอนการจองครับ',
-            icon: 'info', confirmButtonColor: '#2e7d32'
+            title: _t('btn_add_user'),
+            html: `
+                <input id="swal-add-id" class="form-control" style="margin-bottom:10px;" placeholder="${_t('id_card')} / Passport" maxlength="20">
+                <div style="display:flex; gap:10px;">
+                    <input id="swal-add-fname" class="form-control" placeholder="${_t('fname')}">
+                    <input id="swal-add-lname" class="form-control" placeholder="${_t('lname')}">
+                </div>
+                <input id="swal-add-tel" class="form-control" style="margin-top:10px;" placeholder="${_t('phone')}" maxlength="10" type="tel" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'บันทึก',
+            confirmButtonColor: '#2e7d32',
+            preConfirm: () => {
+                return {
+                    idCard: document.getElementById('swal-add-id').value,
+                    fname: document.getElementById('swal-add-fname').value,
+                    lname: document.getElementById('swal-add-lname').value,
+                    tel: document.getElementById('swal-add-tel').value
+                }
+            }
+        }).then((res) => {
+            if (res.isConfirmed) {
+                let v = res.value;
+                if(v.idCard && v.fname && v.tel) {
+                    addOrUpdateProfile(v.idCard, v.fname, v.lname, v.tel);
+                    Swal.fire('สำเร็จ', 'เพิ่มโปรไฟล์เรียบร้อย', 'success');
+                    renderMultiUserCard();
+                } else {
+                    Swal.fire('ผิดพลาด', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
+                }
+            }
         });
     }
 
@@ -747,8 +742,11 @@
     }
 
     function fillUserDataUI(id, fname, lname, tel) {
-        document.getElementById('inp-fname').value = fname; document.getElementById('inp-lname').value = lname || ""; document.getElementById('inp-tel').value = tel;
-        document.getElementById('masked-name').innerHTML = `<i class="fas fa-user"></i> ${getMaskedFullName(fname, lname)}`; document.getElementById('masked-tel').innerHTML = `<i class="fas fa-phone"></i> ${getMaskedTel(tel)}`;
+        document.getElementById('inp-fname').value = fname;
+        document.getElementById('inp-lname').value = lname || "";
+        document.getElementById('inp-tel').value = tel;
+        document.getElementById('masked-name').innerHTML = `<i class="fas fa-user"></i> ${getMaskedFullName(fname, lname)}`; 
+        document.getElementById('masked-tel').innerHTML = `<i class="fas fa-phone"></i> ${getMaskedTel(tel)}`;
         document.getElementById('existing-user-display').classList.remove('hidden'); document.getElementById('user-details-form').classList.add('hidden');
     }
 
@@ -781,10 +779,18 @@
       document.getElementById('summary-content').innerHTML = html; switchStep('step-summary');
     }
 
-    // 🌟 ระบบหน้าจอโหลดตัวเลขวิ่ง 
+    // 🔥 ระบบ Loader ใหม่ (1 นาทีเนียนๆ)
     let loadInterval; 
     let currentPercent = 0; 
+    let tipsInterval;
     
+    // ชุดคำแนะนำที่จะโชว์สลับกัน
+    const loadTips = [ 
+        { icon: 'fa-clock', title: {th: 'มาก่อนเวลา 15 นาที', en: 'Arrive 15 mins early'}, text: {th: 'หากไม่มาติดต่อภายในเวลาที่กำหนด<br>ถือว่าท่านสละสิทธิ์', en: 'Failure to arrive on time<br>may result in cancellation.'} }, 
+        { icon: 'fa-id-card', title: {th: 'สิ่งที่ต้องเตรียม', en: 'What to bring'}, text: {th: '1. บัตรประจำตัวประชาชนตัวจริง<br>2. หน้ากากอนามัย (สวมตลอดเวลา)', en: '1. Original ID Card/Passport<br>2. Face Mask'} }, 
+        { icon: 'fa-calendar-times', title: {th: 'เลื่อน/ยกเลิกนัด', en: 'Reschedule/Cancel'}, text: {th: 'ล่วงหน้าอย่างน้อย 2 วัน<br>หากไม่ปฏิบัติตามแนวทาง<br>ขอสงวนสิทธิ์ไม่รับนัดครั้งถัดไป', en: 'At least 2 days in advance.<br>Otherwise, future bookings<br>may be restricted.'} } 
+    ];
+
     function showPercentageLoader() {
         document.getElementById('saveLoader').classList.remove('hidden');
         currentPercent = 0; 
@@ -792,24 +798,37 @@
         const txt = document.getElementById('progress-text');
         circle.style.transition = 'none'; circle.style.strokeDashoffset = '326'; txt.innerText = "0%";
         
+        let tipIdx = 0;
+        document.getElementById('tip-title').innerHTML = `<i class="fas ${loadTips[0].icon}"></i> ${loadTips[0].title[currentLang]}`; 
+        document.getElementById('tip-text').innerHTML = loadTips[0].text[currentLang];
+        
+        tipsInterval = setInterval(() => { 
+            tipIdx = (tipIdx + 1) % loadTips.length; 
+            document.getElementById('tip-title').innerHTML = `<i class="fas ${loadTips[tipIdx].icon}"></i> ${loadTips[tipIdx].title[currentLang]}`; 
+            document.getElementById('tip-text').innerHTML = loadTips[tipIdx].text[currentLang]; 
+        }, 4000);
+
         setTimeout(() => {
-            circle.style.transition = 'stroke-dashoffset 0.15s linear';
+            circle.style.transition = 'stroke-dashoffset 0.1s linear';
             loadInterval = setInterval(() => {
-                currentPercent += Math.floor(Math.random() * 8) + 3; 
-                if(currentPercent >= 90) currentPercent = 90; 
+                // 60 วินาที = 600 รอบ (รอบละ 100ms) -> วิ่งขึ้นทีละ 0.166%
+                currentPercent += 0.166; 
+                if(currentPercent >= 99) currentPercent = 99; 
                 let offset = 326 - (currentPercent / 100) * 326; 
                 circle.style.strokeDashoffset = offset; 
-                txt.innerText = currentPercent + "%";
-            }, 150);
+                txt.innerText = Math.floor(currentPercent) + "%";
+            }, 100);
         }, 50);
     }
 
     function finishPercentageLoader(callback) {
         clearInterval(loadInterval);
+        clearInterval(tipsInterval);
         const circle = document.getElementById('progress-circle'); const txt = document.getElementById('progress-text');
         currentPercent = 100;
         circle.style.transition = 'stroke-dashoffset 0.4s ease-out'; 
-        circle.style.strokeDashoffset = '0'; txt.innerText = "100%";
+        circle.style.strokeDashoffset = '0'; 
+        txt.innerText = "100%";
         setTimeout(() => { document.getElementById('saveLoader').classList.add('hidden'); if(callback) callback(); }, 500); 
     }
 
@@ -826,7 +845,7 @@
 
       let payload = { appType: bookingData.appType, sheetName: bookingData.sheetName, idCard: bookingData.idCard, fname: bookingData.fname, lname: bookingData.lname, fullName: fNameCombined, tel: bookingData.tel, service: finalServiceDb, note: "", time: bookingData.time, date: bookingData.date, sysDate: bookingData.sysDate, is2Hr: bookingData.is2Hr };
       if ((currentApp === 'ttm' || currentApp === 'tcm') && selectedSlotData) { payload.row = selectedSlotData.row; payload.col = selectedSlotData.col; } else if (currentApp === 'steam') { payload.gender = document.getElementById('inp-gender').value; payload.patients = [{name: fNameCombined, tel: bookingData.tel}]; }
-
+      
       fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(payload) }).then(r=>r.json()).then(res => {
           finishPercentageLoader(() => {
               if(res.status === 'success') { 
@@ -873,14 +892,27 @@
                     if(p.service === 'BANNED') plansHtml += `<div style="background:#fee2e2; color:#b91c1c; padding:4px 8px; border-radius:4px; font-size:0.75rem; margin-top:4px;"><i class="fas fa-ban"></i> BANNED ${p.date} <button onclick="adminManagePlan('${u.idCard}', 'BANNED', 'CLEAR')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold; float:right;">[X]</button></div>`;
                     else plansHtml += `<div class="plan-tag">${p.service}: ${p.date} <button onclick="adminManagePlan('${u.idCard}', '${p.service}', 'CLEAR')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold;">[X]</button></div>`; 
                 }); }
-                html += `<tr><td><div style="font-weight:700; color:var(--primary-dark); font-size:1.05rem;">${u.fname} ${u.lname||''}</div><div style="font-family:monospace; color:#64748b;">${u.idCard}</div><div style="font-size:0.8rem; color:#64748b;">📞 ${u.tel}</div><div style="margin-top:5px;">${plansHtml}</div></td><td style="text-align:right; vertical-align:top;"><button class="btn-icon btn-telebook" onclick="adminTeleBook('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')"><i class="fas fa-calendar-check"></i> Book</button><br><br><button class="btn-icon btn-edit" onclick="editPatientUI('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')"><i class="fas fa-edit"></i></button><button class="btn-icon btn-plan" onclick="openPlanModal('${u.idCard}')"><i class="fas fa-calendar-plus"></i></button><button class="btn-icon btn-delete" onclick="deletePatientConfirm('${u.idCard}')"><i class="fas fa-trash-alt"></i></button></td></tr>`;
+
+                html += `<tr>
+                    <td><div style="font-weight:700; color:var(--primary-dark); font-size:1.05rem;">${u.fname} ${u.lname||''}</div><div style="font-family:monospace; color:#64748b;">${u.idCard}</div><div style="font-size:0.8rem; color:#64748b;">📞 ${u.tel}</div><div style="margin-top:5px;">${plansHtml}</div></td>
+                    <td style="text-align:right; vertical-align:top;">
+                        <button class="btn-icon btn-telebook" onclick="adminTeleBook('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')"><i class="fas fa-calendar-check"></i> Book</button><br><br>
+                        <button class="btn-icon btn-edit" onclick="editPatientUI('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn-icon btn-plan" onclick="openPlanModal('${u.idCard}')"><i class="fas fa-calendar-plus"></i></button>
+                        <button class="btn-icon btn-delete" onclick="deletePatientConfirm('${u.idCard}')"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>`;
             }); resArea.innerHTML = html;
         }
     }
 
-    function adminTeleBook(id, fname, lname, tel) { addOrUpdateProfile(id, fname, lname, tel); document.getElementById('adminModal').classList.remove('show'); Swal.fire({ title: 'Tele-Booking Mode', html: `Login as <b>${fname} ${lname}</b>`, icon: 'info' }).then(() => { renderMultiUserCard(); }); }
-    function openAddPatientModal() { Swal.fire({ title: 'New Patient', html: `<input id="swal-id" class="form-control" style="margin-bottom:10px;" placeholder="ID/Passport" maxlength="20"><div style="display:flex; gap:10px;"><input id="swal-fname" class="form-control" placeholder="First Name"><input id="swal-lname" class="form-control" placeholder="Last Name"></div><input id="swal-tel" class="form-control" style="margin-top:10px;" placeholder="Phone" maxlength="10">`, showCancelButton: true, confirmButtonText: 'Save', preConfirm: () => { return { idCard: document.getElementById('swal-id').value, fname: document.getElementById('swal-fname').value, lname: document.getElementById('swal-lname').value, tel: document.getElementById('swal-tel').value } } }).then((res) => { if(res.isConfirmed) savePatientData(res.value); }); }
-    function editPatientUI(id, f, l, t) { Swal.fire({ title: 'Edit Patient', html: `<input id="swal-id" class="form-control" style="margin-bottom:10px;" value="${id}"><div style="display:flex; gap:10px;"><input id="swal-fname" class="form-control" value="${f}"><input id="swal-lname" class="form-control" value="${l}"></div><input id="swal-tel" class="form-control" style="margin-top:10px;" value="${t}">`, showCancelButton: true, confirmButtonText: 'Update', preConfirm: () => { return { oldId: id, idCard: document.getElementById('swal-id').value, fname: document.getElementById('swal-fname').value, lname: document.getElementById('swal-lname').value, tel: document.getElementById('swal-tel').value } } }).then((res) => { if(res.isConfirmed) savePatientData(res.value); }); }
+    function adminTeleBook(id, fname, lname, tel) {
+        addOrUpdateProfile(id, fname, lname, tel); document.getElementById('adminModal').classList.remove('show');
+        Swal.fire({ title: 'Tele-Booking Mode', html: `Login as <b>${fname} ${lname}</b>`, icon: 'info' }).then(() => { renderMultiUserCard(); });
+    }
+
+    function openAddPatientModalAdmin() { Swal.fire({ title: 'New Patient', html: `<input id="swal-id" class="form-control" style="margin-bottom:10px;" placeholder="ID/Passport" maxlength="20"><div style="display:flex; gap:10px;"><input id="swal-fname" class="form-control" placeholder="First Name"><input id="swal-lname" class="form-control" placeholder="Last Name"></div><input id="swal-tel" class="form-control" style="margin-top:10px;" placeholder="Phone" maxlength="10" type="tel" oninput="this.value=this.value.replace(/[^0-9]/g,'')">`, showCancelButton: true, confirmButtonText: 'Save', preConfirm: () => { return { idCard: document.getElementById('swal-id').value, fname: document.getElementById('swal-fname').value, lname: document.getElementById('swal-lname').value, tel: document.getElementById('swal-tel').value } } }).then((res) => { if(res.isConfirmed) savePatientData(res.value); }); }
+    function editPatientUI(id, f, l, t) { Swal.fire({ title: 'Edit Patient', html: `<input id="swal-id" class="form-control" style="margin-bottom:10px;" value="${id}"><div style="display:flex; gap:10px;"><input id="swal-fname" class="form-control" value="${f}"><input id="swal-lname" class="form-control" value="${l}"></div><input id="swal-tel" class="form-control" style="margin-top:10px;" value="${t}" type="tel" oninput="this.value=this.value.replace(/[^0-9]/g,'')">`, showCancelButton: true, confirmButtonText: 'Update', preConfirm: () => { return { oldId: id, idCard: document.getElementById('swal-id').value, fname: document.getElementById('swal-fname').value, lname: document.getElementById('swal-lname').value, tel: document.getElementById('swal-tel').value } } }).then((res) => { if(res.isConfirmed) savePatientData(res.value); }); }
     async function savePatientData(payload) { if(!payload.idCard || !payload.fname || !payload.tel) return; Swal.fire({title:'Saving...'}); let res = await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_manage_patient', pass: '11395', payload: payload }) }); let data = await res.json(); if(data.status === 'success') { Swal.fire('Success','','success'); adminSearch(); } }
     function deletePatientConfirm(id) { Swal.fire({ title: 'Delete?', icon: 'warning', showCancelButton: true }).then(async (result) => { if (result.isConfirmed) { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_delete_patient', pass: '11395', idCard: id }) }); adminSearch(); } }); }
     function openPlanModal(id) { Swal.fire({ title: 'Plan / Ban', html: `<select id="swal-svc" class="form-control" style="margin-bottom:10px;"><option value="ttm">TTM</option><option value="tcm">TCM</option><option value="steam">Steam</option><option value="postpartum">Postpartum</option><option value="BANNED">BAN ACCOUNT</option></select><input type="number" id="swal-days" class="form-control" placeholder="Days from now">`, showCancelButton: true, preConfirm: () => { adminManagePlan(id, document.getElementById('swal-svc').value, document.getElementById('swal-days').value); } }); }
