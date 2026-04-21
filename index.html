@@ -449,12 +449,9 @@
     let activeProfileId = localStorage.getItem('sdh_active_profile_id');
     if (activeProfileId === 'null') activeProfileId = null;
 
-    // Migrate old profiles without label to have a default label
-    savedProfiles.forEach(p => { if(!p.label) p.label = "ผู้รับบริการ (Patient)"; });
-
     if(!activeProfileId && localStorage.getItem('sdh_patient_id')) {
         let oldId = localStorage.getItem('sdh_patient_id'); let oldF = localStorage.getItem('sdh_patient_fname'); let oldL = localStorage.getItem('sdh_patient_lname') || ""; let oldT = localStorage.getItem('sdh_patient_tel');
-        if(oldF) { savedProfiles.push({ id: oldId, fname: oldF, lname: oldL, tel: oldT, label: "ฉัน" }); activeProfileId = oldId; saveProfilesToStorage(); }
+        if(oldF) { savedProfiles.push({ id: oldId, fname: oldF, lname: oldL, tel: oldT, label: "" }); activeProfileId = oldId; saveProfilesToStorage(); }
         localStorage.removeItem('sdh_patient_id'); localStorage.removeItem('sdh_patient_fname'); localStorage.removeItem('sdh_patient_lname'); localStorage.removeItem('sdh_patient_tel');
     }
 
@@ -466,7 +463,7 @@
     
     function addOrUpdateProfile(id, fname, lname, tel, label) { 
         let idx = savedProfiles.findIndex(p => p.id === id); 
-        let safeLabel = label || (idx > -1 ? savedProfiles[idx].label : (savedProfiles.length === 0 ? "ฉัน" : "ประวัติใหม่"));
+        let safeLabel = (label !== undefined && label !== null) ? label : (idx > -1 ? savedProfiles[idx].label : "");
         if(idx > -1) { savedProfiles[idx] = { id, fname, lname, tel, label: safeLabel }; } 
         else { savedProfiles.push({ id, fname, lname, tel, label: safeLabel }); } 
         activeProfileId = id; saveProfilesToStorage(); 
@@ -626,7 +623,7 @@
         }).then((res) => {
             if (res.isConfirmed) {
                 let v = res.value;
-                if(v.idCard && v.fname && v.tel) { addOrUpdateProfile(v.idCard, v.fname, v.lname, v.tel); Swal.fire(_t('swal_success'), '', 'success'); renderMultiUserCard(); } 
+                if(v.idCard && v.fname && v.tel) { addOrUpdateProfile(v.idCard, v.fname, v.lname, v.tel, ""); Swal.fire(_t('swal_success'), '', 'success'); renderMultiUserCard(); } 
                 else { Swal.fire(_t('swal_error'), _t('err_req_fields'), 'error'); }
             }
         });
@@ -647,10 +644,12 @@
                      </div>`;
             savedProfiles.forEach(p => {
                 let mName = getMaskedFullName(p.fname, p.lname);
+                let displayLabel = p.label ? p.label : (currentLang === 'en' ? 'Add Nickname' : 'กดเพื่อตั้งชื่อเล่น');
+
                 html += `<div class="smart-item" onclick="selectProfileForBooking('${p.id}')">
                             <div class="smart-item-icon"><i class="fas fa-user"></i></div>
                             <div>
-                                <div class="smart-item-label">${p.label || 'ฉัน'}</div>
+                                <div class="smart-item-label">${displayLabel}</div>
                                 <div class="smart-item-mask">${mName}</div>
                             </div>
                          </div>`;
@@ -880,6 +879,7 @@
     // 🌟 BOOKING MODAL LOGIC
     // ==========================================
     function toggleStaffDropdown() { document.getElementById('staff-trigger').classList.toggle('open'); }
+    
     function selectStaffNew(sObj, thaiName) { 
         let dName = currentLang === 'en' ? (STAFF_EN_NAMES[thaiName] || thaiName) : (STAFF_NAME_MAP[thaiName] || thaiName);
         if(document.getElementById('staff-display-name')) document.getElementById('staff-display-name').innerText = dName;
@@ -979,8 +979,31 @@
               
               let cCont = document.getElementById('staff-options'); cCont.innerHTML = ''; 
               if (staffs.length > 0 && staffs[0].row !== undefined) { 
-                  document.getElementById('group-staff').style.display = 'block'; let grouped = {}; staffs.forEach(s => { let k = s.name; if(!grouped[k]) grouped[k] = Object.assign({}, s); else if(s.can2Hr) grouped[k] = Object.assign({}, s); }); let unique = Object.values(grouped); if(unique.length > 0) selectStaffNew(unique[0], unique[0].name); 
-                  unique.forEach(s => { let baseN = s.name; let dN = currentLang === 'en' ? (STAFF_EN_NAMES[baseN] || baseN) : (STAFF_NAME_MAP[baseN] || baseN); let img = STAFF_IMAGES[baseN] || DEFAULT_IMG; let div = document.createElement('div'); div.className = 'select-item'; div.innerHTML = `<img src="${img}" class="select-img"><div style="font-weight:600; flex:1; color:#1e293b;">${dN} ${s.can2Hr?'<span style="color:#f59e0b;font-size:0.75rem;background:#fffbeb;padding:2px 6px;border-radius:6px;margin-left:6px;"><i class="fas fa-bolt"></i> 2Hr</span>':''}</div>`; div.onclick = () => selectStaffNew(s, baseN); cCont.appendChild(div); }); 
+                  document.getElementById('group-staff').style.display = 'block'; 
+                  let grouped = {}; 
+                  staffs.forEach(s => { 
+                      let k = s.name; 
+                      if(!grouped[k]) grouped[k] = Object.assign({}, s); 
+                      else if(s.can2Hr) grouped[k] = Object.assign({}, s); 
+                  }); 
+                  
+                  let unique = Object.values(grouped); 
+                  if(unique.length > 0) selectStaffNew(unique[0], unique[0].name); 
+                  
+                  unique.forEach(s => { 
+                      let baseN = s.name; 
+                      let dN = currentLang === 'en' ? (STAFF_EN_NAMES[baseN] || baseN) : (STAFF_NAME_MAP[baseN] || baseN); 
+                      let img = STAFF_IMAGES[baseN] || DEFAULT_IMG; 
+                      
+                      let badge1Hr = `<span style="background:#dcfce7; color:#16a34a; font-size:0.75rem; padding:2px 6px; border-radius:6px; margin-left:6px; border:1px solid #bbf7d0;"><i class="fas fa-clock"></i> 1Hr</span>`;
+                      let badge2Hr = s.can2Hr ? `<span style="background:#fffbeb; color:#d97706; font-size:0.75rem; padding:2px 6px; border-radius:6px; margin-left:4px; border:1px solid #fde68a;"><i class="fas fa-bolt"></i> 2Hr</span>` : '';
+                      
+                      let div = document.createElement('div'); 
+                      div.className = 'select-item'; 
+                      div.innerHTML = `<img src="${img}" class="select-img"><div style="font-weight:600; flex:1; color:#1e293b;">${dN} ${badge1Hr}${badge2Hr}</div>`; 
+                      div.onclick = () => selectStaffNew(s, baseN); 
+                      cCont.appendChild(div); 
+                  }); 
                   setTimeout(updateSteamAddonUI, 100);
               } else { document.getElementById('group-staff').style.display = 'none'; document.getElementById('inp-staff-val').value = "ไม่ระบุ"; }
           }
@@ -1022,20 +1045,22 @@
 
     function fillUserDataUI(id, f, l, t) { 
         let p = savedProfiles.find(x => x.id === id);
-        let label = p ? (p.label || 'ฉัน') : (currentLang==='en'?'New Patient':'ประวัติใหม่');
+        let label = (p && p.label) ? p.label : (currentLang === 'en' ? '+ Add Nickname' : '+ กดเพื่อตั้งชื่อเล่น');
         
         document.getElementById('inp-fname').value = f; 
         document.getElementById('inp-lname').value = l || ""; 
         document.getElementById('inp-tel').value = t; 
         
         let mName = getMaskedFullName(f, l);
+        
         document.getElementById('masked-name').innerHTML = `
             <div style="display:flex; align-items:center; gap:8px;">
-                <i class="fas fa-user-circle" style="color:var(--primary); font-size:1.2rem;"></i> 
-                <span style="color:var(--primary-dark); font-size:1.15rem;">${label}</span>
-                <button type="button" onclick="editCurrentLabel()" style="background:none; border:none; color:#0ea5e9; cursor:pointer; padding:0 5px;" title="${_t('edit_label')}"><i class="fas fa-pen"></i></button>
+                <i class="fas fa-user-circle" style="color:var(--primary); font-size:1.3rem;"></i> 
+                <button type="button" onclick="editCurrentLabel()" style="background:#eff6ff; border:1px dashed #3b82f6; color:#2563eb; border-radius:20px; padding:4px 12px; cursor:pointer; font-family:'Prompt'; font-size:0.9rem; font-weight:600; transition:0.2s;" onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background='#eff6ff'">
+                    ${label} <i class="fas fa-pen" style="font-size:0.75rem; margin-left:4px;"></i>
+                </button>
             </div>
-            <div style="font-size:0.85rem; color:#64748b; margin-left:26px; font-weight:400;">(${mName})</div>
+            <div style="font-size:0.85rem; color:#64748b; margin-left:32px; font-weight:400; margin-top:4px;">(${mName})</div>
         `; 
         document.getElementById('masked-tel').innerHTML = `<i class="fas fa-phone-alt" style="width:20px; text-align:center;"></i> ${getMaskedTel(t)}`; 
         
@@ -1054,7 +1079,7 @@
       bookingData.idCard = id; bookingData.fname = f; bookingData.lname = l; bookingData.name = f + " " + l; bookingData.tel = t; bookingData.note = document.getElementById('inp-note').value; bookingData.extraInfo = "";
       
       let existingProfile = savedProfiles.find(p => p.id === id);
-      if(!existingProfile) { addOrUpdateProfile(id, f, l, t); }
+      if(!existingProfile) { addOrUpdateProfile(id, f, l, t, ""); }
 
       let day = globalData[selectedIndex]; let isOOH = false;
       if (day) { let hasEvening = day.slots.some(s => s.time === '17:00' || s.time === '18:00'); let isHolidaySheet = (day.dayOfWeek >= 1 && day.dayOfWeek <= 5) && !hasEvening && day.slots.length > 0; if (day.dayOfWeek === 0 || day.dayOfWeek === 6 || bookingData.time === '17:00' || bookingData.time === '18:00' || isHolidaySheet) isOOH = true; }
@@ -1099,7 +1124,8 @@
         let f = bookingData.fname; let l = bookingData.lname; let t = bookingData.tel; let mN = getMaskedFullName(f, l);
         let sN = bookingData.staff; let dS = currentLang === 'en' ? (STAFF_EN_NAMES[sN] || sN) : (STAFF_NAME_MAP[sN] || sN);
         
-        let pLabel = savedProfiles.find(x => x.id === bookingData.idCard)?.label || (currentLang==='en'?'Patient':'ผู้รับบริการ');
+        let p = savedProfiles.find(x => x.id === bookingData.idCard);
+        let pLabel = (p && p.label) ? p.label : (currentLang === 'en' ? 'Patient' : 'ผู้รับบริการ');
 
         let infoH = `
             <div style="display:flex; gap:15px; align-items:center; margin-bottom:15px;">
