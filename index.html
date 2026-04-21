@@ -427,7 +427,9 @@
   </div>
 
   <script>
-    // 🌟 GLOBAL VARIABLES 
+    // ==========================================
+    // 🌟 CONSTANTS & GLOBALS
+    // ==========================================
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycby0EQfBeg8ylgU9Q7IZDf-weHopsK4EFxXkqBUVvtDsEVKKpsIIDZ7y8fXXVWdyzKkbAw/exec"; 
     const FIREBASE_BASE_URL = "https://sadao-queue-999c3-default-rtdb.asia-southeast1.firebasedatabase.app/"; 
     
@@ -439,6 +441,9 @@
     let bookingData = {}; let selectedIndex = 0; let typingTimer;
     let currentUserDB = null; let selectedSlotData = null; let refreshInterval; let activeBookingObj = null; let isForeigner = false;
     
+    // ==========================================
+    // 🌟 PROFILES (LOCAL STORAGE)
+    // ==========================================
     let savedProfiles = [];
     try { savedProfiles = JSON.parse(localStorage.getItem('sdh_saved_profiles') || '[]'); } catch(e) { savedProfiles = []; }
     let activeProfileId = localStorage.getItem('sdh_active_profile_id');
@@ -468,9 +473,11 @@
     }
 
     function switchUser() { activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
-    
     function removeUser(id) { savedProfiles = savedProfiles.filter(p => p.id !== id); if(activeProfileId === id) activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
 
+    // ==========================================
+    // 🌟 I18N (TRANSLATIONS)
+    // ==========================================
     const I18N = {
         th: {
             lang_toggle: "EN", app_ttm: "แพทย์แผนไทย", desc_ttm: "นวดรักษา, ประคบ, นวดส่งเสริมฯ", app_tcm: "แพทย์แผนจีน", desc_tcm: "ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า", app_postpartum: "บริการหลังคลอด", desc_post: "หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน", app_steam: "อบไอน้ำสมุนไพร", desc_steam: "ช่วยการไหลเวียนโลหิต ภูมิแพ้", h1: "โรงพยาบาลสะเดา", h2: "กลุ่มงานการแพทย์แผนไทยและการแพทย์ทางเลือก", online: "เปิดให้บริการออนไลน์ 24 ชม.", greeting: "ข้อมูลผู้รับบริการ", change_user: "สลับผู้ใช้", history_title: "คิวที่กำลังจะมาถึง / ล่าสุด", syncing: "กำลังซิงค์ข้อมูล...", fill_info: "กรอกข้อมูลจองคิว", id_card: "เลขประจำตัวประชาชน", foreigner: "ชาวต่างชาติ", pdpa: "ปลอดภัย 100% ตามมาตรฐาน PDPA", fname: "ชื่อจริง", lname: "นามสกุล", phone: "เบอร์โทรศัพท์", lock_warn: "พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้", user_info_title: "ข้อมูลผู้รับบริการ", change_phone: "เปลี่ยนเบอร์โทรติดต่อ", sel_svc: "เลือกบริการ", price_title: "อัตราค่าบริการ/สิทธิ:", prov_text_ttm: "ผู้ให้บริการ (ผู้ช่วยแพทย์แผนไทย)", prov_text_tcm: "ผู้ให้บริการ (แพทย์แผนจีน)", not_spec: "ไม่ระบุ", birthdate: "วันคลอด", del_type: "ประเภทการคลอด", hosp: "โรงพยาบาลที่คลอด", gender: "เพศ (สำหรับล็อกรอบ)", note: "หมายเหตุ (ถ้ามี)", btn_cancel: "ยกเลิก", btn_check: "ตรวจสอบข้อมูล", sum_title: "ยืนยันการนัดหมาย", btn_edit: "แก้ไข", btn_confirm: "ยืนยันจองคิว", saving: "ระบบรับข้อมูลแล้ว", saving_sub: "กรุณารอสักครู่ เพื่อยืนยันข้อมูล...", loading: "กำลังโหลด...", opt_sel: "-- เลือก --", opt_nat: "คลอดธรรมชาติ", opt_csec: "ผ่าคลอด", g_f: "หญิง", g_m: "ชาย", mu_title: "ผู้ใช้งานที่บันทึกไว้", btn_add_user: "ลงทะเบียนผู้รับบริการใหม่", act_user: "ใช้งานในชื่อ", aps_hist: "คิวล่าสุดของคุณ", cancel_q: "แจ้งยกเลิกนัดหมายนี้", addon_title: "🌿 รับบริการอบไอน้ำสมุนไพรต่อเนื่อง", addon_gender: "ระบุเพศเพื่อเข้าห้องอบ", no_profile: "ยังไม่มีประวัติในเครื่องนี้", btn_ack: "รับทราบและดำเนินการต่อ",
@@ -565,7 +572,67 @@
     const STAFF_EN_NAMES = { "จินดา J": "Jinda (Jeab)", "รจนา M": "Rotjana (Maam)", "อรรถพล B": "Attapon (Bao)", "ศินารัตน์ C": "Sinarat (C)", "จุฑามาศ F": "Jutamat (Fon)", "รัตน์ชนก KW": "Ratchanok (Kwang)", "นิกษ์นิภา T": "Niknipha (Kartoon)", "ณิชาภัทร W": "Nichapat (Wawa)" };
     const DEFAULT_IMG = "https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png"; const DAY_COLORS = ["#ef4444", "#eab308", "#ec4899", "#22c55e", "#f97316", "#3b82f6", "#a855f7"];
 
-    // 🔥 3D Smart Patient Book in Booking Modal 🔥
+    // ==========================================
+    // 🌟 MULTI-USER & SMART BOOKING
+    // ==========================================
+    function renderMultiUserCard() {
+        try {
+            let container = document.getElementById('main-auth-card');
+            if(!container) return; 
+            if (activeProfileId) {
+                let activeUser = savedProfiles.find(p => p.id === activeProfileId);
+                if (activeUser) { 
+                    container.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <div style="font-size:0.8rem; color:#2e7d32; font-weight:700; text-transform:uppercase;"><i class="fas fa-check-circle"></i> ${_t('act_user')}</div>
+                            <button style="background:rgba(46,125,50,0.1); border:1px solid #bbf7d0; color:#2e7d32; padding:4px 12px; border-radius:12px; font-size:0.75rem; font-weight:700; cursor:pointer; transition:0.2s;" onclick="switchUser()">${_t('change_user')}</button>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="mu-avatar">${activeUser.fname.substring(0,1)}</div>
+                            <div style="font-size:1.15rem; font-weight:700; color:#1e293b;">${getMaskedFullName(activeUser.fname, activeUser.lname)}</div>
+                        </div>
+                        <div class="aps-history">
+                            <div style="font-size:0.85rem; color:#475569; font-weight:700; margin-bottom:8px;"><i class="fas fa-calendar-check"></i> ${_t('aps_hist')}</div>
+                            <div id="aps-history-content" style="display:flex; gap:10px; align-items:center;">
+                                <div style="color:var(--primary);"><i class="fas fa-spinner fa-spin"></i></div><div style="font-size:0.9rem;">${_t('syncing')}</div>
+                            </div>
+                            <div id="btn-cancel-area"></div>
+                        </div>
+                    `;
+                    fetchPatientHistory(activeUser.id);
+                } else { activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
+            } else {
+                let listHtml = '';
+                if (!savedProfiles || savedProfiles.length === 0) { listHtml = `<div style="text-align:center; padding:10px; color:#64748b; font-size:0.85rem;">${_t('no_profile')}</div>`; } 
+                else {
+                    savedProfiles.forEach(p => { 
+                        let mName = getMaskedFullName(p.fname, p.lname); let mTel = getMaskedTel(p.tel); 
+                        listHtml += `<div class="mu-profile" onclick="selectUser('${p.id}')"><div class="mu-info"><div class="mu-avatar">${p.fname.substring(0,1)}</div><div class="mu-name">${mName}<span><i class="fas fa-phone"></i> ${mTel}</span></div></div><div class="mu-delete" onclick="event.stopPropagation(); removeUser('${p.id}')"><i class="fas fa-times-circle"></i></div></div>`; 
+                    });
+                }
+                container.innerHTML = `<div class="mu-title"><span>${_t('mu_title')}</span> <i class="fas fa-users" style="color:var(--primary);"></i></div><div class="mu-profile-list">${listHtml}</div><button class="btn-add-user" onclick="showAddUserForm()"><i class="fas fa-plus-circle"></i> ${_t('btn_add_user')}</button>`;
+            }
+        } catch(e) { console.error("Card UI Error:", e); }
+    }
+
+    function selectUser(id) { activeProfileId = id; saveProfilesToStorage(); renderMultiUserCard(); }
+
+    function showAddUserForm() { 
+        Swal.fire({
+            title: _t('btn_add_user'),
+            html: `<input id="swal-add-id" class="form-control" style="margin-bottom:10px;" placeholder="${_t('id_card')}" maxlength="20"><div style="display:flex; gap:10px;"><input id="swal-add-fname" class="form-control" placeholder="${_t('plh_fname')}"><input id="swal-add-lname" class="form-control" placeholder="${_t('plh_lname')}"></div><input id="swal-add-tel" class="form-control" style="margin-top:10px;" placeholder="${_t('phone')}" maxlength="10" type="tel" oninput="this.value=this.value.replace(/[^0-9]/g,'')">`,
+            showCancelButton: true, confirmButtonText: currentLang==='en'?'Save':'บันทึก', confirmButtonColor: '#2e7d32', cancelButtonText: _t('btn_cancel'),
+            preConfirm: () => { return { idCard: document.getElementById('swal-add-id').value, fname: document.getElementById('swal-add-fname').value, lname: document.getElementById('swal-add-lname').value, tel: document.getElementById('swal-add-tel').value } }
+        }).then((res) => {
+            if (res.isConfirmed) {
+                let v = res.value;
+                if(v.idCard && v.fname && v.tel) { addOrUpdateProfile(v.idCard, v.fname, v.lname, v.tel); Swal.fire(_t('swal_success'), '', 'success'); renderMultiUserCard(); } 
+                else { Swal.fire(_t('swal_error'), _t('err_req_fields'), 'error'); }
+            }
+        });
+    }
+
+    // 3D Smart Patient Book in Booking Modal
     function renderSmartBookDropdown() {
         let area = document.getElementById('smart-book-area');
         if (!area) return;
@@ -675,6 +742,9 @@
 
     window.onload = function() { applyLanguageToUI(); setupIDBoxes(); renderMultiUserCard(); };
 
+    // ==========================================
+    // 🌟 ID & VALIDATION
+    // ==========================================
     function setupIDBoxes() {
         const boxes = document.querySelectorAll('.otp-box');
         boxes.forEach((box, index) => {
@@ -696,7 +766,6 @@
             document.getElementById('btn-save-info').disabled = true; 
             document.getElementById('btn-save-info').innerHTML = _t('btn_check'); 
             
-            // Hide info cards if ID is incomplete to keep UI clean
             document.getElementById('existing-user-display').classList.add('hidden');
             document.getElementById('user-details-form').classList.add('hidden');
         } 
@@ -714,6 +783,9 @@
     function getMaskedFullName(fname, lname) { return maskString(fname) + " " + maskString(lname); }
     function getMaskedTel(tel) { if(!tel || tel.length < 10) return tel; return tel.substring(0,3) + "-xxx-x" + tel.substring(8); }
 
+    // ==========================================
+    // 🌟 PATIENT HISTORY & CANCELLATION
+    // ==========================================
     function fetchPatientHistory(idCard) {
         fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'get_my_history', idCard: idCard }) }).then(r=>r.json()).then(data => {
             if (data.status === 'success' && data.history) {
@@ -750,6 +822,9 @@
         .catch(e=>{ fetchPatientHistory(activeBookingObj.idCard); Swal.fire(_t('swal_success'), _t('swal_cancelled'), 'success'); });
     }
 
+    // ==========================================
+    // 🌟 APP NAVIGATION & DATA FETCHING
+    // ==========================================
     function openApp(type) { if (type === 'ttm') { let modal = document.getElementById('announcementModal'); let card = document.getElementById('announce-card-inner'); modal.style.display = 'flex'; setTimeout(() => { modal.style.opacity = '1'; card.style.transform = 'scale(1)'; }, 10); return; } proceedToApp(type); }
     function acceptAnnouncement() { let modal = document.getElementById('announcementModal'); let card = document.getElementById('announce-card-inner'); modal.style.opacity = '0'; card.style.transform = 'scale(0.9)'; setTimeout(() => { modal.style.display = 'none'; proceedToApp('ttm'); }, 300); }
     function proceedToApp(type) { currentApp = type; let conf = APP_CONFIG[type]; document.documentElement.style.setProperty('--primary', conf.color); document.documentElement.style.setProperty('--primary-light', type==='tcm'?'#ffebee':type==='postpartum'?'#fce4ec':type==='steam'?'#e0f2fe':'#e8f5e9'); document.getElementById('app-title').innerText = _t('app_' + type); document.getElementById('app-logo').src = conf.logo; document.getElementById('view-home').classList.add('hidden'); document.getElementById('view-dashboard').classList.remove('hidden'); fetchData(true); if(refreshInterval) clearInterval(refreshInterval); refreshInterval = setInterval(() => { fetchData(false); }, 15000); }
@@ -801,6 +876,9 @@
         container.innerHTML = html + '</div>';
     }
 
+    // ==========================================
+    // 🌟 BOOKING MODAL LOGIC
+    // ==========================================
     function toggleStaffDropdown() { document.getElementById('staff-trigger').classList.toggle('open'); }
     function selectStaffNew(sObj, thaiName) { 
         let dName = currentLang === 'en' ? (STAFF_EN_NAMES[thaiName] || thaiName) : (STAFF_NAME_MAP[thaiName] || thaiName);
@@ -816,9 +894,15 @@
         let day = globalData[selectedIndex]; let isOOH = false;
         if (day) { let hasEvening = day.slots.some(s => s.time === '17:00' || s.time === '18:00'); let isHolidaySheet = (day.dayOfWeek >= 1 && day.dayOfWeek <= 5) && !hasEvening && day.slots.length > 0; if (day.dayOfWeek === 0 || day.dayOfWeek === 6 || bookingData.time === '17:00' || bookingData.time === '18:00' || isHolidaySheet) isOOH = true; }
         bookingData.isOOH = isOOH;
-        if (currentApp === 'ttm') price = _t('calc_sub');
-        else if (currentApp === 'tcm') { if (svc.includes('ฝังเข็มเพื่อการรักษา')) price = _t('calc_sub'); else price = (currentLang === 'en' ? SERVICE_PRICES_EN[currentApp][svc] : SERVICE_PRICES[currentApp][svc]) || "-"; }
-        else price = _t('calc_sub');
+        
+        if (currentApp === 'ttm') {
+            price = _t('calc_sub'); 
+        } else if (currentApp === 'tcm') {
+            if (svc.includes('ฝังเข็มเพื่อการรักษา')) price = _t('calc_sub');
+            else price = (currentLang === 'en' ? SERVICE_PRICES_EN[currentApp][svc] : SERVICE_PRICES[currentApp][svc]) || "-";
+        } else {
+            price = _t('calc_sub');
+        }
         
         let tag = document.getElementById('price-tag'); 
         let val = document.getElementById('price-val'); 
@@ -851,7 +935,7 @@
           let staffs = staffDataEncoded ? JSON.parse(decodeURIComponent(staffDataEncoded)) : [];
           bookingData = { dept: APP_CONFIG[currentApp].title, date: dateFull, sysDate: sysDate, time: time, appType: currentApp, sheetName: globalData[dayIndex].sheetName, ppExtraData: staffDataEncoded };
           
-          document.getElementById('auth-section').style.display = 'block'; // 🔥 แก้บักกรอบ 13 หลักหาย
+          document.getElementById('auth-section').style.display = 'block'; 
           
           if(activeProfileId) { 
               let idStr = activeProfileId.toString();
@@ -961,6 +1045,9 @@
         renderSmartBookDropdown(); 
     }
     
+    // ==========================================
+    // 🌟 SUMMARY & CALCULATION (5 RIGHTS)
+    // ==========================================
     function goToSummary() {
       let id = document.getElementById('inp-idcard').value; let f = document.getElementById('inp-fname').value.trim(); let l = document.getElementById('inp-lname').value.trim(); let t = document.getElementById('inp-tel').value;
       if(!id || !f || !t) return Swal.fire(_t('warn_title'), _t('err_req_fields'), 'warning');
@@ -1068,31 +1155,113 @@
         document.getElementById('summary-content').innerHTML = infoH + billH + nH; switchStep('step-summary');
     }
 
+    // ==========================================
+    // 🌟 SUBMISSION & LOADERS
+    // ==========================================
     function confirmBooking() {
         document.getElementById('btn-final-confirm').disabled = true; showPercentageLoader(); 
         let fCombined = (bookingData.fname + " " + (bookingData.lname || "")).trim(); let fSvc = bookingData.service;
         if(bookingData.is2Hr && currentApp !== 'postpartum') fSvc += (currentApp === 'ttm') ? " (2 ชม.)" : " + ครอบแก้ว";
         let payload = { appType: bookingData.appType, sheetName: bookingData.sheetName, idCard: bookingData.idCard, fname: bookingData.fname, lname: bookingData.lname, fullName: fCombined, tel: bookingData.tel, service: fSvc, note: (bookingData.extraInfo + " | " + (bookingData.note || "")), time: bookingData.time, date: bookingData.date, sysDate: bookingData.sysDate, is2Hr: bookingData.is2Hr, addSteam: bookingData.addSteam, steamTime: bookingData.steamTime, steamGender: bookingData.steamGender, right: bookingData.rightName, totalFee: bookingData.totalFee };
         if ((currentApp === 'ttm' || currentApp === 'tcm') && selectedSlotData) { payload.row = selectedSlotData.row; payload.col = selectedSlotData.col; } else if (currentApp === 'steam') { payload.gender = document.getElementById('inp-gender').value; payload.patients = [{name: fCombined, tel: bookingData.tel}]; } else if (currentApp === 'postpartum') payload.ppExtraData = bookingData.ppExtraData;
+        
         fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(payload) }).then(async r => { let res = await r.json(); finishPercentageLoader(() => { if(res.status === 'success' || res.status === 'error_but_done') { let p = savedProfiles.find(x => x.id === bookingData.idCard); addOrUpdateProfile(bookingData.idCard, bookingData.fname, bookingData.lname, bookingData.tel, p ? p.label : ''); Swal.fire({ title: _t('swal_book_success'), html: _t('swal_line_notify'), icon: 'success', confirmButtonText: '<i class="fab fa-line"></i> LINE Notify', confirmButtonColor: '#00c300', allowOutsideClick: false }).then((r) => { if(r.isConfirmed) { let mN = getMaskedFullName(bookingData.fname, bookingData.lname); let mP = "******" + bookingData.tel.slice(-4); let pLab = p ? p.label : 'ผู้รับบริการ'; let msg = (currentLang === 'en' ? `Booking: ${APP_CONFIG[bookingData.appType].title}\nPatient: ${pLab} (${mN})\nPhone: ${mP}\n` : `ขอจองคิว${APP_CONFIG[bookingData.appType].title}\nผู้รับบริการ: ${pLab} (${mN})\nเบอร์โทร: ${mP}\n`) + `Service: ${_t(bookingData.service)}\nDate: ${bookingData.date}\nTime: ${bookingData.time}\n`; if(bookingData.rightName) msg += `Right: ${bookingData.rightName}\n`; msg += `------------------\n`; if(bookingData.breakdownLines) msg += bookingData.breakdownLines.map(l => l.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ')).join('\n') + `\n`; msg += `------------------\nTotal: ${bookingData.totalFee||0} ${_t('baht')}\n` + (bookingData.note?`Note: ${bookingData.note}`:''); let d = document.createElement("textarea"); document.body.appendChild(d); d.value = msg; d.select(); document.execCommand("copy"); document.body.removeChild(d); window.location.href = `https://line.me/R/oaMessage/@649dqeft/?${encodeURIComponent(msg)}`; } }); closeModal(); renderMultiUserCard(); fetchData(true); } else { Swal.fire(_t('swal_error'), res.message || 'Slot unavailable', 'error'); document.getElementById('btn-final-confirm').disabled = false; fetchData(true); } }); }).catch(e=>finishPercentageLoader(() => { let p = savedProfiles.find(x => x.id === bookingData.idCard); addOrUpdateProfile(bookingData.idCard, bookingData.fname, bookingData.lname, bookingData.tel, p ? p.label : ''); Swal.fire(_t('swal_success'), _t('swal_saved'), 'success'); closeModal(); renderMultiUserCard(); fetchData(true); }));
     }
 
     function closeModal() { document.getElementById('bookingModal').classList.remove('show'); }
     function switchStep(id) { document.getElementById('step-form').classList.add('hidden'); document.getElementById('step-summary').classList.add('hidden'); document.getElementById(id).classList.remove('hidden'); }
-    function handleAdminTap() { logoTaps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => logoTaps = 0, 2000); if (logoTaps >= 7) { logoTaps = 0; Swal.fire({ title: '🛡️ Admin Login', input: 'password', showCancelButton: true }).then((r) => { if (r.isConfirmed && r.value === "11395") { document.getElementById('adminModal').classList.add('show'); loadAdminLogs(); } }); } }
-    let logoTaps = 0; let tapTimer; let currentAdminSort = 'created';
-    function switchAdminTab(tId) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById(tId).classList.add('active'); }
-    async function adminSearch() { let q = document.getElementById('adminSearchInp').value; if(!q) return; let resA = document.getElementById('adminSearchResult'); resA.innerHTML = "<tr><td colspan='2' style='text-align:center;'>Loading...</td></tr>"; let r = await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_search', pass: '11395', query: q }) }); let d = await r.json(); if(d.status === 'success') { let h = ''; d.data.forEach(u => { let pH = ''; u.plans.forEach(p => { if(p.service === 'BANNED') pH += `<div style="background:#fee2e2; color:#b91c1c; padding:4px 8px; border-radius:4px; font-size:0.75rem; margin-top:4px;">BANNED ${p.date} <button onclick="adminManagePlan('${u.idCard}', 'BANNED', 'CLEAR')">[X]</button></div>`; else pH += `<div class="plan-tag">${p.service}: ${p.date} <button onclick="adminManagePlan('${u.idCard}', '${p.service}', 'CLEAR')">[X]</button></div>`; }); h += `<tr><td><div style="font-weight:700;">${u.fname} ${u.lname||''}</div><div>${u.idCard}</div><div>📞 ${u.tel}</div>${pH}</td><td style="text-align:right;"><button class="btn-icon btn-telebook" onclick="adminTeleBook('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')">Book</button><br><br><button class="btn-icon btn-edit" onclick="editPatientUI('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')"><i class="fas fa-edit"></i></button><button class="btn-icon btn-plan" onclick="openPlanModal('${u.idCard}')"><i class="fas fa-calendar-plus"></i></button><button class="btn-icon btn-delete" onclick="deletePatientConfirm('${u.idCard}')"><i class="fas fa-trash-alt"></i></button></td></tr>`; }); resA.innerHTML = h; } }
-    function adminTeleBook(id, f, l, t) { addOrUpdateProfile(id, f, l, t, "Admin Book"); document.getElementById('adminModal').classList.remove('show'); renderMultiUserCard(); }
-    function editPatientUI(id, f, l, t) { Swal.fire({ title: 'Edit', html: `<input id="sw-id" class="form-control" value="${id}"><div style="display:flex; gap:10px;"><input id="sw-f" class="form-control" value="${f}"><input id="sw-l" class="form-control" value="${l}"></div><input id="sw-t" class="form-control" value="${t}">`, showCancelButton: true, preConfirm: () => { savePatientData({oldId: id, idCard: document.getElementById('sw-id').value, fname: document.getElementById('sw-f').value, lname: document.getElementById('sw-l').value, tel: document.getElementById('sw-t').value}); } }); }
-    async function savePatientData(p) { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_manage_patient', pass: '11395', payload: p }) }); adminSearch(); }
-    async function deletePatientConfirm(id) { Swal.fire({ title: 'Delete?', showCancelButton: true }).then(async (r) => { if (r.isConfirmed) { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_delete_patient', pass: '11395', idCard: id }) }); adminSearch(); } }); }
-    function setAdminSort(t) { currentAdminSort = t; document.getElementById('btnSortCreated').className = (t === 'created') ? 'btn btn-confirm' : 'btn btn-cancel'; document.getElementById('btnSortAppoint').className = (t === 'appoint') ? 'btn btn-confirm' : 'btn btn-cancel'; loadAdminLogs(); }
-    function loadAdminLogs() { let a = document.getElementById('adminLogsArea'); a.innerHTML = "<tr><td colspan='4' style='text-align:center;'>Loading...</td></tr>"; fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({action: 'admin_get_logs', pass: '11395', filterDate: document.getElementById('adminLogDateFilter').value, sortType: currentAdminSort}) }).then(r => r.json()).then(d => { if(d.status === 'success') { let h = ''; d.data.forEach(l => { let c = l.status.includes('ยกเลิก') ? '#ef4444' : '#10b981'; h += `<tr><td><div style="font-size:0.7rem;">${l.createdAt}</div></td><td><div style="font-weight:700;">${l.name}</div><div style="font-size:0.75rem;">${l.service}</div></td><td><div>${l.bookFor}</div><div style="color:${c}; font-weight:700;">${l.status}</div></td><td style="text-align:right;">${l.status==='รอรับบริการ'?`<button class="btn-icon btn-delete" onclick="adminCancelQueue('${l.idCard}','${l.sysDate}','${l.timeOnly}','${l.dept}')"><i class="fas fa-times-circle"></i></button>`:''}</td></tr>`; }); a.innerHTML = h; } }); }
-    function adminCancelQueue(id, sd, t, d) { Swal.fire({ title: 'Cancel?', input: 'select', inputOptions: {'0':'No Ban','2':'2 Days','5':'5 Days'}, showCancelButton: true }).then(async (r) => { if (r.isConfirmed) { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_cancel_booking', pass: '11395', idCard: id, sysDate: sd, time: t, dept: d, banDays: r.value }) }); loadAdminLogs(); } }); }
-    function forceSyncSystem(b) { b.disabled = true; fetch(API_ENDPOINT + "?action=syncFirebase").then(()=>{ Swal.fire('Success'); b.disabled = false; }); }
+    
+    let loadInterval; let tipsInterval; let currentPercent = 0;
+    const loadTips = [ { icon: 'fa-clock', title: {th: 'มาก่อนเวลา 15 นาที', en: 'Arrive 15 mins early'}, text: {th: 'หากไม่มาติดต่อภายในเวลาที่กำหนด<br>ถือว่าท่านสละสิทธิ์', en: 'Failure to arrive on time<br>may result in cancellation.'} }, { icon: 'fa-id-card', title: {th: 'สิ่งที่ต้องเตรียม', en: 'What to bring'}, text: {th: '1. บัตรประจำตัวประชาชนตัวจริง<br>2. หน้ากากอนามัย (สวมตลอดเวลา)', en: '1. Original ID Card/Passport<br>2. Face Mask'} }, { icon: 'fa-calendar-times', title: {th: 'เลื่อน/ยกเลิกนัด', en: 'Reschedule/Cancel'}, text: {th: 'ล่วงหน้าอย่างน้อย 2 วัน<br>หากไม่ปฏิบัติตามแนวทาง<br>ขอสงวนสิทธิ์ไม่รับนัดครั้งถัดไป', en: 'At least 2 days in advance.<br>Otherwise, future bookings<br>may be restricted.'} } ];
+    
     function showPercentageLoader() { document.getElementById('saveLoader').classList.remove('hidden'); currentPercent = 0; let tipIdx = 0; loadInterval = setInterval(() => { currentPercent += 1.5; if(currentPercent >= 95) currentPercent = 95; document.getElementById('progress-circle').style.strokeDashoffset = 326 - (currentPercent / 100) * 326; document.getElementById('progress-text').innerText = Math.floor(currentPercent) + "%"; }, 500); tipsInterval = setInterval(() => { tipIdx = (tipIdx + 1) % loadTips.length; document.getElementById('tip-title').innerHTML = `<i class="fas ${loadTips[tipIdx].icon}"></i> ${loadTips[tipIdx].title[currentLang]}`; document.getElementById('tip-text').innerHTML = loadTips[tipIdx].text[currentLang]; }, 4000); }
     function finishPercentageLoader(cb) { clearInterval(loadInterval); clearInterval(tipsInterval); document.getElementById('progress-circle').style.strokeDashoffset = 0; document.getElementById('progress-text').innerText = "100%"; setTimeout(() => { document.getElementById('saveLoader').classList.add('hidden'); if(cb) cb(); }, 500); }
+
+    // ==========================================
+    // 🌟 ADMIN & SYSTEM
+    // ==========================================
+    let logoTaps = 0; let tapTimer; let currentAdminSort = 'created';
+    function handleAdminTap() { logoTaps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => logoTaps = 0, 2000); if (logoTaps >= 7) { logoTaps = 0; Swal.fire({ title: '🛡️ Admin Login', input: 'password', showCancelButton: true }).then((r) => { if (r.isConfirmed && r.value === "11395") { document.getElementById('adminModal').classList.add('show'); loadAdminLogs(); } }); } }
+    function switchAdminTab(tId) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById(tId).classList.add('active'); }
+    
+    async function adminSearch() { 
+        let q = document.getElementById('adminSearchInp').value; if(!q) return; 
+        let resA = document.getElementById('adminSearchResult'); resA.innerHTML = "<tr><td colspan='2' style='text-align:center;'>Loading...</td></tr>"; 
+        let r = await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_search', pass: '11395', query: q }) }); 
+        let d = await r.json(); 
+        if(d.status === 'success') { 
+            let h = ''; 
+            if(d.data.length === 0) h = "<tr><td colspan='2' style='text-align:center; color:red;'>No data</td></tr>";
+            d.data.forEach(u => { 
+                let pH = ''; 
+                u.plans.forEach(p => { 
+                    if(p.service === 'BANNED') pH += `<div style="background:#fee2e2; color:#b91c1c; padding:4px 8px; border-radius:4px; font-size:0.75rem; margin-top:4px;">BANNED ${p.date} <button onclick="adminManagePlan('${u.idCard}', 'BANNED', 'CLEAR')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold; float:right;">[X]</button></div>`; 
+                    else pH += `<div class="plan-tag">${p.service}: ${p.date} <button onclick="adminManagePlan('${u.idCard}', '${p.service}', 'CLEAR')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold;">[X]</button></div>`; 
+                }); 
+                h += `<tr><td><div style="font-weight:700;">${u.fname} ${u.lname||''}</div><div>${u.idCard}</div><div>📞 ${u.tel}</div>${pH}</td><td style="text-align:right;"><button class="btn-icon btn-telebook" onclick="adminTeleBook('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')">Book</button><br><br><button class="btn-icon btn-edit" onclick="editPatientUI('${u.idCard}','${u.fname}','${u.lname||''}','${u.tel}')"><i class="fas fa-edit"></i></button><button class="btn-icon btn-plan" onclick="openPlanModal('${u.idCard}')"><i class="fas fa-calendar-plus"></i></button><button class="btn-icon btn-delete" onclick="deletePatientConfirm('${u.idCard}')"><i class="fas fa-trash-alt"></i></button></td></tr>`; 
+            }); 
+            resA.innerHTML = h; 
+        } 
+    }
+    
+    function adminTeleBook(id, f, l, t) { addOrUpdateProfile(id, f, l, t, "Admin Book"); document.getElementById('adminModal').classList.remove('show'); renderMultiUserCard(); }
+    function editPatientUI(id, f, l, t) { Swal.fire({ title: 'Edit', html: `<input id="sw-id" class="form-control" value="${id}" style="margin-bottom:10px;"><div style="display:flex; gap:10px; margin-bottom:10px;"><input id="sw-f" class="form-control" value="${f}"><input id="sw-l" class="form-control" value="${l}"></div><input id="sw-t" class="form-control" value="${t}">`, showCancelButton: true, preConfirm: () => { savePatientData({oldId: id, idCard: document.getElementById('sw-id').value, fname: document.getElementById('sw-f').value, lname: document.getElementById('sw-l').value, tel: document.getElementById('sw-t').value}); } }); }
+    async function savePatientData(p) { Swal.fire({title:'Saving...'}); await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_manage_patient', pass: '11395', payload: p }) }); Swal.fire('Success','','success'); adminSearch(); }
+    async function deletePatientConfirm(id) { Swal.fire({ title: 'Delete?', showCancelButton: true }).then(async (r) => { if (r.isConfirmed) { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_delete_patient', pass: '11395', idCard: id }) }); adminSearch(); } }); }
+    function openPlanModal(id) { Swal.fire({ title: 'Plan / Ban', html: `<select id="swal-svc" class="form-control" style="margin-bottom:10px;"><option value="ttm">TTM</option><option value="tcm">TCM</option><option value="steam">Steam</option><option value="postpartum">Postpartum</option><option value="BANNED">BAN ACCOUNT</option></select><input type="number" id="swal-days" class="form-control" placeholder="Days from now">`, showCancelButton: true, preConfirm: () => { adminManagePlan(id, document.getElementById('swal-svc').value, document.getElementById('swal-days').value); } }); }
+    async function adminManagePlan(id, svc, days) { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_manage_plan', pass: '11395', idCard: id, service: svc, days: days }) }); adminSearch(); }
+    
+    function setAdminSort(t) { currentAdminSort = t; document.getElementById('btnSortCreated').className = (t === 'created') ? 'btn btn-confirm' : 'btn btn-cancel'; document.getElementById('btnSortAppoint').className = (t === 'appoint') ? 'btn btn-confirm' : 'btn btn-cancel'; loadAdminLogs(); }
+    
+    function loadAdminLogs() { 
+        let a = document.getElementById('adminLogsArea'); a.innerHTML = "<tr><td colspan='4' style='text-align:center;'>Loading...</td></tr>"; 
+        fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({action: 'admin_get_logs', pass: '11395', filterDate: document.getElementById('adminLogDateFilter').value, sortType: currentAdminSort}) }).then(r => r.json()).then(d => { 
+            if(d.status === 'success') { 
+                let h = ''; 
+                d.data.forEach(l => { 
+                    let c = l.status.includes('ยกเลิก') ? '#ef4444' : '#10b981'; if(l.status.includes('เลยกำหนด')) c = '#f59e0b';
+                    h += `<tr><td><div style="font-size:0.7rem;">${l.createdAt}</div></td><td><div style="font-weight:700;">${l.name}</div><div style="font-size:0.75rem;">${l.service}</div></td><td><div>${l.bookFor}</div><div style="color:${c}; font-weight:700;">${l.status}</div></td><td style="text-align:right;">${l.status==='รอรับบริการ'?`<button class="btn-icon btn-delete" onclick="adminCancelQueue('${l.idCard}','${l.sysDate}','${l.timeOnly}','${l.dept}')"><i class="fas fa-times-circle"></i></button>`:''}</td></tr>`; 
+                }); 
+                a.innerHTML = h; 
+            } 
+        }); 
+    }
+    
+    function adminCancelQueue(id, sd, t, d) { Swal.fire({ title: 'Cancel?', html:`Ban duration:<br><select id="swal-ban-days" class="form-control" style="margin-top:10px;"><option value="0">No Ban</option><option value="2">2 Days</option><option value="5">5 Days</option></select>`, showCancelButton: true }).then(async (r) => { if (r.isConfirmed) { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_cancel_booking', pass: '11395', idCard: id, sysDate: sd, time: t, dept: d, banDays: document.getElementById('swal-ban-days').value }) }); loadAdminLogs(); } }); }
+    
+    function forceSyncSystem(b) { let old = b.innerHTML; b.innerHTML='Syncing...'; b.disabled = true; fetch(API_ENDPOINT + "?action=syncFirebase").then(()=>{ Swal.fire('Success'); b.innerHTML=old; b.disabled = false; }).catch(()=>{ Swal.fire('Error'); b.innerHTML=old; b.disabled=false; }); }
+    
+    // RESTORED CSV UPLOAD
+    function updateAdminFileUI(input) {
+        if(input.files.length > 0) {
+            document.getElementById('adminFileName').innerText = input.files[0].name;
+            document.getElementById('btnAdminUpload').disabled = false;
+        }
+    }
+    
+    function processAdminUpload() {
+        const fileInp = document.getElementById('adminFileInput');
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            Swal.fire({title: 'Uploading...', allowOutsideClick: false, didOpen: () => {Swal.showLoading();}});
+            const rows = e.target.result.split('\n').slice(1);
+            const payload = [];
+            rows.forEach(row => {
+                const cols = row.split(',');
+                if(cols.length >= 4) {
+                    payload.push({ visitDate: cols[0].trim(), idCard: cols[1].trim(), service: cols[2].trim(), planDays: cols[3].trim() });
+                }
+            });
+            try {
+                let res = await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_batch_upload', pass: '11395', payload: payload }) });
+                let data = await res.json();
+                if(data.status === 'success') { Swal.fire('Success', `Uploaded ${data.count} records`, 'success'); }
+                else { Swal.fire('Error', 'Upload failed', 'error'); }
+            } catch(err) { Swal.fire('Error', 'Connection error', 'error'); }
+        };
+        reader.readAsText(fileInp.files[0]);
+    }
+
     function viewFullImage() { let meta = document.querySelector('meta[name=viewport]'); meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes'); Swal.fire({ imageUrl: 'https://img2.pic.in.th/890005e17a696c1ad92f3ab1fb121f87.png', imageAlt: 'Announce', width: '100%', background: 'transparent', padding: '0', showConfirmButton: false, showCloseButton: true, backdrop: 'rgba(0,0,0,0.95)', didOpen: () => { document.querySelector('.swal2-image').style.maxHeight = '85vh'; }, willClose: () => { meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'); } }); }
   </script>
 </body>
