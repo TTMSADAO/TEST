@@ -135,7 +135,7 @@
     .btn-icon { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 6px; transition: 0.2s; font-size: 1rem; }
     .btn-edit { color: #0ea5e9; background: #e0f2fe; } .btn-delete { color: #ef4444; background: #fee2e2; } .btn-plan { color: #8b5cf6; background: #f3e8ff; } .btn-telebook { color: #16a34a; background: #dcfce7; font-size:0.8rem; font-weight:bold; padding:4px 8px;}
 
-    /* RIGHT SELECTION STYLES */
+    /* 🏷️ RIGHT SELECTION STYLES */
     .right-option { padding: 14px 15px; border: 2px solid #e2e8f0; border-radius: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); background: #f8fafc; display: flex; flex-direction: column; gap: 2px; }
     .right-option:hover { border-color: #cbd5e1; background: #f1f5f9; transform: scale(1.02); }
     .right-option.selected { border-color: var(--primary); background: var(--primary-light); box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15); transform: translateY(-2px); }
@@ -302,6 +302,10 @@
             <div class="form-group">
               <label class="form-label" id="t-sel-svc">เลือกบริการ</label>
               <select id="inp-service" class="form-control" onchange="updatePriceDisplay(); checkIDCardInput();"></select>
+              
+              <div id="price-tag" style="margin-top:10px; display:none; background:#eff6ff; color:#0369a1; padding:10px 15px; border-radius:10px; font-size:0.85rem; border:1px solid #bfdbfe; line-height:1.5;">
+                  <div style="display:flex; gap:8px; align-items:flex-start;"><i class="fas fa-circle-info" style="margin-top:2px;"></i><div><span style="font-weight:700; display:block;" id="t-price-title">อัตราค่าบริการ/สิทธิ:</span><span id="price-val">-</span></div></div>
+              </div>
             </div>
 
             <div class="form-group" id="group-staff" style="display:none; position:relative;">
@@ -441,7 +445,7 @@
     let activeProfileId = localStorage.getItem('sdh_active_profile_id');
     if (activeProfileId === 'null') activeProfileId = null;
 
-    // Migrate old profiles
+    // Migrate old profiles without label to have a default label
     savedProfiles.forEach(p => { if(!p.label) p.label = "ผู้รับบริการ (Patient)"; });
 
     if(!activeProfileId && localStorage.getItem('sdh_patient_id')) {
@@ -464,44 +468,48 @@
         activeProfileId = id; saveProfilesToStorage(); 
     }
 
-    // 🔥 เปิดกล่องแก้ไขสรรพนาม (Label) 🔥
-    function editCurrentLabel() {
-        let id = document.getElementById('inp-idcard').value;
-        let p = savedProfiles.find(x => x.id === id);
-        if(!p) return;
-        Swal.fire({
-            title: _t('edit_label'),
-            input: 'text',
-            inputValue: p.label || '',
-            placeholder: _t('plh_label_eg'),
-            showCancelButton: true,
-            confirmButtonText: currentLang === 'en' ? 'Save' : 'บันทึก',
-            cancelButtonText: _t('btn_cancel'),
-            confirmButtonColor: '#2e7d32'
-        }).then(res => {
-            if(res.isConfirmed && res.value) {
-                addOrUpdateProfile(p.id, p.fname, p.lname, p.tel, res.value);
-                fillUserDataUI(p.id, p.fname, p.lname, p.tel);
-                renderMultiUserCard(); 
-            }
-        });
-    }
-
     function switchUser() { activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
     
-    function removeUser(id) { savedProfiles = savedProfiles.filter(p => p.id !== id); if(activeProfileId === id) activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
-    
-    // 🌟 TRANSLATIONS 
+    function logoutPatient(fromModal) {
+        activeProfileId = null; 
+        saveProfilesToStorage(); 
+        if(fromModal) {
+            document.getElementById('existing-user-display').classList.add('hidden');
+            document.getElementById('auth-section').style.display = 'block';
+            document.getElementById('inp-idcard').value = '';
+            document.getElementById('inp-idcard-foreigner').value = '';
+            document.querySelectorAll('.otp-box').forEach(b => { b.value = ''; b.classList.remove('filled'); });
+            document.getElementById('idcard-status').innerHTML = '';
+            document.getElementById('inp-fname').value = '';
+            document.getElementById('inp-lname').value = '';
+            document.getElementById('inp-tel').value = '';
+            document.getElementById('inp-fname').readOnly = false;
+            document.getElementById('inp-lname').readOnly = false;
+            document.getElementById('name-lock-warning').style.display = 'none';
+            document.getElementById('user-details-form').classList.add('hidden');
+            
+            // Show Smart Book if profiles exist
+            renderSmartBookDropdown();
+
+            let btnSave = document.getElementById('btn-save-info');
+            btnSave.disabled = true;
+            btnSave.innerHTML = _t('btn_check');
+            currentUserDB = null;
+            if(!isForeigner) { setTimeout(() => { let oBox = document.querySelector('.otp-box'); if(oBox) oBox.focus(); }, 100); }
+        }
+        renderMultiUserCard();
+    }
+
     const I18N = {
         th: {
-            lang_toggle: "EN", app_ttm: "แพทย์แผนไทย", desc_ttm: "นวดรักษา, ประคบ, นวดส่งเสริมฯ", app_tcm: "แพทย์แผนจีน", desc_tcm: "ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า", app_postpartum: "บริการหลังคลอด", desc_post: "หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน", app_steam: "อบไอน้ำสมุนไพร", desc_steam: "ช่วยการไหลเวียนโลหิต ภูมิแพ้", h1: "โรงพยาบาลสะเดา", h2: "กลุ่มงานการแพทย์แผนไทยและการแพทย์ทางเลือก", online: "เปิดให้บริการออนไลน์ 24 ชม.", greeting: "ข้อมูลผู้รับบริการ", change_user: "สลับผู้ใช้", history_title: "คิวที่กำลังจะมาถึง / ล่าสุด", syncing: "กำลังซิงค์ข้อมูล...", fill_info: "กรอกข้อมูลจองคิว", id_card: "เลขประจำตัวประชาชน", foreigner: "ชาวต่างชาติ", pdpa: "ปลอดภัย 100% ตามมาตรฐาน PDPA", fname: "ชื่อจริง", lname: "นามสกุล", phone: "เบอร์โทรศัพท์", lock_warn: "พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้", user_info_title: "ข้อมูลผู้รับบริการ", change_phone: "เปลี่ยนเบอร์โทรติดต่อ", sel_svc: "เลือกบริการ", price_title: "อัตราค่าบริการ/สิทธิ:", prov_text_ttm: "ผู้ให้บริการ (ผู้ช่วยแพทย์แผนไทย)", prov_text_tcm: "ผู้ให้บริการ (แพทย์แผนจีน)", not_spec: "ไม่ระบุ", birthdate: "วันคลอด", del_type: "ประเภทการคลอด", hosp: "โรงพยาบาลที่คลอด", gender: "เพศ (สำหรับล็อกรอบ)", note: "หมายเหตุ (ถ้ามี)", btn_cancel: "ยกเลิก", btn_check: "ตรวจสอบข้อมูล", sum_title: "ยืนยันการนัดหมาย", btn_edit: "แก้ไข", btn_confirm: "ยืนยันจองคิว", saving: "ระบบรับข้อมูลแล้ว", saving_sub: "กรุณารอสักครู่ เพื่อยืนยันข้อมูล...", loading: "กำลังโหลด...", opt_sel: "-- เลือก --", opt_nat: "คลอดธรรมชาติ", opt_csec: "ผ่าคลอด", g_f: "หญิง", g_m: "ชาย", mu_title: "ผู้ใช้งานที่บันทึกไว้", btn_add_user: "ลงทะเบียนผู้รับบริการใหม่", act_user: "ใช้งานในชื่อ", aps_hist: "คิวล่าสุดของคุณ", cancel_q: "แจ้งยกเลิกนัดหมายนี้", addon_title: "🌿 รับบริการอบไอน้ำสมุนไพรต่อเนื่อง", addon_gender: "ระบุเพศเพื่อเข้าห้องอบ", no_profile: "ยังไม่มีประวัติในเครื่องนี้", btn_ack: "รับทราบและดำเนินการต่อ",
+            lang_toggle: "EN", app_ttm: "แพทย์แผนไทย", desc_ttm: "นวดรักษา, ประคบ, นวดส่งเสริมฯ", app_tcm: "แพทย์แผนจีน", desc_tcm: "ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า", app_postpartum: "บริการหลังคลอด", desc_post: "หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน", app_steam: "อบไอน้ำสมุนไพร", desc_steam: "ช่วยการไหลเวียนโลหิต ภูมิแพ้", h1: "โรงพยาบาลสะเดา", h2: "กลุ่มงานการแพทย์แผนไทยและการแพทย์ทางเลือก", online: "เปิดให้บริการออนไลน์ 24 ชม.", greeting: "ข้อมูลผู้รับบริการ", change_user: "สลับผู้ใช้", history_title: "คิวที่กำลังจะมาถึง / ล่าสุด", syncing: "กำลังซิงค์ข้อมูล...", fill_info: "กรอกข้อมูลจองคิว", id_card: "เลขประจำตัวประชาชน", foreigner: "ชาวต่างชาติ", pdpa: "ปลอดภัย 100% ตามมาตรฐาน PDPA", fname: "ชื่อจริง", lname: "นามสกุล", phone: "เบอร์โทรศัพท์", lock_warn: "พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้", user_info_title: "ข้อมูลผู้รับบริการ", not_me: "ไม่ใช่ฉัน?", change_phone: "เปลี่ยนเบอร์โทรติดต่อ", sel_svc: "เลือกบริการ", price_title: "อัตราค่าบริการ/สิทธิ:", prov_text_ttm: "ผู้ให้บริการ (ผู้ช่วยแพทย์แผนไทย)", prov_text_tcm: "ผู้ให้บริการ (แพทย์แผนจีน)", not_spec: "ไม่ระบุ", birthdate: "วันคลอด", del_type: "ประเภทการคลอด", hosp: "โรงพยาบาลที่คลอด", gender: "เพศ (สำหรับล็อกรอบ)", note: "หมายเหตุ (ถ้ามี)", btn_cancel: "ยกเลิก", btn_check: "ตรวจสอบข้อมูล", sum_title: "ยืนยันการนัดหมาย", btn_edit: "แก้ไข", btn_confirm: "ยืนยันจองคิว", saving: "ระบบรับข้อมูลแล้ว", saving_sub: "กรุณารอสักครู่ เพื่อยืนยันข้อมูล...", loading: "กำลังโหลด...", opt_sel: "-- เลือก --", opt_nat: "คลอดธรรมชาติ", opt_csec: "ผ่าคลอด", g_f: "หญิง", g_m: "ชาย", mu_title: "ผู้ใช้งานที่บันทึกไว้", btn_add_user: "ลงทะเบียนผู้รับบริการใหม่", act_user: "ใช้งานในชื่อ", aps_hist: "คิวล่าสุดของคุณ", cancel_q: "แจ้งยกเลิกนัดหมายนี้", addon_title: "🌿 รับบริการอบไอน้ำสมุนไพรต่อเนื่อง", addon_gender: "ระบุเพศเพื่อเข้าห้องอบ", no_profile: "ยังไม่มีประวัติในเครื่องนี้", btn_ack: "รับทราบและดำเนินการต่อ",
             right_title: "💳 เลือกสิทธิการรักษา", right_uc30: "สิทธิบัตรทอง (ร่วมจ่าย 30 บาท)", right_desc30: "(ช่วงอายุ 12-59 ปี)", right_uc_free: "สิทธิบัตรทอง (ยกเว้นร่วมจ่าย)", right_desc_free: "(ผู้สูงอายุ ผู้มีรายได้น้อย อสม. ฯลฯ)", right_gov: "สิทธิเบิกตรงข้าราชการ / อปท.", right_desc_gov: "(ไม่ต้องสำรองจ่าย)", right_enterprise: "สิทธิรัฐวิสาหกิจ", right_desc_enterprise: "(สำรองจ่ายเบิกต้นสังกัด)", right_ss: "สิทธิประกันสังคม / ชำระเงินเอง", right_desc_ss: "(สำรองจ่าย/เงินสด)", btn_confirm_right: "ยืนยันสิทธิและประมวลผล", warn_select_right: "กรุณาเลือกสิทธิการรักษาก่อนครับ", calc_title: "กำลังคำนวณค่าบริการ...", calc_sub: "ระบบกำลังประมวลผลตามสิทธิของคุณ...", bill_title: "สรุปค่าบริการ (โดยประมาณ)", bill_right: "💳 สิทธิ:", bill_base: "ค่าบริการพื้นฐาน:", bill_ooh: "ค่าบริการนอกเวลา/วันหยุด:", bill_2hr: "บริการต่อเนื่องชั่วโมงที่ 2:", bill_steam: "บริการอบไอน้ำสมุนไพร:", bill_total: "ยอดชำระสุทธิ:", baht: "บาท", opt_2hr_ttm: "จองต่อเนื่อง 2 ชั่วโมง", opt_2hr_tcm: "จองต่อเนื่อง ฝังเข็ม + ครอบแก้ว", note_2hr_ttm: "*ชั่วโมงที่ 2 ชำระเพิ่ม 250 บาท", note_2hr_tcm: "*ระบบจะลงคิว 2 ชม. ให้ทันที", plh_fname: "ชื่อ", plh_lname: "นามสกุล", plh_note: "มีไข้ / กระดูกแตกหัก / ประจำเดือน", plh_passport: "กรอกหมายเลข Passport", err_req_fields: "กรุณากรอกข้อมูลให้ครบถ้วน", warn_title: "แจ้งเตือน", swal_success: "สำเร็จ!", swal_error: "ผิดพลาด", swal_saved: "บันทึกข้อมูลเรียบร้อยแล้ว", swal_cancelled: "ระบบได้ยกเลิกคิวให้ท่านเรียบร้อยแล้ว", swal_cancel_title: "ยืนยันการยกเลิกนัด", swal_cancel_warn1: "⚠️ คำเตือน: ยกเลิกวันเดียวกัน ระบบระงับสิทธิ 5 วัน", swal_cancel_warn2: "⚠️ คำเตือน: ยกเลิกกระชั้นชิด ระบบระงับสิทธิ 2 วัน", swal_cancel_warn3: "คุณต้องการยกเลิกคิวนี้ใช่หรือไม่?", btn_yes_cancel: "ยอมรับและยกเลิกคิว", btn_close: "ปิด", swal_book_success: "จองคิวสำเร็จ!", swal_line_notify: "<p>กรุณากดปุ่มด้านล่างเพื่อรับการยืนยันทาง LINE</p>", swal_processing: "กำลังประมวลผล...", swal_sys_err: "⚠️ ระบบขัดข้อง (กรุณาลองใหม่)", swal_record_found: "พบข้อมูลประวัติ", swal_new_patient: "ผู้รับบริการใหม่ กรุณากรอกข้อมูล",
             bill_enterprise_note: "*(โปรดขอใบเสร็จและใบรับรองแพทย์เพื่อเบิกต้นสังกัด)",
             "นวดและประคบเพื่อการรักษา": "นวดและประคบเพื่อการรักษา", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)": "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)": "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)", "ฝังเข็มเพื่อการรักษา": "ฝังเข็มเพื่อการรักษา", "ครอบแก้ว": "ครอบแก้ว", "ฝังเข็มใบหน้า": "ฝังเข็มใบหน้า", "เม็ดผักกาดแปะหู": "เม็ดผักกาดแปะหู", "ปรึกษาแพทย์แผนจีน": "ปรึกษาแพทย์แผนจีน",
             plh_label: "สรรพนาม (เช่น ตัวฉัน, พ่อ, แม่)", sb_title: "เลือกจากรายชื่อที่บันทึกไว้", sb_or: "หรือจองให้คนอื่น", edit_label: "แก้ไขสรรพนาม", plh_label_eg: "เช่น คุณแม่, ตัวฉัน, ลูกชาย", btn_book_other: "จองให้บุคคลอื่น (กรอกใหม่)"
         },
         en: {
-            lang_toggle: "TH", app_ttm: "Thai Traditional Med.", desc_ttm: "Massage, Compress, Wellness", app_tcm: "Chinese Medicine", desc_tcm: "Acupuncture, Cupping, Facial", app_postpartum: "Postpartum Care", desc_post: "Normal delivery 7 days / C-Section 1 mo.", app_steam: "Herbal Steam", desc_steam: "Blood circulation, Allergy relief", h1: "Sadao Hospital", h2: "Thai Traditional & Alternative Medicine", online: "Online Booking 24/7", greeting: "Patient Information", change_user: "Switch User", history_title: "Upcoming / Recent Appointments", syncing: "Syncing data...", fill_info: "Booking Details", id_card: "Passport / ID Number", foreigner: "Foreigner", pdpa: "100% Secured by PDPA standard", fname: "First Name", lname: "Last Name", phone: "Phone Number", lock_warn: "Profile found. Name cannot be changed.", user_info_title: "Patient Details", change_phone: "Change Phone Number", sel_svc: "Select Service", price_title: "Estimated Fee:", prov_text_ttm: "Provider (TTM Assistant)", prov_text_tcm: "Provider (TCM Doctor)", not_spec: "Not Specified", birthdate: "Date of Birth (Baby)", del_type: "Delivery Type", hosp: "Hospital", gender: "Gender (For Room Allocation)", note: "Note (Optional)", btn_cancel: "Cancel", btn_check: "Check Info", sum_title: "Confirm Appointment", btn_edit: "Edit", btn_confirm: "Confirm Booking", saving: "Data Received", saving_sub: "Processing confirmation...", loading: "Loading...", opt_sel: "-- Select --", opt_nat: "Normal Delivery", opt_csec: "C-Section", g_f: "Female", g_m: "Male", mu_title: "Saved Profiles", btn_add_user: "Add New Patient", act_user: "Active Profile", aps_hist: "Your Recent Appointment", cancel_q: "Cancel Appointment", addon_title: "🌿 Add Continuous Steam Therapy", addon_gender: "Select gender for steam room", no_profile: "No profiles saved", btn_ack: "Acknowledge & Continue",
+            lang_toggle: "TH", app_ttm: "Thai Traditional Med.", desc_ttm: "Massage, Compress, Wellness", app_tcm: "Chinese Medicine", desc_tcm: "Acupuncture, Cupping, Facial", app_postpartum: "Postpartum Care", desc_post: "Normal delivery 7 days / C-Section 1 mo.", app_steam: "Herbal Steam", desc_steam: "Blood circulation, Allergy relief", h1: "Sadao Hospital", h2: "Thai Traditional & Alternative Medicine", online: "Online Booking 24/7", greeting: "Patient Information", change_user: "Switch User", history_title: "Upcoming / Recent Appointments", syncing: "Syncing data...", fill_info: "Booking Details", id_card: "Passport / ID Number", foreigner: "Foreigner", pdpa: "100% Secured by PDPA standard", fname: "First Name", lname: "Last Name", phone: "Phone Number", lock_warn: "Profile found. Name cannot be changed.", user_info_title: "Patient Details", not_me: "Not me?", change_phone: "Change Phone Number", sel_svc: "Select Service", price_title: "Estimated Fee:", prov_text_ttm: "Provider (TTM Assistant)", prov_text_tcm: "Provider (TCM Doctor)", not_spec: "Not Specified", birthdate: "Date of Birth (Baby)", del_type: "Delivery Type", hosp: "Hospital", gender: "Gender (For Room Allocation)", note: "Note (Optional)", btn_cancel: "Cancel", btn_check: "Check Info", sum_title: "Confirm Appointment", btn_edit: "Edit", btn_confirm: "Confirm Booking", saving: "Data Received", saving_sub: "Processing confirmation...", loading: "Loading...", opt_sel: "-- Select --", opt_nat: "Normal Delivery", opt_csec: "C-Section", g_f: "Female", g_m: "Male", mu_title: "Saved Profiles", btn_add_user: "Add New Patient", act_user: "Active Profile", aps_hist: "Your Recent Appointment", cancel_q: "Cancel Appointment", addon_title: "🌿 Add Continuous Steam Therapy", addon_gender: "Select gender for steam room", no_profile: "No profiles saved", btn_ack: "Acknowledge & Continue",
             right_title: "💳 Select Treatment Right", right_uc30: "Universal Coverage (Co-pay 30 THB)", right_desc30: "(Age 12-59 years old)", right_uc_free: "Universal Coverage (Exempt)", right_desc_free: "(Elderly, Low-income, VHV, etc.)", right_gov: "Civil Servant / LGO", right_desc_gov: "(Direct Billing)", right_enterprise: "State Enterprise", right_desc_enterprise: "(Pay and Claim back)", right_ss: "Social Security / Self-Pay", right_desc_ss: "(Cash Payment)", btn_confirm_right: "Confirm & Calculate", warn_select_right: "Please select your treatment right.", calc_title: "Calculating Fee...", calc_sub: "Processing based on your selected right...", bill_title: "Estimated Service Fee", bill_right: "💳 Right:", bill_base: "Base Service Fee:", bill_ooh: "Out-of-Hours Fee:", bill_2hr: "2nd Hour Session:", bill_steam: "Herbal Steam Therapy:", bill_total: "Total Estimated Amount:", baht: "THB", opt_2hr_ttm: "Cont. 2 Hrs Session", opt_2hr_tcm: "Cont. Acu + Cupping", note_2hr_ttm: "*Extra 250 THB for 2nd hour", note_2hr_tcm: "*Auto 2-hour slot", plh_fname: "First Name", plh_lname: "Last Name", plh_note: "Fever / Fracture / Menstruation", plh_passport: "Enter Passport Number", err_req_fields: "Please fill all required fields", warn_title: "Warning", swal_success: "Success!", swal_error: "Error", swal_saved: "Appointment saved.", swal_cancelled: "Appointment cancelled.", swal_cancel_title: "Cancel Appointment?", swal_cancel_warn1: "⚠️ Warning: Same-day cancel, 5 days ban.", swal_cancel_warn2: "⚠️ Warning: Late cancel, 2 days ban.", swal_cancel_warn3: "Do you want to cancel this appointment?", btn_yes_cancel: "Yes, Cancel", btn_close: "Close", swal_book_success: "Booking Successful!", swal_line_notify: "<p>Click below to notify via LINE</p>", swal_processing: "Processing...", swal_sys_err: "⚠️ System error. Please try again.", swal_record_found: "Record found!", swal_new_patient: "New Patient: Please fill out details",
             bill_enterprise_note: "*(Please claim the receipt and certificate at your office)",
             "นวดและประคบเพื่อการรักษา": "Massage and Compress Therapy", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)": "Relaxing Body Massage (Self-pay)", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)": "Foot Reflexology (Self-pay)", "ฝังเข็มเพื่อการรักษา": "Acupuncture Therapy", "ครอบแก้ว": "Cupping Therapy", "ฝังเข็มใบหน้า": "Facial Acupuncture", "เม็ดผักกาดแปะหู": "Auricular Seed Therapy", "ปรึกษาแพทย์แผนจีน": "TCM Consultation",
@@ -724,27 +732,27 @@
         }
     }
 
-    function showAddUserForm() { 
+    // 🔥 เปิดกล่องแก้ไขสรรพนาม (Label) 🔥
+    function editCurrentLabel() {
+        let id = document.getElementById('inp-idcard').value;
+        let p = savedProfiles.find(x => x.id === id);
+        if(!p) return;
         Swal.fire({
-            title: _t('btn_add_user'),
-            html: `
-                <input id="swal-add-label" class="form-control" style="margin-bottom:10px; border-color:#2e7d32;" placeholder="${_t('plh_label')}">
-                <input id="swal-add-id" class="form-control" style="margin-bottom:10px;" placeholder="${_t('id_card')}" maxlength="20">
-                <div style="display:flex; gap:10px;">
-                    <input id="swal-add-fname" class="form-control" placeholder="${_t('plh_fname')}">
-                    <input id="swal-add-lname" class="form-control" placeholder="${_t('plh_lname')}">
-                </div>
-                <input id="swal-add-tel" class="form-control" style="margin-top:10px;" placeholder="${_t('phone')}" maxlength="10" type="tel" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-            `,
-            showCancelButton: true, confirmButtonText: currentLang==='en'?'Save':'บันทึก', confirmButtonColor: '#2e7d32', cancelButtonText: _t('btn_cancel'),
-            preConfirm: () => { return { 
-                idCard: document.getElementById('swal-add-id').value, 
-                fname: document.getElementById('swal-add-fname').value, 
-                lname: document.getElementById('swal-add-lname').value, 
-                tel: document.getElementById('swal-add-tel').value,
-                label: document.getElementById('swal-add-label').value 
-            } }
-        }).then((res) => { if (res.isConfirmed) { let v = res.value; if(v.idCard && v.fname && v.tel) { addOrUpdateProfile(v.idCard, v.fname, v.lname, v.tel, v.label); Swal.fire(_t('swal_success'), '', 'success'); renderMultiUserCard(); } else { Swal.fire(_t('swal_error'), _t('err_req_fields'), 'error'); } } });
+            title: _t('edit_label'),
+            input: 'text',
+            inputValue: p.label || '',
+            placeholder: _t('plh_label_eg'),
+            showCancelButton: true,
+            confirmButtonText: currentLang === 'en' ? 'Save' : 'บันทึก',
+            cancelButtonText: _t('btn_cancel'),
+            confirmButtonColor: '#2e7d32'
+        }).then(res => {
+            if(res.isConfirmed && res.value) {
+                addOrUpdateProfile(p.id, p.fname, p.lname, p.tel, res.value);
+                fillUserDataUI(p.id, p.fname, p.lname, p.tel);
+                renderMultiUserCard(); 
+            }
+        });
     }
 
     window.onload = function() { applyLanguageToUI(); setupIDBoxes(); renderMultiUserCard(); };
@@ -877,7 +885,13 @@
         if (currentApp === 'ttm') price = _t('calc_sub');
         else if (currentApp === 'tcm') { if (svc.includes('ฝังเข็มเพื่อการรักษา')) price = _t('calc_sub'); else price = (currentLang === 'en' ? SERVICE_PRICES_EN[currentApp][svc] : SERVICE_PRICES[currentApp][svc]) || "-"; }
         else price = _t('calc_sub');
-        let tag = document.getElementById('price-tag'); if (price !== "-") { document.getElementById('price-val').innerHTML = price; tag.style.display = 'block'; } else tag.style.display = 'none'; 
+        
+        let tag = document.getElementById('price-tag'); 
+        let val = document.getElementById('price-val'); 
+        if (tag && val) { 
+            if (price !== "-") { val.innerHTML = price; tag.style.display = 'block'; } 
+            else { tag.style.display = 'none'; } 
+        } 
     }
     document.addEventListener('DOMContentLoaded', () => { let c = document.getElementById('inp-2hr'); if(c) c.addEventListener('change', updatePriceDisplay); });
 
@@ -923,10 +937,17 @@
           ['normal-fields', 'postpartum-fields', 'steam-fields'].forEach(id => document.getElementById(id).classList.add('hidden'));
           if (document.getElementById('lbl_provider_text')) document.getElementById('lbl_provider_text').innerText = (currentApp === 'tcm') ? _t('prov_text_tcm') : _t('prov_text_ttm');
           if(document.getElementById('steam-addon-container')) { document.getElementById('steam-addon-container').style.display = 'none'; document.getElementById('chk-addon-steam').checked = false; }
-          if (currentApp === 'postpartum') { document.getElementById('postpartum-fields').classList.remove('hidden'); bookingData.service = "บริการหลังคลอด"; document.getElementById('group-staff').style.display = 'none'; document.getElementById('inp-staff-val').value = "ไม่ระบุ"; } 
-          else if (currentApp === 'steam') { document.getElementById('steam-fields').classList.remove('hidden'); bookingData.service = "อบไอน้ำ"; document.getElementById('group-staff').style.display = 'none'; if (slotGender === 'ช' || slotGender === 'ชาย') document.getElementById('inp-gender').value = 'ชาย'; else if (slotGender === 'ญ' || slotGender === 'หญิง') document.getElementById('inp-gender').value = 'หญิง'; } 
-          else {
-              document.getElementById('normal-fields').classList.remove('hidden'); let sel = document.getElementById('inp-service'); sel.innerHTML = ''; SERVICE_OPTIONS[currentApp].forEach(s => { let o = document.createElement('option'); o.value=s; o.innerText= _t(s); sel.appendChild(o); }); updatePriceDisplay();
+          
+          if (currentApp === 'postpartum') { 
+              document.getElementById('postpartum-fields').classList.remove('hidden'); bookingData.service = "บริการหลังคลอด"; document.getElementById('group-staff').style.display = 'none'; document.getElementById('inp-staff-val').value = "ไม่ระบุ"; 
+          } else if (currentApp === 'steam') { 
+              document.getElementById('steam-fields').classList.remove('hidden'); bookingData.service = "อบไอน้ำ"; document.getElementById('group-staff').style.display = 'none'; if (slotGender === 'ช' || slotGender === 'ชาย') document.getElementById('inp-gender').value = 'ชาย'; else if (slotGender === 'ญ' || slotGender === 'หญิง') document.getElementById('inp-gender').value = 'หญิง'; 
+          } else {
+              document.getElementById('normal-fields').classList.remove('hidden'); 
+              let sel = document.getElementById('inp-service'); sel.innerHTML = ''; 
+              SERVICE_OPTIONS[currentApp].forEach(s => { let o = document.createElement('option'); o.value=s; o.innerText= _t(s); sel.appendChild(o); }); 
+              updatePriceDisplay();
+              
               let cCont = document.getElementById('staff-options'); cCont.innerHTML = ''; 
               if (staffs.length > 0 && staffs[0].row !== undefined) { 
                   document.getElementById('group-staff').style.display = 'block'; let grouped = {}; staffs.forEach(s => { let k = s.name; if(!grouped[k]) grouped[k] = Object.assign({}, s); else if(s.can2Hr) grouped[k] = Object.assign({}, s); }); let unique = Object.values(grouped); if(unique.length > 0) selectStaffNew(unique[0], unique[0].name); 
@@ -943,6 +964,10 @@
         if(isForeigner) document.getElementById('inp-idcard').value = document.getElementById('inp-idcard-foreigner').value;
         clearTimeout(typingTimer); let id = document.getElementById('inp-idcard').value; let stat = document.getElementById('idcard-status'); let btn = document.getElementById('btn-save-info');
         
+        let sbArea = document.getElementById('smart-book-area');
+        if(sbArea && id.length > 0) sbArea.classList.add('hidden');
+        else if (sbArea && id.length === 0 && savedProfiles.length > 0) sbArea.classList.remove('hidden');
+
         if (isForeigner ? id.length >= 6 : id.length === 13) { 
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${_t('loading')}`;
             if(!activeProfileId) stat.innerHTML = '<span style="color:#f59e0b;"><i class="fas fa-spinner fa-spin"></i> Checking...</span>'; 
