@@ -192,6 +192,13 @@
     .step.completed .step-label { color: var(--primary); }
     .step-line { flex: 1; height: 3px; background: #e2e8f0; margin: 0 -15px; position: relative; top: -10px; z-index: 1; transition: 0.3s; }
     .step-line.active { background: var(--primary); }
+
+    /* 🔥 3D SWEETALERT OVERRIDE 🔥 */
+    .swal2-popup { border-radius: 24px !important; background: linear-gradient(145deg, #ffffff, #f8fafc) !important; box-shadow: 10px 10px 25px #d1d9e6, -10px -10px 25px #ffffff !important; border: 1px solid #e2e8f0 !important; padding: 2em !important; }
+    .swal2-title { color: #1e293b !important; font-family: 'Prompt', sans-serif !important; font-weight: 700 !important; }
+    .swal2-html-container { font-family: 'Prompt', sans-serif !important; color: #475569 !important; }
+    .swal2-confirm, .swal2-cancel { border-radius: 14px !important; font-family: 'Prompt', sans-serif !important; font-weight: 700 !important; padding: 12px 24px !important; box-shadow: 4px 4px 10px rgba(0,0,0,0.15) !important; transition: transform 0.2s !important; }
+    .swal2-confirm:active, .swal2-cancel:active { transform: scale(0.95) !important; }
   </style>
 </head>
 <body>
@@ -859,17 +866,17 @@
         if(!activeBookingObj) return; let today = new Date(); today.setHours(0,0,0,0); let bParts = activeBookingObj.sysDate.split('-'); let bDate = new Date(bParts[0], bParts[1]-1, bParts[2]); let diffTime = Math.abs(bDate - today); let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         let warnMsg = _t('swal_cancel_warn3');
         if(bDate.getTime() === today.getTime()) warnMsg = _t('swal_cancel_warn1'); else if (diffDays === 1) warnMsg = _t('swal_cancel_warn2');
-        Swal.fire({ title: _t('swal_cancel_title'), text: warnMsg, icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#cbd5e1', confirmButtonText: _t('btn_yes_cancel'), cancelButtonText: _t('btn_close') }).then((result) => { if (result.isConfirmed) executeCancelBooking(); });
+        Swal.fire({ title: _t('swal_cancel_title'), text: warnMsg, icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#cbd5e1', confirmButtonText: _t('btn_yes_cancel'), cancelButtonText: _t('btn_close'), customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' } }).then((result) => { if (result.isConfirmed) executeCancelBooking(); });
     }
 
     function executeCancelBooking() {
-        Swal.fire({ title: _t('swal_processing'), allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+        Swal.fire({ title: _t('swal_processing'), allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }, customClass: { popup: 'swal-3d-popup' } });
         let bParts = activeBookingObj.sysDate.split('-'); let sheetN = parseInt(bParts[2]) + "/" + parseInt(bParts[1]); let sDept = 'ttm'; if(activeBookingObj.service.includes('ฝังเข็ม')||activeBookingObj.service.includes('ครอบแก้ว')) sDept='tcm'; else if(activeBookingObj.service.includes('อบ')) sDept='steam';
         let payload = { action: 'cancel_booking', idCard: activeBookingObj.idCard, sysDate: activeBookingObj.sysDate, time: activeBookingObj.time, sheetName: sheetN, dept: sDept };
         fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(payload) })
         .then(async response => { let resText = await response.text(); try { return JSON.parse(resText); } catch(err) { return { status: 'success', penaltyDays: 0 }; } })
-        .then(res => { if(res.status === 'success' || res.status === 'error_but_done') { let msg = _t('swal_cancelled'); if(res.penaltyDays > 0) msg += `\n\nBan until: ${res.banUntil}`; Swal.fire(_t('swal_success'), msg, 'success'); fetchPatientHistory(activeBookingObj.idCard); fetch(API_ENDPOINT, {method:'POST', body:JSON.stringify({action:'background_sync', dept:sDept})}); } else Swal.fire(_t('swal_error'), res.message || 'Error occurred', 'error'); })
-        .catch(e=>{ fetchPatientHistory(activeBookingObj.idCard); Swal.fire(_t('swal_success'), _t('swal_cancelled'), 'success'); });
+        .then(res => { if(res.status === 'success' || res.status === 'error_but_done') { let msg = _t('swal_cancelled'); if(res.penaltyDays > 0) msg += `\n\nBan until: ${res.banUntil}`; Swal.fire({title:_t('swal_success'), text:msg, icon:'success', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}}); fetchPatientHistory(activeBookingObj.idCard); fetch(API_ENDPOINT, {method:'POST', body:JSON.stringify({action:'background_sync', dept:sDept})}); } else Swal.fire({title:_t('swal_error'), text:(res.message || 'Error occurred'), icon:'error', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}}); })
+        .catch(e=>{ fetchPatientHistory(activeBookingObj.idCard); Swal.fire({title:_t('swal_success'), text:_t('swal_cancelled'), icon:'success', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}}); });
     }
 
     // ==========================================
@@ -987,7 +994,7 @@
         let id = document.getElementById('inp-idcard').value; 
         let f = document.getElementById('inp-fname').value.trim(); 
         let t = document.getElementById('inp-tel').value;
-        if(!id || !f || !t) return Swal.fire(_t('warn_title'), _t('err_req_fields'), 'warning');
+        if(!id || !f || !t) return Swal.fire({title:_t('warn_title'), text:_t('err_req_fields'), icon:'warning', customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' }});
         
         document.getElementById('step-1-patient').classList.add('hidden');
         document.getElementById('step-2-service').classList.remove('hidden');
@@ -1203,7 +1210,7 @@
     // ==========================================
     function goToSummary() {
       let id = document.getElementById('inp-idcard').value; let f = document.getElementById('inp-fname').value.trim(); let l = document.getElementById('inp-lname').value.trim(); let t = document.getElementById('inp-tel').value;
-      if(!id || !f || !t) return Swal.fire(_t('warn_title'), _t('err_req_fields'), 'warning');
+      if(!id || !f || !t) return Swal.fire({title:_t('warn_title'), text:_t('err_req_fields'), icon:'warning', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}});
       bookingData.idCard = id; bookingData.fname = f; bookingData.lname = l; bookingData.name = f + " " + l; bookingData.tel = t; bookingData.note = document.getElementById('inp-note').value; bookingData.extraInfo = "";
       
       let existingProfile = savedProfiles.find(p => p.id === id);
@@ -1217,7 +1224,7 @@
 
       if (currentApp === 'postpartum') { 
           let bd = document.getElementById('inp-birth-date').value; let dt = document.getElementById('inp-delivery-type').value; let h = document.getElementById('inp-hospital').value;
-          if(!bd || !dt || !h) return Swal.fire(_t('warn_title'), currentLang==='en'?'Please fill delivery details':'กรุณากรอกข้อมูลการคลอดให้ครบ','warning');
+          if(!bd || !dt || !h) return Swal.fire({title:_t('warn_title'), text:currentLang==='en'?'Please fill delivery details':'กรุณากรอกข้อมูลการคลอดให้ครบ', icon:'warning', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}});
           bookingData.extraInfo = currentLang==='en' ? `Birth: ${bd} (${dt}) Hosp: ${h}` : `คลอด: ${bd} (${dt}) รพ.${h}`; bookingData.service = "บริการหลังคลอด"; bookingData.staff = "ไม่ระบุ"; bookingData.is2Hr = true; 
       } else if (currentApp === 'steam') { bookingData.extraInfo = currentLang==='en' ? `Gender: ${document.getElementById('inp-gender').value}` : `เพศ: ${document.getElementById('inp-gender').value}`; bookingData.service = "อบไอน้ำ"; bookingData.staff = "ไม่ระบุ"; } 
       else { bookingData.service = document.getElementById('inp-service').value.split(' (')[0]; bookingData.staff = baseStaffName; bookingData.is2Hr = document.getElementById('inp-2hr') ? document.getElementById('inp-2hr').checked : false; bookingData.addSteam = document.getElementById('chk-addon-steam') ? document.getElementById('chk-addon-steam').checked : false; if(bookingData.addSteam) bookingData.steamGender = document.getElementById('inp-addon-gender').value; }
@@ -1240,12 +1247,13 @@
                 <input type="hidden" id="selected-right-val" value="">
             `,
             showCancelButton: true, confirmButtonText: _t('btn_confirm_right'), cancelButtonText: _t('btn_cancel'), confirmButtonColor: '#2e7d32',
+            customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' },
             preConfirm: () => { let v = document.getElementById('selected-right-val').value; if(!v) { Swal.showValidationMessage(_t('warn_select_right')); return false; } return v; }
         }).then((r) => { if(r.isConfirmed) calculateAnimation(r.value); });
     }
 
     function calculateAnimation(rV) {
-        Swal.fire({ title: _t('calc_title'), html: `<div style="font-size:3.5rem; color:var(--primary); margin:20px 0;"><i class="fas fa-calculator fa-beat-fade"></i></div><div style="font-size:0.95rem; font-weight:bold; color:#64748b;">${_t('calc_sub')}</div>`, showConfirmButton: false, allowOutsideClick: false, timer: 1500 }).then(() => buildSummaryAndShow(rV));
+        Swal.fire({ title: _t('calc_title'), html: `<div style="font-size:3.5rem; color:var(--primary); margin:20px 0;"><i class="fas fa-calculator fa-beat-fade"></i></div><div style="font-size:0.95rem; font-weight:bold; color:#64748b;">${_t('calc_sub')}</div>`, showConfirmButton: false, allowOutsideClick: false, timer: 1500, customClass: { popup: 'swal-3d-popup' } }).then(() => buildSummaryAndShow(rV));
     }
 
     function buildSummaryAndShow(rV) {
@@ -1379,12 +1387,14 @@
                         icon: 'success', 
                         confirmButtonText: '<i class="fab fa-line"></i> LINE Notify', 
                         confirmButtonColor: '#00c300', 
-                        allowOutsideClick: false 
+                        allowOutsideClick: false,
+                        customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' }
                     }).then((r) => { 
                         if(r.isConfirmed) { 
                             let mN = getMaskedFullName(bookingData.fname, bookingData.lname); 
                             let mP = "******" + bookingData.tel.slice(-4); 
                             
+                            // 🔥 ตัด pLab (ชื่อเล่น) ออกจาก LINE Notify ตามที่ผู้ใช้รีเควส
                             let msg = (currentLang === 'en' ? `Booking: ${APP_CONFIG[bookingData.appType].title}\nPatient: ${mN}\nPhone: ${mP}\n` : `ขอจองคิว${APP_CONFIG[bookingData.appType].title}\nผู้รับบริการ: ${mN}\nเบอร์โทร: ${mP}\n`) + `Service: ${_t(bookingData.service)}\nDate: ${bookingData.date}\nTime: ${bookingData.time}\n`; 
                             
                             if(bookingData.rightName) msg += `Right: ${bookingData.rightName}\n`; 
@@ -1398,14 +1408,42 @@
                     }); 
                     closeModal(); renderMultiUserCard(); fetchData(true); 
                 } else { 
-                    Swal.fire(_t('swal_error'), res.message || 'Slot unavailable', 'error'); 
+                    // 🔥 Custom Alert Logic ตรงนี้ 🔥
+                    let errTitle = _t('swal_error');
+                    let errMsg = res.message || 'Slot unavailable';
+                    let errIcon = 'error';
+                    let btnColor = '#ef4444';
+
+                    if (res.status === 'error_blocked' && res.reason === 'duplicate_person') {
+                        errTitle = currentLang === 'en' ? 'Duplicate Appointment' : 'พบรายการจองซ้ำ';
+                        errMsg = currentLang === 'en' ? 
+                            `You have an active appointment on<br><b style="color:var(--primary); font-size:1.1rem;">${res.date} at ${res.time}</b>.<br>Please cancel it before booking a new one.` : 
+                            `คุณมีคิวที่ยังไม่เข้ารับบริการในระบบ<br><b style="color:var(--primary); font-size:1.1rem;">วันที่ ${res.date} เวลา ${res.time} น.</b><br>กรุณากดยกเลิกคิวเดิมก่อนทำรายการใหม่ครับ`;
+                        errIcon = 'warning';
+                        btnColor = '#f59e0b';
+                    } else if (errMsg.includes('ระบบทำงานหนัก') || res.status === 'error_occupied') {
+                        errTitle = currentLang === 'en' ? 'Slot Taken' : 'คิวไม่ว่างแล้ว';
+                        errMsg = currentLang === 'en' ? 
+                            'This queue was just taken by someone else.<br>Please select another time.' : 
+                            'คิวนี้มีคนจองไปก่อนแล้ว<br>กรุณาเลือกรอบเวลาอื่นครับ';
+                        errIcon = 'info';
+                        btnColor = '#3b82f6';
+                    }
+
+                    Swal.fire({ 
+                        title: errTitle, 
+                        html: errMsg, 
+                        icon: errIcon, 
+                        confirmButtonColor: btnColor,
+                        customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' }
+                    }); 
                     document.getElementById('btn-final-confirm').disabled = false; fetchData(true); 
                 } 
             }); 
         }).catch(e => finishPercentageLoader(() => { 
             let p = savedProfiles.find(x => x.id === bookingData.idCard); 
             addOrUpdateProfile(bookingData.idCard, bookingData.fname, bookingData.lname, bookingData.tel, p ? p.label : ''); 
-            Swal.fire(_t('swal_success'), _t('swal_saved'), 'success'); 
+            Swal.fire({title:_t('swal_success'), text:_t('swal_saved'), icon:'success', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}}); 
             closeModal(); renderMultiUserCard(); fetchData(true); 
         }));
     }
@@ -1422,7 +1460,7 @@
     // 🌟 ADMIN & SYSTEM
     // ==========================================
     let logoTaps = 0; let tapTimer; let currentAdminSort = 'created';
-    function handleAdminTap() { logoTaps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => logoTaps = 0, 2000); if (logoTaps >= 7) { logoTaps = 0; Swal.fire({ title: '🛡️ Admin Login', input: 'password', showCancelButton: true }).then((r) => { if (r.isConfirmed && r.value === "11395") { document.getElementById('adminModal').classList.add('show'); loadAdminLogs(); } }); } }
+    function handleAdminTap() { logoTaps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => logoTaps = 0, 2000); if (logoTaps >= 7) { logoTaps = 0; Swal.fire({ title: '🛡️ Admin Login', input: 'password', showCancelButton: true, customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'} }).then((r) => { if (r.isConfirmed && r.value === "11395") { document.getElementById('adminModal').classList.add('show'); loadAdminLogs(); } }); } }
     function switchAdminTab(tId) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active')); event.currentTarget.classList.add('active'); document.getElementById(tId).classList.add('active'); }
     
     async function adminSearch() { 
@@ -1446,10 +1484,10 @@
     }
     
     function adminTeleBook(id, f, l, t) { addOrUpdateProfile(id, f, l, t, "Admin Book"); document.getElementById('adminModal').classList.remove('show'); renderMultiUserCard(); }
-    function editPatientUI(id, f, l, t) { Swal.fire({ title: 'Edit', html: `<input id="sw-id" class="form-control" value="${id}" style="margin-bottom:10px;"><div style="display:flex; gap:10px; margin-bottom:10px;"><input id="sw-f" class="form-control" value="${f}"><input id="sw-l" class="form-control" value="${l}"></div><input id="sw-t" class="form-control" value="${t}">`, showCancelButton: true, preConfirm: () => { savePatientData({oldId: id, idCard: document.getElementById('sw-id').value, fname: document.getElementById('sw-f').value, lname: document.getElementById('sw-l').value, tel: document.getElementById('sw-t').value}); } }); }
-    async function savePatientData(p) { Swal.fire({title:'Saving...'}); await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_manage_patient', pass: '11395', payload: p }) }); Swal.fire('Success','','success'); adminSearch(); }
-    async function deletePatientConfirm(id) { Swal.fire({ title: 'Delete?', showCancelButton: true }).then(async (r) => { if (r.isConfirmed) { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_delete_patient', pass: '11395', idCard: id }) }); adminSearch(); } }); }
-    function openPlanModal(id) { Swal.fire({ title: 'Plan / Ban', html: `<select id="swal-svc" class="form-control" style="margin-bottom:10px;"><option value="ttm">TTM</option><option value="tcm">TCM</option><option value="steam">Steam</option><option value="postpartum">Postpartum</option><option value="BANNED">BAN ACCOUNT</option></select><input type="number" id="swal-days" class="form-control" placeholder="Days from now">`, showCancelButton: true, preConfirm: () => { adminManagePlan(id, document.getElementById('swal-svc').value, document.getElementById('swal-days').value); } }); }
+    function editPatientUI(id, f, l, t) { Swal.fire({ title: 'Edit', html: `<input id="sw-id" class="form-control" value="${id}" style="margin-bottom:10px;"><div style="display:flex; gap:10px; margin-bottom:10px;"><input id="sw-f" class="form-control" value="${f}"><input id="sw-l" class="form-control" value="${l}"></div><input id="sw-t" class="form-control" value="${t}">`, showCancelButton: true, customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}, preConfirm: () => { savePatientData({oldId: id, idCard: document.getElementById('sw-id').value, fname: document.getElementById('sw-f').value, lname: document.getElementById('sw-l').value, tel: document.getElementById('sw-t').value}); } }); }
+    async function savePatientData(p) { Swal.fire({title:'Saving...', customClass:{popup:'swal-3d-popup'}}); await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_manage_patient', pass: '11395', payload: p }) }); Swal.fire({title:'Success', icon:'success', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}}); adminSearch(); }
+    async function deletePatientConfirm(id) { Swal.fire({ title: 'Delete?', showCancelButton: true, customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'} }).then(async (r) => { if (r.isConfirmed) { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_delete_patient', pass: '11395', idCard: id }) }); adminSearch(); } }); }
+    function openPlanModal(id) { Swal.fire({ title: 'Plan / Ban', html: `<select id="swal-svc" class="form-control" style="margin-bottom:10px;"><option value="ttm">TTM</option><option value="tcm">TCM</option><option value="steam">Steam</option><option value="postpartum">Postpartum</option><option value="BANNED">BAN ACCOUNT</option></select><input type="number" id="swal-days" class="form-control" placeholder="Days from now">`, showCancelButton: true, customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}, preConfirm: () => { adminManagePlan(id, document.getElementById('swal-svc').value, document.getElementById('swal-days').value); } }); }
     async function adminManagePlan(id, svc, days) { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_manage_plan', pass: '11395', idCard: id, service: svc, days: days }) }); adminSearch(); }
     
     function setAdminSort(t) { currentAdminSort = t; document.getElementById('btnSortCreated').className = (t === 'created') ? 'btn btn-confirm' : 'btn btn-cancel'; document.getElementById('btnSortAppoint').className = (t === 'appoint') ? 'btn btn-confirm' : 'btn btn-cancel'; loadAdminLogs(); }
@@ -1468,9 +1506,9 @@
         }); 
     }
     
-    function adminCancelQueue(id, sd, t, d) { Swal.fire({ title: 'Cancel?', html:`Ban duration:<br><select id="swal-ban-days" class="form-control" style="margin-top:10px;"><option value="0">No Ban</option><option value="2">2 Days</option><option value="5">5 Days</option></select>`, showCancelButton: true }).then(async (r) => { if (r.isConfirmed) { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_cancel_booking', pass: '11395', idCard: id, sysDate: sd, time: t, dept: d, banDays: document.getElementById('swal-ban-days').value }) }); loadAdminLogs(); } }); }
+    function adminCancelQueue(id, sd, t, d) { Swal.fire({ title: 'Cancel?', html:`Ban duration:<br><select id="swal-ban-days" class="form-control" style="margin-top:10px;"><option value="0">No Ban</option><option value="2">2 Days</option><option value="5">5 Days</option></select>`, showCancelButton: true, customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'} }).then(async (r) => { if (r.isConfirmed) { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_cancel_booking', pass: '11395', idCard: id, sysDate: sd, time: t, dept: d, banDays: document.getElementById('swal-ban-days').value }) }); loadAdminLogs(); } }); }
     
-    function forceSyncSystem(b) { let old = b.innerHTML; b.innerHTML='Syncing...'; b.disabled = true; fetch(API_ENDPOINT + "?action=syncFirebase").then(()=>{ Swal.fire('Success'); b.innerHTML=old; b.disabled = false; }).catch(()=>{ Swal.fire('Error'); b.innerHTML=old; b.disabled=false; }); }
+    function forceSyncSystem(b) { let old = b.innerHTML; b.innerHTML='Syncing...'; b.disabled = true; fetch(API_ENDPOINT + "?action=syncFirebase").then(()=>{ Swal.fire({title:'Success', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}}); b.innerHTML=old; b.disabled = false; }).catch(()=>{ Swal.fire({title:'Error', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}}); b.innerHTML=old; b.disabled=false; }); }
     
     // RESTORED CSV UPLOAD
     function updateAdminFileUI(input) {
@@ -1484,7 +1522,7 @@
         const fileInp = document.getElementById('adminFileInput');
         const reader = new FileReader();
         reader.onload = async function(e) {
-            Swal.fire({title: 'Uploading...', allowOutsideClick: false, didOpen: () => {Swal.showLoading();}});
+            Swal.fire({title: 'Uploading...', allowOutsideClick: false, didOpen: () => {Swal.showLoading();}, customClass:{popup:'swal-3d-popup'}});
             const rows = e.target.result.split('\n').slice(1);
             const payload = [];
             rows.forEach(row => {
@@ -1496,14 +1534,14 @@
             try {
                 let res = await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_batch_upload', pass: '11395', payload: payload }) });
                 let data = await res.json();
-                if(data.status === 'success') { Swal.fire('Success', `Uploaded ${data.count} records`, 'success'); }
-                else { Swal.fire('Error', 'Upload failed', 'error'); }
-            } catch(err) { Swal.fire('Error', 'Connection error', 'error'); }
+                if(data.status === 'success') { Swal.fire({title:'Success', text:`Uploaded ${data.count} records`, icon:'success', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}}); }
+                else { Swal.fire({title:'Error', text:'Upload failed', icon:'error', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}}); }
+            } catch(err) { Swal.fire({title:'Error', text:'Connection error', icon:'error', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}}); }
         };
         reader.readAsText(fileInp.files[0]);
     }
 
-    function viewFullImage() { let meta = document.querySelector('meta[name=viewport]'); meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes'); Swal.fire({ imageUrl: 'https://img2.pic.in.th/890005e17a696c1ad92f3ab1fb121f87.png', imageAlt: 'Announce', width: '100%', background: 'transparent', padding: '0', showConfirmButton: false, showCloseButton: true, backdrop: 'rgba(0,0,0,0.95)', didOpen: () => { document.querySelector('.swal2-image').style.maxHeight = '85vh'; }, willClose: () => { meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'); } }); }
+    function viewFullImage() { let meta = document.querySelector('meta[name=viewport]'); meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes'); Swal.fire({ imageUrl: 'https://img2.pic.in.th/890005e17a696c1ad92f3ab1fb121f87.png', imageAlt: 'Announce', width: '100%', background: 'transparent', padding: '0', showConfirmButton: false, showCloseButton: true, backdrop: 'rgba(0,0,0,0.95)', didOpen: () => { document.querySelector('.swal2-image').style.maxHeight = '85vh'; }, willClose: () => { meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'); }, customClass:{popup:'swal-3d-popup'} }); }
   </script>
 </body>
 </html>
