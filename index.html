@@ -254,7 +254,6 @@
           <span id="t-fill-info"></span>
       </div>
       
-      <!-- 🚥 STEPPER UI 🚥 -->
       <div class="stepper-wrapper" id="booking-stepper">
           <div class="step active" id="step-ind-1">
               <div class="step-circle">1</div>
@@ -272,7 +271,6 @@
           </div>
       </div>
       
-      <!-- 🟢 STEP 1 : PATIENT INFO 🟢 -->
       <div id="step-1-patient">
           <div id="auth-section" style="display: block;">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
@@ -331,7 +329,6 @@
           </div>
       </div>
 
-      <!-- 🟢 STEP 2 : SERVICE 🟢 -->
       <div id="step-2-service" class="hidden">
           <div id="ghost-hint-options" style="display:none; background:#f8fafc; border:1px dashed #cbd5e1; padding:12px; border-radius:12px; text-align:center; color:#64748b; font-size:0.85rem; margin-top:15px; margin-bottom:15px;">
               <i class="fas fa-lightbulb" style="color:#f59e0b; font-size:1.2rem; margin-bottom:5px; display:block;"></i>
@@ -376,7 +373,6 @@
           </div>
       </div>
 
-      <!-- 🟢 STEP 3 : SUMMARY 🟢 -->
       <div id="step-3-summary" class="hidden">
         <div id="summary-content"></div>
         <div class="btn-group">
@@ -388,7 +384,6 @@
     </div>
   </div>
 
-  <!-- ADMIN MODAL -->
   <div id="adminModal" class="modal-overlay">
       <div class="modal-card" style="background: #f0f4f8; padding:0; border-radius:0; height:100vh; max-height:100vh;">
           <div style="background:white; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.05); display:flex; justify-content:space-between; position:sticky; top:0; z-index:10; font-weight:700; font-size:1.1rem;">
@@ -459,8 +454,8 @@
     let currentLang = localStorage.getItem('sdh_lang') || 'th';
     let currentApp = ''; let globalData = []; let fullFirebaseData = null; 
     let bookingData = {}; let selectedIndex = 0; let typingTimer;
-    let currentUserDB = null; let selectedSlotData = null; let refreshInterval; let activeBookingObj = null; let isForeigner = false;
-    let staffCan2Hr = false; // สำหรับดักจับว่าหมอที่เลือกให้บริการ 2 ชั่วโมงได้หรือไม่
+    let currentUserDB = null; let selectedSlotData = null; let refreshInterval; let activeBookingObj = null; let isForeigner = false; 
+    let staffCan2Hr = false; // 🔥 FIX: ประกาศตัวแปร Global ป้องกันบั๊กขัดข้องตอนเรียกหน้าต่าง 2 ชม.
     
     // ==========================================
     // 🌟 PROFILES (LOCAL STORAGE)
@@ -942,7 +937,12 @@
             let genderBadge = ''; if (currentApp === 'steam' && slotGender && !isFull) { if (slotGender === "ชาย" || slotGender === "ช") genderBadge = `<div class="gender-tag male-tag"><i class="fas fa-mars"></i> Male</div>`; else if (slotGender === "หญิง" || slotGender === "ญ") genderBadge = `<div class="gender-tag female-tag"><i class="fas fa-venus"></i> Female</div>`; }
             let statusTxt = isFull ? (currentLang==='en'?'FULL':'เต็ม') : (currentLang==='en'?`${count} Left`:`ว่าง ${count}`);
             let badgeHtml = isFull ? `<div class="status-capsule"><div class="status-text">${statusTxt}</div></div>` : `<div class="slot-info-right">${genderBadge}${twoHrBadge}<div class="status-capsule">${iconsHtml}<div class="status-text">${statusTxt}</div></div></div>`;
-            let staffJsonEncoded = encodeURIComponent(JSON.stringify(slot.staff || [])); let action = isFull ? '' : `onclick="openBooking('${slot.time}', '${dtLabel}', '${day.sysDate}', ${index}, '${staffJsonEncoded}', '${slotGender}')"`;
+            
+            // 🔥 FIX: Encode string correctly to avoid breaking HTML onclick tag 🔥
+            let staffJsonEncoded = encodeURIComponent(JSON.stringify(slot.staff || [])).replace(/'/g, "%27"); 
+            let dtLabelSafe = dtLabel.replace(/'/g, "\\'");
+            
+            let action = isFull ? '' : `onclick="openBooking('${slot.time}', '${dtLabelSafe}', '${day.sysDate}', ${index}, '${staffJsonEncoded}', '${slotGender}')"`;
             html += `<div class="slot-card ${isFull?'is-full':''} ${gClass}" style="animation-delay:${i*0.05}s; ${isFull?'':'cursor:pointer'}" ${action}><div class="time-wrap"><div class="icon-status">${isFull ? '<i class="fas fa-lock"></i>' : deptIcon}</div><div class="time-text">${slot.time}<small>${currentApp==='steam'?(currentLang==='en'?'Round':'รอบบริการ'):(currentLang==='en'?'Start':'เริ่มให้บริการ')}</small></div></div>${badgeHtml}</div>`;
         });
         container.innerHTML = html + '</div>';
@@ -1009,12 +1009,13 @@
         // 🔥 FIX: อัปเดตรูปภาพที่ Dropdown ด้วย
         let defaultAppImg = currentApp === 'tcm' ? 'https://img2.pic.in.th/55c47176d1c28f966a1289b3b1d48837.png' : DEFAULT_IMG;
         let imgUrl = STAFF_IMAGES[thaiName] || defaultAppImg;
-        document.getElementById('staff-display-img').src = imgUrl;
+        let displayImg = document.getElementById('staff-display-img');
+        if (displayImg) displayImg.src = imgUrl;
         
         document.getElementById('staff-display-name').innerText = dName;
         document.getElementById('inp-staff-val').value = thaiName; 
         selectedSlotData = { sheetName: sObj.sheetName, row: sObj.row, col: sObj.col }; 
-        staffCan2Hr = sObj.can2Hr || false; // เก็บสถานะว่าหมอคนนี้ว่าง 2 ชม. ไหม
+        staffCan2Hr = sObj.can2Hr || false; 
         
         document.getElementById('staff-trigger').classList.remove('open'); 
         updatePriceDisplay();
@@ -1311,6 +1312,7 @@
                             let sN = bookingData.staff; 
                             let dS = currentLang === 'en' ? (STAFF_EN_NAMES[sN] || sN) : (STAFF_NAME_MAP[sN] || sN);
                             
+                            // 🔥 ตัด pLab (ชื่อเล่น) ออกจาก LINE Notify ตามที่ผู้ใช้รีเควส
                             let msg = (currentLang === 'en' ? `Booking: ${APP_CONFIG[bookingData.appType].title}\nPatient: ${mN}\nPhone: ${mP}\n` : `ขอจองคิว${APP_CONFIG[bookingData.appType].title}\nผู้รับบริการ: ${mN}\nเบอร์โทร: ${mP}\n`) + `Service: ${_t(bookingData.service)}\nDate: ${bookingData.date}\nTime: ${bookingData.time}\n`; 
                             
                             if(bookingData.rightName) msg += `Right: ${bookingData.rightName}\n`; 
@@ -1457,6 +1459,8 @@
         };
         reader.readAsText(fileInp.files[0]);
     }
+
+    function viewFullImage() { let meta = document.querySelector('meta[name=viewport]'); meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes'); Swal.fire({ imageUrl: 'https://img2.pic.in.th/890005e17a696c1ad92f3ab1fb121f87.png', imageAlt: 'Announce', width: '100%', background: 'transparent', padding: '0', showConfirmButton: false, showCloseButton: true, backdrop: 'rgba(0,0,0,0.95)', didOpen: () => { document.querySelector('.swal2-image').style.maxHeight = '85vh'; }, willClose: () => { meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'); }, customClass:{popup:'swal-3d-popup'} }); }
   </script>
 </body>
 </html>
