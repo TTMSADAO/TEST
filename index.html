@@ -455,7 +455,7 @@
     let currentApp = ''; let globalData = []; let fullFirebaseData = null; 
     let bookingData = {}; let selectedIndex = 0; let typingTimer;
     let currentUserDB = null; let selectedSlotData = null; let refreshInterval; let activeBookingObj = null; let isForeigner = false; 
-    let staffCan2Hr = false; // 🔥 FIX: ประกาศตัวแปร Global ป้องกันบั๊กขัดข้องตอนเรียกหน้าต่าง 2 ชม.
+    let staffCan2Hr = false;
     
     // ==========================================
     // 🌟 PROFILES (LOCAL STORAGE)
@@ -659,7 +659,6 @@
         });
     }
 
-    // 3D Smart Patient Book in Booking Modal
     function renderSmartBookDropdown() {
         let area = document.getElementById('smart-book-area');
         if (!area) return;
@@ -883,22 +882,38 @@
     function selectDate(index) { selectedIndex = index; renderScroller(); renderSlots(index); }
 
     function renderSlots(index) {
-        let day = globalData[index]; let container = document.getElementById('contentArea');
+        let day = globalData[index]; 
+        let container = document.getElementById('contentArea');
         if (!day || !day.slots || day.slots.length === 0) { container.innerHTML = `<div style="text-align:center; padding:60px 20px; color:#94a3b8;"><i class="fas fa-calendar-times" style="font-size:3.5rem; margin-bottom:15px; opacity:0.4;"></i><h3 style="margin:0;">${currentLang === 'en' ? 'No slots available' : 'ไม่มีรอบว่างในวันนี้'}</h3></div>`; return; }
+        
         let now = new Date(); let currentMins = now.getHours() * 60 + now.getMinutes(); let todaySysDate = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, '0') + "-" + String(now.getDate()).padStart(2, '0'); let isToday = (day.sysDate === todaySysDate);
         let validSlots = [];
+        
         day.slots.forEach(slot => { if (isToday) { let tP = slot.time.split(":"); let sM = parseInt(tP[0]) * 60 + parseInt(tP[1]); if (sM <= currentMins) return; } validSlots.push(slot); });
+        
         if(validSlots.length === 0) { container.innerHTML = `<div style="text-align:center; padding:60px 20px; color:#94a3b8;"><i class="fas fa-clock" style="font-size:3.5rem; margin-bottom:15px; opacity:0.4;"></i><h3 style="margin:0;">${currentLang === 'en' ? 'All slots have passed' : 'รอบบริการวันนี้ผ่านไปหมดแล้ว'}</h3></div>`; return; }
-        let dtLabel = day.fullLabel; if(currentLang === 'en') { let mEn = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; let dParts = day.sysDate.split("-"); dtLabel = `${dParts[2]} ${mEn[parseInt(dParts[1])-1]} ${dParts[0]}`; }
+        
+        let dtLabel = day.fullLabel; 
+        if(currentLang === 'en') { let mEn = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; let dParts = day.sysDate.split("-"); dtLabel = `${dParts[2]} ${mEn[parseInt(dParts[1])-1]} ${dParts[0]}`; }
+        
         let html = `<div class="selected-date-header"><span class="header-bar"></span>${dtLabel}</div><div class="grid-container">`;
-        let deptIcon = '<i class="fas fa-calendar-check"></i>'; if (currentApp === 'ttm') deptIcon = '<i class="fas fa-leaf"></i>'; else if (currentApp === 'tcm') deptIcon = '<i class="fas fa-yin-yang"></i>'; else if (currentApp === 'postpartum') deptIcon = '<i class="fas fa-hands-holding-child"></i>'; else if (currentApp === 'steam') deptIcon = '<i class="fas fa-hot-tub-person"></i>';
+        let deptIcon = '<i class="fas fa-calendar-check"></i>'; 
+        if (currentApp === 'ttm') deptIcon = '<i class="fas fa-leaf"></i>'; else if (currentApp === 'tcm') deptIcon = '<i class="fas fa-yin-yang"></i>'; else if (currentApp === 'postpartum') deptIcon = '<i class="fas fa-hands-holding-child"></i>'; else if (currentApp === 'steam') deptIcon = '<i class="fas fa-hot-tub-person"></i>';
         
         validSlots.forEach((slot, i) => {
-            let isFull = slot.val.includes('เต็ม') || slot.val.includes('งด'); let count = slot.count || 0; let slotGender = slot.gender || ""; let gClass = "";
-            if (currentApp === 'tcm') gClass = "theme-tcm"; if (currentApp === 'postpartum') gClass = "theme-postpartum";
+            let isFull = slot.val.includes('เต็ม') || slot.val.includes('งด'); 
+            let count = slot.count || 0; 
+            let slotGender = slot.gender || ""; 
+            let gClass = "";
+            if (currentApp === 'tcm') gClass = "theme-tcm"; 
+            if (currentApp === 'postpartum') gClass = "theme-postpartum";
             if (currentApp === 'steam' && slotGender !== "" && !isFull) { if (slotGender === "ชาย" || slotGender === "ช") gClass = "slot-male"; else if (slotGender === "หญิง" || slotGender === "ญ") gClass = "slot-female"; }
             
-            let twoHrBadge = ""; if (!isFull && slot.count2Hr > 0 && (currentApp === 'ttm' || currentApp === 'tcm')) { let bText = currentApp === 'tcm' ? "Acu+Cup" : `2Hr (${slot.count2Hr})`; twoHrBadge = `<div class="badge-2hr"><i class="fas fa-clock"></i> ${bText}</div>`; }
+            let twoHrBadge = ""; 
+            if (!isFull && slot.count2Hr > 0 && (currentApp === 'ttm' || currentApp === 'tcm')) { 
+                let bText = currentApp === 'tcm' ? "Acu+Cup" : `2Hr (${slot.count2Hr})`; 
+                twoHrBadge = `<div class="badge-2hr"><i class="fas fa-clock"></i> ${bText}</div>`; 
+            }
             
             // 🔥 NEW AVATAR STACK LOGIC 🔥
             let iconsHtml = ''; 
@@ -934,15 +949,22 @@
                 iconsHtml += `</div>`; 
             }
             
-            let genderBadge = ''; if (currentApp === 'steam' && slotGender && !isFull) { if (slotGender === "ชาย" || slotGender === "ช") genderBadge = `<div class="gender-tag male-tag"><i class="fas fa-mars"></i> Male</div>`; else if (slotGender === "หญิง" || slotGender === "ญ") genderBadge = `<div class="gender-tag female-tag"><i class="fas fa-venus"></i> Female</div>`; }
+            let genderBadge = ''; 
+            if (currentApp === 'steam' && slotGender && !isFull) { 
+                if (slotGender === "ชาย" || slotGender === "ช") genderBadge = `<div class="gender-tag male-tag"><i class="fas fa-mars"></i> Male</div>`; 
+                else if (slotGender === "หญิง" || slotGender === "ญ") genderBadge = `<div class="gender-tag female-tag"><i class="fas fa-venus"></i> Female</div>`; 
+            }
+            
             let statusTxt = isFull ? (currentLang==='en'?'FULL':'เต็ม') : (currentLang==='en'?`${count} Left`:`ว่าง ${count}`);
             let badgeHtml = isFull ? `<div class="status-capsule"><div class="status-text">${statusTxt}</div></div>` : `<div class="slot-info-right">${genderBadge}${twoHrBadge}<div class="status-capsule">${iconsHtml}<div class="status-text">${statusTxt}</div></div></div>`;
             
-            // 🔥 FIX: Encode string correctly to avoid breaking HTML onclick tag 🔥
-            let staffJsonEncoded = encodeURIComponent(JSON.stringify(slot.staff || [])).replace(/'/g, "%27"); 
+            // 🔥 ESCAPE DATA FULLY TO PREVENT ONCLICK BUGS 🔥
+            let staffJsonStr = JSON.stringify(slot.staff || []);
+            let staffJsonEncoded = encodeURIComponent(staffJsonStr).replace(/'/g, "%27"); 
             let dtLabelSafe = dtLabel.replace(/'/g, "\\'");
             
             let action = isFull ? '' : `onclick="openBooking('${slot.time}', '${dtLabelSafe}', '${day.sysDate}', ${index}, '${staffJsonEncoded}', '${slotGender}')"`;
+            
             html += `<div class="slot-card ${isFull?'is-full':''} ${gClass}" style="animation-delay:${i*0.05}s; ${isFull?'':'cursor:pointer'}" ${action}><div class="time-wrap"><div class="icon-status">${isFull ? '<i class="fas fa-lock"></i>' : deptIcon}</div><div class="time-text">${slot.time}<small>${currentApp==='steam'?(currentLang==='en'?'Round':'รอบบริการ'):(currentLang==='en'?'Start':'เริ่มให้บริการ')}</small></div></div>${badgeHtml}</div>`;
         });
         container.innerHTML = html + '</div>';
@@ -1083,7 +1105,6 @@
             return;
         }
 
-        // TTM or TCM flow
         if (currentApp === 'tcm' && !bookingData.service.includes("ฝังเข็มเพื่อการรักษา")) {
             buildSummaryAndShow(null);
             return;
@@ -1312,7 +1333,6 @@
                             let sN = bookingData.staff; 
                             let dS = currentLang === 'en' ? (STAFF_EN_NAMES[sN] || sN) : (STAFF_NAME_MAP[sN] || sN);
                             
-                            // 🔥 ตัด pLab (ชื่อเล่น) ออกจาก LINE Notify ตามที่ผู้ใช้รีเควส
                             let msg = (currentLang === 'en' ? `Booking: ${APP_CONFIG[bookingData.appType].title}\nPatient: ${mN}\nPhone: ${mP}\n` : `ขอจองคิว${APP_CONFIG[bookingData.appType].title}\nผู้รับบริการ: ${mN}\nเบอร์โทร: ${mP}\n`) + `Service: ${_t(bookingData.service)}\nDate: ${bookingData.date}\nTime: ${bookingData.time}\n`; 
                             
                             if(bookingData.rightName) msg += `Right: ${bookingData.rightName}\n`; 
