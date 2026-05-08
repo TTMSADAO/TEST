@@ -455,7 +455,7 @@
     let currentApp = ''; let globalData = []; let fullFirebaseData = null; 
     let bookingData = {}; let selectedIndex = 0; let typingTimer;
     let currentUserDB = null; let refreshInterval; let activeBookingObj = null; let isForeigner = false; 
-    let staffCan2Hr = false; // สำหรับดักจับ 2 ชั่วโมง
+    let staffCan2Hr = false;
     
     // ==========================================
     // 🌟 PROFILES (LOCAL STORAGE)
@@ -659,7 +659,6 @@
         });
     }
 
-    // 3D Smart Patient Book in Booking Modal
     function renderSmartBookDropdown() {
         let area = document.getElementById('smart-book-area');
         if (!area) return;
@@ -883,12 +882,14 @@
     function selectDate(index) { selectedIndex = index; renderScroller(); renderSlots(index); }
 
     // 🔥 NEW FUNCTION: ONLY PASS INDEX AND TIME IN ONCLICK 🔥
-    function openBookingSafe(time, dayIndex, slotGender) {
+    function openBookingSafe(dayIndex, time, slotGender) {
         try {
-            staffCan2Hr = false; // รีเซ็ตทุกครั้งที่เปิด
+            staffCan2Hr = false; 
             let day = globalData[dayIndex];
             let slotData = day.slots.find(s => s.time === time);
-            let staffs = slotData ? (slotData.staff || []) : [];
+            if (!slotData) return;
+
+            let staffs = slotData.staff || [];
             
             let dtLabel = day.fullLabel;
             if (currentLang === 'en') {
@@ -897,7 +898,15 @@
                 dtLabel = `${dParts[2]} ${mEn[parseInt(dParts[1])-1]} ${dParts[0]}`;
             }
 
-            bookingData = { dept: APP_CONFIG[currentApp].title, date: dtLabel, sysDate: day.sysDate, time: time, appType: currentApp, sheetName: day.sheetName };
+            bookingData = { 
+                dept: APP_CONFIG[currentApp].title, 
+                date: dtLabel, 
+                sysDate: day.sysDate, 
+                time: time, 
+                appType: currentApp, 
+                sheetName: day.sheetName,
+                ppExtraData: JSON.stringify(staffs)
+            };
             
             document.getElementById('auth-section').style.display = 'block'; 
             
@@ -1009,13 +1018,9 @@
             let count = slot.count || 0; 
             let slotGender = slot.gender || ""; 
             let gClass = "";
-            
             if (currentApp === 'tcm') gClass = "theme-tcm"; 
             if (currentApp === 'postpartum') gClass = "theme-postpartum";
-            if (currentApp === 'steam' && slotGender !== "" && !isFull) { 
-                if (slotGender === "ชาย" || slotGender === "ช") gClass = "slot-male"; 
-                else if (slotGender === "หญิง" || slotGender === "ญ") gClass = "slot-female"; 
-            }
+            if (currentApp === 'steam' && slotGender !== "" && !isFull) { if (slotGender === "ชาย" || slotGender === "ช") gClass = "slot-male"; else if (slotGender === "หญิง" || slotGender === "ญ") gClass = "slot-female"; }
             
             let twoHrBadge = ""; 
             if (!isFull && slot.count2Hr > 0 && (currentApp === 'ttm' || currentApp === 'tcm')) { 
@@ -1027,6 +1032,7 @@
             let iconsHtml = ''; 
             if (!isFull && count > 0) { 
                 iconsHtml = `<div class="queue-icons" style="display:flex; align-items:center;">`; 
+                
                 if (currentApp === 'tcm') {
                     let displayCount = Math.min(count, 4);
                     let tcmImg = 'https://img2.pic.in.th/55c47176d1c28f966a1289b3b1d48837.png';
@@ -1034,7 +1040,9 @@
                         let marginLeft = k > 0 ? '-8px' : '0';
                         iconsHtml += `<img src="${tcmImg}" style="width:26px; height:26px; border-radius:50%; border:2px solid white; margin-left:${marginLeft}; z-index:${10-k}; position:relative; object-fit:cover; background:#f8fafc; box-shadow:0 1px 3px rgba(0,0,0,0.1);">`;
                     }
-                    if (count > displayCount) iconsHtml += `<span style="font-weight:800; margin-left:6px; font-size:0.75rem; color:var(--primary);">+${count - displayCount}</span>`;
+                    if (count > displayCount) {
+                        iconsHtml += `<span style="font-weight:800; margin-left:6px; font-size:0.75rem; color:var(--primary);">+${count - displayCount}</span>`;
+                    }
                 } else if (currentApp === 'ttm' && slot.staff && slot.staff.length > 0) {
                     let uniqueStaffNames = [...new Set(slot.staff.map(s => s.name))];
                     let displayCount = Math.min(uniqueStaffNames.length, 4);
@@ -1044,7 +1052,9 @@
                         let marginLeft = k > 0 ? '-8px' : '0';
                         iconsHtml += `<img src="${imgUrl}" style="width:26px; height:26px; border-radius:50%; border:2px solid white; margin-left:${marginLeft}; z-index:${10-k}; position:relative; object-fit:cover; background:#f8fafc; box-shadow:0 1px 3px rgba(0,0,0,0.1);">`;
                     }
-                    if (count > displayCount) iconsHtml += `<span style="font-weight:800; margin-left:6px; font-size:0.75rem; color:var(--primary);">+${count - displayCount}</span>`;
+                    if (count > displayCount) {
+                        iconsHtml += `<span style="font-weight:800; margin-left:6px; font-size:0.75rem; color:var(--primary);">+${count - displayCount}</span>`;
+                    }
                 } else {
                     for(let k=0; k<Math.min(count, 4); k++) iconsHtml += `<i class="fas fa-user" style="font-size:0.8rem;"></i>`; 
                     if (count > 4) iconsHtml += `<span style="font-weight:800; margin-left:2px; font-size:0.7rem;">+</span>`; 
@@ -1062,7 +1072,7 @@
             let badgeHtml = isFull ? `<div class="status-capsule"><div class="status-text">${statusTxt}</div></div>` : `<div class="slot-info-right">${genderBadge}${twoHrBadge}<div class="status-capsule">${iconsHtml}<div class="status-text">${statusTxt}</div></div></div>`;
             
             // 🔥 FIXED ESCAPE LOGIC: JUST PASS PRIMITIVES 🔥
-            let action = isFull ? '' : `onclick="openBookingSafe('${slot.time}', ${index}, '${slotGender}')"`;
+            let action = isFull ? '' : `onclick="openBookingSafe(${index}, '${slot.time}', '${slotGender}')"`;
             
             html += `<div class="slot-card ${isFull?'is-full':''} ${gClass}" style="animation-delay:${i*0.05}s; ${isFull?'':'cursor:pointer'}" ${action}><div class="time-wrap"><div class="icon-status">${isFull ? '<i class="fas fa-lock"></i>' : deptIcon}</div><div class="time-text">${slot.time}<small>${currentApp==='steam'?(currentLang==='en'?'Round':'รอบบริการ'):(currentLang==='en'?'Start':'เริ่มให้บริการ')}</small></div></div>${badgeHtml}</div>`;
         });
@@ -1172,7 +1182,6 @@
         bookingData.idCard = id; bookingData.fname = f; bookingData.lname = l; 
         bookingData.name = f + " " + l; bookingData.tel = t; 
         bookingData.note = document.getElementById('inp-note').value; 
-        bookingData.extraInfo = "";
         
         let existingProfile = savedProfiles.find(p => p.id === id);
         if(!existingProfile) addOrUpdateProfile(id, f, l, t, "");
@@ -1431,6 +1440,7 @@
                             let sN = bookingData.staff; 
                             let dS = currentLang === 'en' ? (STAFF_EN_NAMES[sN] || sN) : (STAFF_NAME_MAP[sN] || sN);
                             
+                            // 🔥 ตัด pLab (ชื่อเล่น) ออกจาก LINE Notify ตามที่ผู้ใช้รีเควส
                             let msg = (currentLang === 'en' ? `Booking: ${APP_CONFIG[bookingData.appType].title}\nPatient: ${mN}\nPhone: ${mP}\n` : `ขอจองคิว${APP_CONFIG[bookingData.appType].title}\nผู้รับบริการ: ${mN}\nเบอร์โทร: ${mP}\n`) + `Service: ${_t(bookingData.service)}\nDate: ${bookingData.date}\nTime: ${bookingData.time}\n`; 
                             
                             if(bookingData.rightName) msg += `Right: ${bookingData.rightName}\n`; 
