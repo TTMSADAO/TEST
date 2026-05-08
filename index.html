@@ -67,14 +67,14 @@
     .container { max-width: 600px; margin: 0 auto; padding: 0 15px 80px; }
     .selected-date-header { font-size: 1.1rem; font-weight: 700; color: #1e293b; padding: 20px 5px 15px; display: flex; align-items: center; } .header-bar { width: 5px; height: 20px; border-radius: 5px; margin-right: 12px; background-color: var(--primary); }
     .grid-container { display: flex; flex-direction: column; gap: 14px; }
-    .slot-card { display: flex; justify-content: space-between; align-items: center; background: white; border-radius: 16px; padding: 12px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; position: relative; overflow: hidden; animation: slideUp 0.3s forwards; opacity: 0; transition: transform 0.2s; border-left: 6px solid var(--primary); }
-    .slot-card:active { transform: scale(0.98); } .slot-card.is-full { border-left-color: #cbd5e1; background: #f8fafc; opacity: 0.85; pointer-events: none; }
+    .slot-card { display: flex; justify-content: space-between; align-items: center; background: white; border-radius: 16px; padding: 12px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; position: relative; overflow: hidden; animation: slideUp 0.3s forwards; opacity: 0; transition: transform 0.2s; border-left: 6px solid var(--primary); cursor: pointer; }
+    .slot-card:active { transform: scale(0.98); } .slot-card.is-full { border-left-color: #cbd5e1; background: #f8fafc; opacity: 0.85; pointer-events: none; cursor: default; }
     .theme-tcm { border-left-color: #c62828 !important; } .theme-postpartum { border-left-color: #ec4899 !important; } .slot-male { border-left-color: #3b82f6 !important; background: #eff6ff !important; } .slot-female { border-left-color: #ec4899 !important; background: #fdf2f8 !important; }
     .time-wrap { display: flex; align-items: center; gap: 14px; } .icon-status { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: var(--primary-light); color: var(--primary); } .is-full .icon-status { background: #e2e8f0; color: #94a3b8; }
     .time-text { font-weight: 700; font-size: 1.15rem; color: #1e293b; display: flex; flex-direction: column; line-height: 1.2; } .time-text small { font-size: 0.7rem; color: #64748b; font-weight: 500; margin-top: 2px; }
     .slot-info-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
     .status-capsule { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px; background: var(--primary-light); padding: 8px 16px; border-radius: 14px; min-width: 90px; border: 1px solid rgba(76, 175, 80, 0.2); } .is-full .status-capsule { background: #e2e8f0; border-color: transparent; }
-    .queue-icons { display: flex; gap: 3px; color: var(--primary); font-size: 0.9rem; opacity: 0.9; } .status-text { font-size: 0.95rem; font-weight: 700; color: var(--primary); line-height: 1; } .is-full .status-text { color: #64748b; }
+    .queue-icons { display: flex; gap: 3px; color: var(--primary); font-size: 0.9rem; opacity: 0.9; align-items: center;} .status-text { font-size: 0.95rem; font-weight: 700; color: var(--primary); line-height: 1; } .is-full .status-text { color: #64748b; }
     .badge-2hr { background: #f59e0b; color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
 
     .loading-screen, .page-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; backdrop-filter: blur(5px); } 
@@ -338,7 +338,7 @@
           <div id="normal-fields" class="hidden">
               <div class="form-group">
                 <label class="form-label" id="t-sel-svc">เลือกบริการ</label>
-                <select id="inp-service" class="form-control" onchange="updatePriceDisplay(); checkIDCardInput();"></select>
+                <select id="inp-service" class="form-control" onchange="updatePriceDisplay();"></select>
                 <div id="price-tag" style="margin-top:10px; display:none; background:#eff6ff; color:#0369a1; padding:10px 15px; border-radius:10px; font-size:0.85rem; border:1px solid #bfdbfe; line-height:1.5;">
                     <div style="display:flex; gap:8px; align-items:flex-start;"><i class="fas fa-circle-info" style="margin-top:2px;"></i><div><span style="font-weight:700; display:block;" id="t-price-title">อัตราค่าบริการ/สิทธิ:</span><span id="price-val">-</span></div></div>
                 </div>
@@ -454,8 +454,8 @@
     let currentLang = localStorage.getItem('sdh_lang') || 'th';
     let currentApp = ''; let globalData = []; let fullFirebaseData = null; 
     let bookingData = {}; let selectedIndex = 0; let typingTimer;
-    let currentUserDB = null; let selectedSlotData = null; let refreshInterval; let activeBookingObj = null; let isForeigner = false; 
-    let staffCan2Hr = false;
+    let currentUserDB = null; let refreshInterval; let activeBookingObj = null; let isForeigner = false; 
+    let staffCan2Hr = false; // สำหรับดักจับ 2 ชั่วโมง
     
     // ==========================================
     // 🌟 PROFILES (LOCAL STORAGE)
@@ -882,6 +882,109 @@
     
     function selectDate(index) { selectedIndex = index; renderScroller(); renderSlots(index); }
 
+    // 🔥 NEW FUNCTION: ONLY PASS INDEX AND TIME IN ONCLICK 🔥
+    function openBookingSafe(time, dayIndex, slotGender) {
+        try {
+            staffCan2Hr = false; // รีเซ็ตทุกครั้งที่เปิด
+            let day = globalData[dayIndex];
+            let slotData = day.slots.find(s => s.time === time);
+            let staffs = slotData ? (slotData.staff || []) : [];
+            
+            let dtLabel = day.fullLabel;
+            if (currentLang === 'en') {
+                let mEn = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+                let dParts = day.sysDate.split("-");
+                dtLabel = `${dParts[2]} ${mEn[parseInt(dParts[1])-1]} ${dParts[0]}`;
+            }
+
+            bookingData = { dept: APP_CONFIG[currentApp].title, date: dtLabel, sysDate: day.sysDate, time: time, appType: currentApp, sheetName: day.sheetName };
+            
+            document.getElementById('auth-section').style.display = 'block'; 
+            
+            if(activeProfileId) { 
+                let idStr = activeProfileId.toString();
+                if(idStr.length === 13 && !isForeigner) {
+                    let boxes = document.querySelectorAll('.otp-box');
+                    for(let i=0; i<13; i++) {
+                        if(boxes[i]) { boxes[i].value = idStr[i]; boxes[i].classList.add('filled'); }
+                    }
+                } else {
+                    document.getElementById('chk-foreigner').checked = true;
+                    toggleForeignerMode();
+                    document.getElementById('inp-idcard-foreigner').value = idStr;
+                }
+                document.getElementById('inp-idcard').value = idStr;
+                
+                document.getElementById('existing-user-display').classList.remove('hidden'); 
+                document.getElementById('user-details-form').classList.add('hidden');
+                document.getElementById('masked-name').innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${_t('loading')}`; 
+                
+                renderSmartBookDropdown(); 
+                checkIDCardInput(); 
+            } else { 
+                clearForNewPatient(); 
+            }
+            
+            document.getElementById('inp-note').value = ''; 
+            ['normal-fields', 'postpartum-fields', 'steam-fields'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            
+            if (currentApp === 'postpartum') { 
+                document.getElementById('postpartum-fields').classList.remove('hidden'); 
+            } else if (currentApp === 'steam') { 
+                document.getElementById('steam-fields').classList.remove('hidden'); 
+                if (slotGender === 'ช' || slotGender === 'ชาย') document.getElementById('inp-gender').value = 'ชาย'; 
+                else if (slotGender === 'ญ' || slotGender === 'หญิง') document.getElementById('inp-gender').value = 'หญิง'; 
+            } else {
+                document.getElementById('normal-fields').classList.remove('hidden'); 
+                let sel = document.getElementById('inp-service'); 
+                sel.innerHTML = ''; 
+                SERVICE_OPTIONS[currentApp].forEach(s => { let o = document.createElement('option'); o.value=s; o.innerText= _t(s); sel.appendChild(o); }); 
+                updatePriceDisplay();
+                
+                let cCont = document.getElementById('staff-options'); 
+                cCont.innerHTML = ''; 
+                
+                if (staffs.length > 0 && staffs[0].row !== undefined) { 
+                    document.getElementById('group-staff').style.display = 'block'; 
+                    let grouped = {}; 
+                    staffs.forEach(s => { 
+                        let k = s.name; 
+                        if(!grouped[k]) grouped[k] = Object.assign({}, s); 
+                        else if(s.can2Hr) grouped[k] = Object.assign({}, s); 
+                    }); 
+                    
+                    let unique = Object.values(grouped); 
+                    if(unique.length > 0) selectStaffNew(unique[0], unique[0].name); 
+                    
+                    unique.forEach(s => { 
+                        let baseN = s.name; 
+                        let dN = currentLang === 'en' ? (STAFF_EN_NAMES[baseN] || baseN) : (STAFF_NAME_MAP[baseN] || baseN); 
+                        let defaultAppImg = currentApp === 'tcm' ? 'https://img2.pic.in.th/55c47176d1c28f966a1289b3b1d48837.png' : DEFAULT_IMG;
+                        let img = STAFF_IMAGES[baseN] || defaultAppImg; 
+                        
+                        let badge1Hr = `<span style="background:#dcfce7; color:#16a34a; font-size:0.75rem; padding:2px 6px; border-radius:6px; margin-left:6px; border:1px solid #bbf7d0;"><i class="fas fa-clock"></i> 1Hr</span>`;
+                        let badge2Hr = s.can2Hr ? `<span style="background:#fffbeb; color:#d97706; font-size:0.75rem; padding:2px 6px; border-radius:6px; margin-left:4px; border:1px solid #fde68a;"><i class="fas fa-bolt"></i> 2Hr</span>` : '';
+                        
+                        let div = document.createElement('div'); 
+                        div.className = 'select-item'; 
+                        div.innerHTML = `<img src="${img}" class="select-img"><div style="font-weight:600; flex:1; color:#1e293b;">${dN} ${badge1Hr}${badge2Hr}</div>`; 
+                        div.onclick = () => selectStaffNew(s, baseN); 
+                        cCont.appendChild(div); 
+                    }); 
+                } else { 
+                    document.getElementById('group-staff').style.display = 'none'; 
+                    document.getElementById('inp-staff-val').value = "ไม่ระบุ"; 
+                }
+            }
+            
+            goToStep1(); 
+            document.getElementById('bookingModal').classList.add('show');
+            
+        } catch(e) { 
+            console.error("Setup error:", e); 
+        }
+    }
+
     function renderSlots(index) {
         let day = globalData[index]; 
         let container = document.getElementById('contentArea');
@@ -958,11 +1061,8 @@
             let statusTxt = isFull ? (currentLang==='en'?'FULL':'เต็ม') : (currentLang==='en'?`${count} Left`:`ว่าง ${count}`);
             let badgeHtml = isFull ? `<div class="status-capsule"><div class="status-text">${statusTxt}</div></div>` : `<div class="slot-info-right">${genderBadge}${twoHrBadge}<div class="status-capsule">${iconsHtml}<div class="status-text">${statusTxt}</div></div></div>`;
             
-            // 🔥 FIXED ESCAPE LOGIC TO PREVENT ONCLICK BUGS 🔥
-            let staffJsonEncoded = encodeURIComponent(JSON.stringify(slot.staff || [])); 
-            let safeDtLabel = dtLabel ? dtLabel.toString().replace(/'/g, "\\'") : '';
-            
-            let action = isFull ? '' : `onclick="openBooking('${slot.time}', '${safeDtLabel}', '${day.sysDate}', ${index}, '${staffJsonEncoded}', '${slotGender}')"`;
+            // 🔥 FIXED ESCAPE LOGIC: JUST PASS PRIMITIVES 🔥
+            let action = isFull ? '' : `onclick="openBookingSafe('${slot.time}', ${index}, '${slotGender}')"`;
             
             html += `<div class="slot-card ${isFull?'is-full':''} ${gClass}" style="animation-delay:${i*0.05}s; ${isFull?'':'cursor:pointer'}" ${action}><div class="time-wrap"><div class="icon-status">${isFull ? '<i class="fas fa-lock"></i>' : deptIcon}</div><div class="time-text">${slot.time}<small>${currentApp==='steam'?(currentLang==='en'?'Round':'รอบบริการ'):(currentLang==='en'?'Start':'เริ่มให้บริการ')}</small></div></div>${badgeHtml}</div>`;
         });
@@ -1477,6 +1577,8 @@
         };
         reader.readAsText(fileInp.files[0]);
     }
+
+    function viewFullImage() { let meta = document.querySelector('meta[name=viewport]'); meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes'); Swal.fire({ imageUrl: 'https://img2.pic.in.th/890005e17a696c1ad92f3ab1fb121f87.png', imageAlt: 'Announce', width: '100%', background: 'transparent', padding: '0', showConfirmButton: false, showCloseButton: true, backdrop: 'rgba(0,0,0,0.95)', didOpen: () => { document.querySelector('.swal2-image').style.maxHeight = '85vh'; }, willClose: () => { meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'); }, customClass:{popup:'swal-3d-popup'} }); }
   </script>
 </body>
 </html>
