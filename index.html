@@ -659,6 +659,7 @@
         });
     }
 
+    // 3D Smart Patient Book in Booking Modal
     function renderSmartBookDropdown() {
         let area = document.getElementById('smart-book-area');
         if (!area) return;
@@ -905,9 +906,13 @@
             let count = slot.count || 0; 
             let slotGender = slot.gender || ""; 
             let gClass = "";
+            
             if (currentApp === 'tcm') gClass = "theme-tcm"; 
             if (currentApp === 'postpartum') gClass = "theme-postpartum";
-            if (currentApp === 'steam' && slotGender !== "" && !isFull) { if (slotGender === "ชาย" || slotGender === "ช") gClass = "slot-male"; else if (slotGender === "หญิง" || slotGender === "ญ") gClass = "slot-female"; }
+            if (currentApp === 'steam' && slotGender !== "" && !isFull) { 
+                if (slotGender === "ชาย" || slotGender === "ช") gClass = "slot-male"; 
+                else if (slotGender === "หญิง" || slotGender === "ญ") gClass = "slot-female"; 
+            }
             
             let twoHrBadge = ""; 
             if (!isFull && slot.count2Hr > 0 && (currentApp === 'ttm' || currentApp === 'tcm')) { 
@@ -915,11 +920,10 @@
                 twoHrBadge = `<div class="badge-2hr"><i class="fas fa-clock"></i> ${bText}</div>`; 
             }
             
-            // 🔥 NEW AVATAR STACK LOGIC 🔥
+            // 🔥 AVATAR STACK LOGIC 🔥
             let iconsHtml = ''; 
             if (!isFull && count > 0) { 
                 iconsHtml = `<div class="queue-icons" style="display:flex; align-items:center;">`; 
-                
                 if (currentApp === 'tcm') {
                     let displayCount = Math.min(count, 4);
                     let tcmImg = 'https://img2.pic.in.th/55c47176d1c28f966a1289b3b1d48837.png';
@@ -927,9 +931,7 @@
                         let marginLeft = k > 0 ? '-8px' : '0';
                         iconsHtml += `<img src="${tcmImg}" style="width:26px; height:26px; border-radius:50%; border:2px solid white; margin-left:${marginLeft}; z-index:${10-k}; position:relative; object-fit:cover; background:#f8fafc; box-shadow:0 1px 3px rgba(0,0,0,0.1);">`;
                     }
-                    if (count > displayCount) {
-                        iconsHtml += `<span style="font-weight:800; margin-left:6px; font-size:0.75rem; color:var(--primary);">+${count - displayCount}</span>`;
-                    }
+                    if (count > displayCount) iconsHtml += `<span style="font-weight:800; margin-left:6px; font-size:0.75rem; color:var(--primary);">+${count - displayCount}</span>`;
                 } else if (currentApp === 'ttm' && slot.staff && slot.staff.length > 0) {
                     let uniqueStaffNames = [...new Set(slot.staff.map(s => s.name))];
                     let displayCount = Math.min(uniqueStaffNames.length, 4);
@@ -939,9 +941,7 @@
                         let marginLeft = k > 0 ? '-8px' : '0';
                         iconsHtml += `<img src="${imgUrl}" style="width:26px; height:26px; border-radius:50%; border:2px solid white; margin-left:${marginLeft}; z-index:${10-k}; position:relative; object-fit:cover; background:#f8fafc; box-shadow:0 1px 3px rgba(0,0,0,0.1);">`;
                     }
-                    if (count > displayCount) {
-                        iconsHtml += `<span style="font-weight:800; margin-left:6px; font-size:0.75rem; color:var(--primary);">+${count - displayCount}</span>`;
-                    }
+                    if (count > displayCount) iconsHtml += `<span style="font-weight:800; margin-left:6px; font-size:0.75rem; color:var(--primary);">+${count - displayCount}</span>`;
                 } else {
                     for(let k=0; k<Math.min(count, 4); k++) iconsHtml += `<i class="fas fa-user" style="font-size:0.8rem;"></i>`; 
                     if (count > 4) iconsHtml += `<span style="font-weight:800; margin-left:2px; font-size:0.7rem;">+</span>`; 
@@ -958,12 +958,11 @@
             let statusTxt = isFull ? (currentLang==='en'?'FULL':'เต็ม') : (currentLang==='en'?`${count} Left`:`ว่าง ${count}`);
             let badgeHtml = isFull ? `<div class="status-capsule"><div class="status-text">${statusTxt}</div></div>` : `<div class="slot-info-right">${genderBadge}${twoHrBadge}<div class="status-capsule">${iconsHtml}<div class="status-text">${statusTxt}</div></div></div>`;
             
-            // 🔥 ESCAPE DATA FULLY TO PREVENT ONCLICK BUGS 🔥
-            let staffJsonStr = JSON.stringify(slot.staff || []);
-            let staffJsonEncoded = encodeURIComponent(staffJsonStr).replace(/'/g, "%27"); 
-            let dtLabelSafe = dtLabel.replace(/'/g, "\\'");
+            // 🔥 FIXED ESCAPE LOGIC TO PREVENT ONCLICK BUGS 🔥
+            let staffJsonEncoded = encodeURIComponent(JSON.stringify(slot.staff || [])); 
+            let safeDtLabel = dtLabel ? dtLabel.toString().replace(/'/g, "\\'") : '';
             
-            let action = isFull ? '' : `onclick="openBooking('${slot.time}', '${dtLabelSafe}', '${day.sysDate}', ${index}, '${staffJsonEncoded}', '${slotGender}')"`;
+            let action = isFull ? '' : `onclick="openBooking('${slot.time}', '${safeDtLabel}', '${day.sysDate}', ${index}, '${staffJsonEncoded}', '${slotGender}')"`;
             
             html += `<div class="slot-card ${isFull?'is-full':''} ${gClass}" style="animation-delay:${i*0.05}s; ${isFull?'':'cursor:pointer'}" ${action}><div class="time-wrap"><div class="icon-status">${isFull ? '<i class="fas fa-lock"></i>' : deptIcon}</div><div class="time-text">${slot.time}<small>${currentApp==='steam'?(currentLang==='en'?'Round':'รอบบริการ'):(currentLang==='en'?'Start':'เริ่มให้บริการ')}</small></div></div>${badgeHtml}</div>`;
         });
@@ -1028,7 +1027,6 @@
     function selectStaffNew(sObj, thaiName) { 
         let dName = currentLang === 'en' ? (STAFF_EN_NAMES[thaiName] || thaiName) : (STAFF_NAME_MAP[thaiName] || thaiName);
         
-        // 🔥 FIX: อัปเดตรูปภาพที่ Dropdown ด้วย
         let defaultAppImg = currentApp === 'tcm' ? 'https://img2.pic.in.th/55c47176d1c28f966a1289b3b1d48837.png' : DEFAULT_IMG;
         let imgUrl = STAFF_IMAGES[thaiName] || defaultAppImg;
         let displayImg = document.getElementById('staff-display-img');
@@ -1479,8 +1477,6 @@
         };
         reader.readAsText(fileInp.files[0]);
     }
-
-    function viewFullImage() { let meta = document.querySelector('meta[name=viewport]'); meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes'); Swal.fire({ imageUrl: 'https://img2.pic.in.th/890005e17a696c1ad92f3ab1fb121f87.png', imageAlt: 'Announce', width: '100%', background: 'transparent', padding: '0', showConfirmButton: false, showCloseButton: true, backdrop: 'rgba(0,0,0,0.95)', didOpen: () => { document.querySelector('.swal2-image').style.maxHeight = '85vh'; }, willClose: () => { meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'); }, customClass:{popup:'swal-3d-popup'} }); }
   </script>
 </body>
 </html>
