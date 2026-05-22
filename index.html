@@ -18,7 +18,7 @@
         --primary: #2e7d32; 
         --primary-light: #e8f5e9; 
         --primary-dark: #1b5e20; 
-        --accent: #f59e0b; /* สีส้มอมเหลืองตามแบบ */
+        --accent: #f59e0b; 
         --bg-color: #f0f4f8; 
         --shadow-light: #ffffff;
         --shadow-dark: #d1d9e6;
@@ -40,17 +40,18 @@
         position: absolute; top: 15px; right: 15px; 
         background: rgba(255,255,255,0.9); 
         color: var(--primary-dark); 
-        padding: 6px 16px; 
-        border-radius: 20px; font-size: 0.9rem; font-weight: 800; cursor: pointer; 
-        display: flex; align-items: center; gap: 6px; z-index: 10; 
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        padding: 8px 18px; 
+        border-radius: 25px; font-size: 0.95rem; font-weight: 800; cursor: pointer; 
+        display: flex; align-items: center; gap: 8px; z-index: 10; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.5);
     }
-    .lang-toggle-btn i { font-size: 1rem; color: var(--accent); } 
-    
+    .lang-toggle-btn i { font-size: 1.1rem; color: var(--accent); } 
+    .lang-toggle-btn:active { transform: scale(0.96); }
+
     .online-badge { 
-        background: rgba(255,255,255,0.25); padding: 6px 16px; border-radius: 20px; 
-        font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; 
-        backdrop-filter: blur(8px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top:12px;
+        background: rgba(255,255,255,0.25); padding: 8px 18px; border-radius: 20px; 
+        font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; 
+        backdrop-filter: blur(8px); box-shadow: 0 4px 15px rgba(0,0,0,0.15); margin-top:12px; border: 1px solid rgba(255,255,255,0.3);
     }
     .online-dot { width: 10px; height: 10px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 10px #4ade80; animation: pulseDot 2s infinite; }
 
@@ -61,96 +62,260 @@
         background-image: url('https://img2.pic.in.th/pic/2e56ebb3c838125fd55c9db5dcd51baf.png'); 
         background-size: cover; background-position: center;
         position: relative; border-radius: 0 0 40px 40px; 
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 25px; overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1); margin-bottom: 30px; overflow: hidden;
     }
     .hero-overlay { 
         position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(to bottom, rgba(46,125,50,0.4), rgba(27,94,32,0.95)); 
+        background: linear-gradient(to bottom, rgba(46,125,50,0.3), rgba(27,94,32,0.95)); 
         display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; padding: 20px;
     }
     .main-logo { 
-        width: 90px; height: 90px; object-fit: cover; margin-bottom: 15px; 
+        width: 85px; height: 85px; object-fit: cover; margin-bottom: 12px; 
         background: white; border-radius: 50%; padding: 4px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.2); cursor: pointer; transition: 0.2s; 
+        box-shadow: 0 8px 20px rgba(0,0,0,0.25); cursor: pointer; transition: 0.2s; 
     } 
-    .main-logo:active { transform: scale(0.95); }
+    .main-logo:active { transform: scale(0.9); }
 
-    /* --- 3D Profile Card (New Style from Image) --- */
+    /* --- 3D Profile Card (สำหรับหน้า Profile) --- */
     .premium-glass-card { 
-        width: 90%; max-width: 560px; 
+        width: 100%; 
         background: var(--bg-color);
-        border: 1px solid rgba(255,255,255,0.8); 
-        border-radius: 28px; padding: 20px; margin-bottom: 20px;
-        box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light); 
+        border: 1px solid rgba(255,255,255,0.7); 
+        border-radius: 30px; padding: 25px; position: relative; overflow: hidden;
+        box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); 
+        margin-bottom: 25px; z-index: 5;
     }
     .mu-profile-list { display: flex; flex-direction: column; gap: 15px; }
     .mu-profile { 
         display: flex; align-items: center; justify-content: space-between; 
-        background: white; padding: 15px; border-radius: 20px; 
-        border: 1px solid #f1f5f9; cursor: pointer; transition: 0.2s;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+        background: var(--bg-color); padding: 15px; border-radius: 20px; 
+        border: 1px solid rgba(255,255,255,0.5); cursor: pointer; transition: 0.2s;
+        box-shadow: 5px 5px 12px var(--shadow-dark), -5px -5px 12px var(--shadow-light); 
     }
+    .mu-profile:active { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); transform: translateY(2px); }
     .mu-info { display: flex; align-items: center; gap: 15px; }
     .mu-avatar { 
-        width: 50px; height: 50px; 
-        background: var(--accent); color: white; 
+        width: 48px; height: 48px; 
+        background: linear-gradient(135deg, var(--accent), #fbbf24); color: white; 
         border-radius: 16px; display: flex; align-items: center; justify-content: center; 
-        font-weight: 800; font-size: 1.4rem; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+        font-weight: 800; font-size: 1.3rem; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
     }
-    .mu-name { font-weight: 800; color: #1e293b; font-size: 1.1rem; } 
+    .mu-name { font-weight: 700; color: #1e293b; font-size: 1.05rem; } 
     .mu-name span { display: block; font-size: 0.8rem; color: #64748b; font-weight: 500; margin-top: 2px;}
     .mu-delete { color: #ef4444; background: #fee2e2; border-radius: 50%; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; } 
+    .mu-delete:active { transform: scale(0.9); }
     
     .btn-add-user { 
         background: var(--bg-color); border: 2px dashed #cbd5e1; color: #64748b; 
         width: 100%; padding: 15px; border-radius: 20px; font-weight: 700; cursor: pointer; 
         transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top:15px;
     }
+    .btn-add-user:active { background: #e2e8f0; transform: scale(0.98); }
 
     .aps-history { 
-        background: #f8fafc; border-radius: 20px; padding: 18px; margin-top: 20px; 
-        box-shadow: inset 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #f1f5f9;
+        background: var(--bg-color); border-radius: 20px; padding: 20px; margin-top: 20px; 
+        box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light); border: 1px solid rgba(255,255,255,0.4);
     }
     .btn-cancel-q { 
         background: #fee2e2; color: #ef4444; border: none; padding: 12px; border-radius: 15px; font-size: 0.95rem;
         font-weight: 700; cursor:pointer; width:100%; margin-top:15px; transition:0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        box-shadow: 3px 3px 8px rgba(239, 68, 68, 0.2);
     }
-    .btn-cancel-q:active { transform: scale(0.97); }
+    .btn-cancel-q:active { box-shadow: inset 3px 3px 6px rgba(239, 68, 68, 0.3); transform: scale(0.97); }
 
     /* --- 3D Department Cards --- */
-   .menu-container { 
-        width: 100%; 
-        padding: 0 25px; 
-        z-index: 10; /* ดันให้อยู่บนสุดเพื่อไม่ให้โดนบัง */
-        position: relative; /* สำคัญมาก เพื่อให้ z-index ทำงาน */
-        display: flex; 
-        flex-direction: column; 
-        gap: 16px; 
-        margin-top: -40px; 
-    }
+    .menu-container { width: 100%; padding: 0 25px; display: flex; flex-direction: column; gap: 18px; margin-top: -30px; position: relative; z-index: 10; }
     .dept-card { 
-        background: var(--bg-color); border-radius: 24px; padding: 18px 20px; display: flex; align-items: center; cursor: pointer;
-        box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light); 
-        position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.6); transition: all 0.2s;
+        background: var(--bg-color); border-radius: 24px; padding: 20px; display: flex; align-items: center; cursor: pointer;
+        box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light); 
+        position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.6); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .dept-card:active { box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light); transform: scale(0.98); }
-    .dept-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; border-radius: 6px 0 0 6px; }
+    .dept-card:active { box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light); transform: translateY(2px); }
+    .dept-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; border-radius: 8px 0 0 8px; }
     .card-ttm::before { background: #2e7d32; } .card-tcm::before { background: #c62828; } .card-postpartum::before { background: #ec4899; } .card-steam::before { background: #0288d1; }
     
-    .dept-icon { width: 60px; height: 60px; border-radius: 50%; margin-right: 18px; object-fit: cover; background: #ffffff; padding: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-    .dept-info h3 { margin: 0 0 4px 0; font-size: 1.15rem; font-weight: 800; color: #1e293b; } 
+    .dept-icon { width: 70px; height: 70px; border-radius: 20px; margin-right: 18px; object-fit: cover; background: #ffffff; padding: 4px; box-shadow: 2px 2px 8px rgba(0,0,0,0.05); }
+    .dept-info h3 { margin: 0 0 4px 0; font-size: 1.2rem; font-weight: 700; color: #1e293b; } 
     .dept-info p { margin: 0; font-size: 0.85rem; color: #64748b; line-height: 1.4; }
     .arrow-btn { 
-        margin-left: auto; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-        background: var(--bg-color); color: var(--accent); font-size: 1rem; box-shadow: 2px 2px 6px var(--shadow-dark), -2px -2px 6px var(--shadow-light);
+        margin-left: auto; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+        background: var(--bg-color); color: var(--accent); font-size: 1.1rem; box-shadow: 3px 3px 8px var(--shadow-dark), -3px -3px 8px var(--shadow-light);
     }
+
+    /* --- Dashboard Top Section --- */
+    .top-section { 
+        background: var(--bg-color); color: #1e293b; padding: 20px 0 10px 0; position: sticky; top: 0; z-index: 100; 
+        box-shadow: 0 10px 20px rgba(209, 217, 230, 0.4); border-radius: 0 0 30px 30px;
+    }
+    .header-top-row { display: flex; align-items: center; justify-content: center; position: relative; padding: 0 20px; margin-bottom: 12px; }
+    .back-btn { 
+        position: absolute; left: 20px; background: var(--bg-color); width: 44px; height: 44px; border-radius: 16px; 
+        display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; color: #1e293b;
+        box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light); border: 1px solid rgba(255,255,255,0.4);
+    }
+    .back-btn:active { box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light); }
+    
+    .header-logo-title { display: flex; align-items: center; gap: 12px; } 
+    .header-logo-title img { width: 42px; height: 42px; background: white; border-radius: 14px; padding: 4px; box-shadow: 2px 2px 8px rgba(0,0,0,0.1); object-fit: contain; } 
+    .header-logo-title h1 { margin: 0; font-size: 1.4rem; font-weight: 800; color: var(--primary); }
+    
+    .sync-badge { 
+        display: inline-flex; align-items: center; gap: 6px; background: #e2e8f0; color: #475569; padding: 6px 16px; border-radius: 20px; 
+        font-size: 0.8rem; font-weight: 600; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+    }
+    .spin-active { animation: spin 1s linear infinite; color: var(--accent); }
+
+    /* --- 3D Date Scroller --- */
+    .date-scroller { display: flex; overflow-x: auto; padding: 15px 20px 10px 20px; gap: 15px; scrollbar-width: none; } 
+    .date-scroller::-webkit-scrollbar { display: none; }
+    .date-chip { 
+        background: var(--bg-color); color: #64748b; border-radius: 18px; padding: 12px 0; min-width: 65px; 
+        text-align: center; cursor: pointer; flex-shrink: 0; position: relative; transition: 0.3s;
+        box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light); border: 1px solid rgba(255,255,255,0.4);
+    }
+    .date-chip small { font-size: 0.75rem; display: block; margin-bottom: 4px; font-weight: 600; } 
+    .date-chip span { font-size: 1.25rem; display: block; font-weight: 800; line-height: 1; }
+    .date-chip.active { background: var(--primary); color: white; transform: translateY(-4px); box-shadow: 0 10px 20px rgba(46, 125, 50, 0.4); border: none; } 
+
+    .container { max-width: 600px; margin: 0 auto; padding: 0 20px 100px; }
+    .selected-date-header { font-size: 1.2rem; font-weight: 800; color: #1e293b; padding: 25px 5px 15px; display: flex; align-items: center; } 
+    .header-bar { width: 6px; height: 24px; border-radius: 6px; margin-right: 12px; background-color: var(--accent); box-shadow: 0 2px 8px rgba(245, 158, 11, 0.5); }
+    
+    /* --- 3D Slot Cards --- */
+    .grid-container { display: flex; flex-direction: column; gap: 18px; }
+    .slot-card { 
+        display: flex; justify-content: space-between; align-items: center; 
+        background: var(--bg-color); border-radius: 24px; padding: 18px 20px; 
+        box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light); 
+        border: 1px solid rgba(255,255,255,0.6); position: relative; overflow: hidden; animation: slideUp 0.3s forwards; opacity: 0; transition: 0.2s; 
+    }
+    .slot-card:active { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); transform: scale(0.98); } 
+    .slot-card.is-full { background: #e2e8f0; box-shadow: inset 3px 3px 8px rgba(0,0,0,0.05); opacity: 0.7; pointer-events: none; border: none; }
+    
+    .theme-tcm .icon-status { color: #c62828; } .theme-postpartum .icon-status { color: #ec4899; }
+    
+    .time-wrap { display: flex; align-items: center; gap: 16px; } 
+    .icon-status { 
+        width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; 
+        font-size: 1.4rem; background: var(--bg-color); color: var(--primary); 
+        box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+    } 
+    .is-full .icon-status { background: transparent; box-shadow: none; color: #94a3b8; }
+    
+    .time-text { font-weight: 800; font-size: 1.25rem; color: #1e293b; display: flex; flex-direction: column; line-height: 1.1; } 
+    .time-text small { font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 4px; }
+    
+    .slot-info-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .status-capsule { 
+        display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 10px; 
+        background: white; padding: 10px 18px; border-radius: 20px; min-width: 100px; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #f1f5f9;
+    } 
+    .is-full .status-capsule { background: transparent; box-shadow: none; border: none; }
+    .queue-icons { display: flex; gap: 4px; color: var(--accent); font-size: 1rem; } 
+    .status-text { font-size: 1rem; font-weight: 800; color: var(--primary); line-height: 1; } 
+    .is-full .status-text { color: #64748b; }
+    
+    .badge-2hr { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; font-size: 0.75rem; padding: 4px 10px; border-radius: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4); }
+
+    /* --- Loaders --- */
+    .loading-screen, .page-loader { 
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(240,244,248,0.95);
+        z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; backdrop-filter: blur(10px);
+    } 
+    .loading-screen.hidden, .page-loader.hidden { opacity: 0; pointer-events: none; }
+    .circle-wrap svg { transform: rotate(-90deg); width: 120px; height: 120px; }
+    .circle-bg { fill: none; stroke: var(--shadow-dark); stroke-width: 8; }
+    .circle-progress { fill: none; stroke: var(--accent); stroke-width: 8; stroke-dasharray: 326; stroke-dashoffset: 326; stroke-linecap: round; }
+    .percent-text { font-size: 1.6rem; font-weight: 800; color: var(--accent); position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);}
+    .tips-box { background: white; padding: 25px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 85%; max-width: 350px; text-align: center; margin-top:25px; }
+    
+    @keyframes spin { 100% { transform: rotate(360deg); } } 
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } 
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* --- 3D Modal Forms --- */
+    .modal-overlay { 
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.5); 
+        z-index: 1000; display: flex; align-items: flex-end; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(8px); 
+    } 
+    .modal-overlay.show { opacity: 1; visibility: visible; }
+    .modal-card { 
+        background: var(--bg-color); width: 100%; max-width: 600px; 
+        border-radius: 35px 35px 0 0; padding: 35px 25px 45px; 
+        box-shadow: 0 -15px 40px rgba(0,0,0,0.15); transform: translateY(100%); transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); max-height: 92vh; overflow-y: auto; 
+    } 
+    .modal-overlay.show .modal-card { transform: translateY(0); }
+    
+    .form-group { margin-bottom: 20px; } 
+    .form-label { display: block; margin-bottom: 8px; font-size: 0.95rem; color: #475569; font-weight: 700; }
+    
+    .form-control { 
+        width: 100%; padding: 15px 18px; border-radius: 18px; font-family: 'Prompt', sans-serif; font-size: 1.05rem; 
+        background: var(--bg-color); border: none; color: #1e293b; outline: none; transition: 0.2s;
+        box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+    }
+    .form-control:focus { box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light), 0 0 0 3px rgba(245, 158, 11, 0.2); }
+    .form-control[readonly] { background: #e2e8f0; color: #64748b; box-shadow: none; cursor: not-allowed; border: 1px solid #cbd5e1; }
+    
+    .otp-container { display: flex; gap: 8px; justify-content: space-between; margin-bottom: 10px; }
+    .otp-box { 
+        width: 100%; aspect-ratio: 1/1.2; text-align: center; font-size: 1.3rem; font-weight: 800; 
+        border-radius: 12px; background: var(--bg-color); border: none; color: var(--primary-dark); transition: all 0.2s; padding: 0; outline: none; font-family: 'Prompt', sans-serif;
+        box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+    }
+    .otp-box:focus { background: white; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3); transform: translateY(-2px); }
+    .otp-box.filled { background: var(--primary-light); color: var(--primary); box-shadow: inset 2px 2px 5px rgba(46,125,50,0.2); }
+    
+    .id-card-input { text-align: center; font-size: 1.3rem !important; font-weight: 800 !important; letter-spacing: 2px !important; }
+
+    .custom-select { 
+        width: 100%; padding: 12px 18px; border-radius: 18px; background: var(--bg-color); 
+        display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s;
+        box-shadow: 5px 5px 12px var(--shadow-dark), -5px -5px 12px var(--shadow-light); border: 1px solid rgba(255,255,255,0.5);
+    }
+    .custom-select:active { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); }
+    .select-img { width: 40px; height: 40px; border-radius: 14px; object-fit: cover; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+    
+    .btn-group { display: flex; gap: 15px; margin-top: 30px; } 
+    .btn { flex: 1; padding: 16px; border: none; border-radius: 20px; font-size: 1.1rem; cursor: pointer; font-family: 'Prompt', sans-serif; font-weight: 800; transition: 0.2s; text-align:center; }
+    .btn-cancel { background: #e2e8f0; color: #64748b; box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light); } 
+    .btn-cancel:active { box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light); transform: scale(0.96); }
+    
+    .btn-confirm { background: linear-gradient(135deg, var(--accent), #d97706); color: white; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); text-shadow: 0 1px 2px rgba(0,0,0,0.2); } 
+    .btn-confirm:active { transform: scale(0.96); box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4); }
+    .btn-confirm:disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; box-shadow: none; text-shadow: none; }
+
+    /* Stepper */
+    .stepper-wrapper { display: flex; align-items: center; justify-content: space-between; margin-bottom: 35px; padding: 0 10px; }
+    .step { display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; z-index: 2; width: 65px; }
+    .step-circle { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-color); color: #94a3b8; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; transition: 0.3s; box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); }
+    .step.active .step-circle { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
+    .step.completed .step-circle { background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .step-label { font-size: 0.75rem; font-weight: 700; color: #64748b; text-align: center; white-space: nowrap; transition: 0.3s; }
+    .step.active .step-label { color: var(--accent); font-size: 0.8rem; }
+    .step-line { flex: 1; height: 4px; background: var(--shadow-dark); margin: 0 -15px; position: relative; top: -12px; z-index: 1; transition: 0.3s; border-radius: 2px; }
+    .step-line.active { background: var(--accent); box-shadow: 0 2px 6px rgba(245, 158, 11, 0.3); }
+
+    /* 🏷️ RIGHT SELECTION STYLES */
+    .right-option { padding: 16px 20px; border-radius: 20px; margin-bottom: 15px; cursor: pointer; transition: 0.2s; background: var(--bg-color); display: flex; flex-direction: column; gap: 4px; border: 1px solid rgba(255,255,255,0.4); box-shadow: 5px 5px 12px var(--shadow-dark), -5px -5px 12px var(--shadow-light); }
+    .right-option.selected { border-color: var(--primary); background: var(--primary-light); box-shadow: inset 4px 4px 10px rgba(46, 125, 50, 0.15), inset -4px -4px 10px rgba(255,255,255,0.8); }
+    .right-title-row { display: flex; align-items: center; gap: 12px; font-weight: 800; color: #1e293b; font-size: 1.05rem; }
+    .right-desc { font-size: 0.8rem; color: #64748b; margin-left: 34px; line-height: 1.4; font-weight: 500; }
+
+    /* 🔥 3D SWEETALERT OVERRIDE 🔥 */
+    .swal2-popup { border-radius: 30px !important; background: var(--bg-color) !important; box-shadow: 15px 15px 35px var(--shadow-dark), -15px -15px 35px var(--shadow-light) !important; border: 1px solid rgba(255,255,255,0.5) !important; padding: 2.5em 2em !important; }
+    .swal2-title { color: #1e293b !important; font-family: 'Prompt', sans-serif !important; font-weight: 800 !important; }
+    .swal2-html-container { font-family: 'Prompt', sans-serif !important; color: #475569 !important; font-weight: 500 !important; }
+    .swal2-confirm { background: linear-gradient(135deg, var(--accent), #d97706) !important; border-radius: 18px !important; font-weight: 800 !important; padding: 14px 28px !important; box-shadow: 0 6px 15px rgba(245, 158, 11, 0.4) !important; }
+    .swal2-cancel { background: #e2e8f0 !important; color: #475569 !important; border-radius: 18px !important; font-weight: 800 !important; padding: 14px 28px !important; box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light) !important; }
 
     /* --- FLOATING BOTTOM NAVIGATION --- */
     .bottom-nav {
         position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+        background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
         display: flex; justify-content: space-around; align-items: center;
-        width: 85%; max-width: 380px; padding: 10px 15px; border-radius: 35px;
+        width: 90%; max-width: 400px; padding: 10px 15px; border-radius: 35px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,1); z-index: 999;
     }
     .nav-item {
@@ -158,23 +323,25 @@
         color: #94a3b8; text-decoration: none; font-size: 1.3rem; padding: 12px; border-radius: 50%;
         transition: all 0.3s ease; width: 50px; height: 50px;
     }
-    .nav-item.active {
-        background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
-        transform: translateY(-5px);
-    }
+    .nav-item.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); transform: translateY(-5px); }
     .nav-item:active i { transform: scale(0.85); }
-
-    /* ซ่อนโครงสร้างอื่นๆ ชั่วคราวเพื่อประหยัดพื้นที่แสดงผล (ดึงมาจากไฟล์เดิมทั้งหมด) */
-    /* ... (CSS สำหรับ Loader, Dashboard, Modal, Stepper ยังคงใช้ชุดเดิมที่ให้ไปในเวอร์ชั่นก่อน) ... */
     
     @keyframes pulseDot { 0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); } 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); } }
   </style>
-  
-  <style>
-     /* CSS ส่วนอื่นๆ จากโค้ดฉบับเต็ม ... */
-  </style>
 </head>
 <body>
+
+  <div id="saveLoader" class="loading-screen hidden">
+      <div class="circle-wrap"><svg><circle class="circle-bg" cx="60" cy="60" r="52"></circle><circle class="circle-progress" id="progress-circle" cx="60" cy="60" r="52"></circle></svg><div class="percent-text" id="progress-text">0%</div></div>
+      <div class="loading-title" id="t-saving" style="color:#1e293b; margin-top:20px;">กำลังบันทึกข้อมูล...</div>
+      <div style="color:#dc2626; font-weight:800; font-size:0.95rem; margin-top:5px;" id="t-saving-sub">⚠️ กรุณาอย่าปิดหน้าจอนี้ จนกว่าจะสำเร็จ</div>
+      <div class="tips-box"><div class="tips-title" id="tip-title"><i class="fas fa-clock"></i> มาก่อนเวลา 15 นาที</div><div class="tips-text" id="tip-text">หากไม่มาติดต่อภายในเวลาที่กำหนด<br>ถือว่าท่านสละสิทธิ์</div></div>
+  </div>
+
+  <div id="pageLoader" class="page-loader hidden">
+      <div class="circle-wrap" style="width:60px; height:60px;"><svg style="width:60px; height:60px; animation:spin 1s linear infinite;"><circle class="circle-bg" cx="30" cy="30" r="26" stroke="var(--shadow-dark)" stroke-width="4"></circle><circle class="circle-progress" cx="30" cy="30" r="26" stroke="var(--accent)" stroke-width="4" stroke-dasharray="163" stroke-dashoffset="40"></circle></svg></div>
+      <div style="color:var(--accent); font-weight:800; margin-top:10px;" id="t-loading">กำลังโหลด...</div>
+  </div>
 
   <div id="view-home" class="home-container fade-in">
     <div class="lang-toggle-btn" onclick="toggleLanguage()"><i class="fas fa-globe"></i> <span id="current-lang-text">EN</span></div>
@@ -199,43 +366,298 @@
   <div id="view-profile" class="home-container hidden fade-in">
     <div style="width: 100%; padding: 40px 25px 20px;">
         <h2 style="color: #1e293b; font-weight: 800; font-size: 1.5rem; margin-bottom: 20px;"><i class="fas fa-user-circle" style="color:var(--accent);"></i> ข้อมูลผู้ใช้งาน</h2>
+        
+        <div id="main-auth-card" class="premium-glass-card" style="margin:0; width:100%; max-width:100%;"></div>
+    </div>
   </div>
 
   <div id="view-dashboard" class="hidden">
-      </div>
+    <div class="top-section" id="top-header">
+        <div class="lang-toggle-btn" onclick="toggleLanguage()" style="top:15px; padding:6px 15px; box-shadow:none;"><i class="fas fa-globe"></i> <span id="current-lang-dash">EN</span></div>
+        <div class="header-top-row">
+            <div class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i></div>
+            <div class="header-logo-title"><img id="app-logo" src=""><h1 id="app-title"></h1></div>
+        </div>
+        <div style="display: flex; justify-content: center; margin-bottom: 10px;"><div class="sync-badge" id="sync-badge-ui"><i id="sync-icon" class="fas fa-sync-alt"></i> <span id="sync-text">อัปเดตล่าสุด --:--</span></div></div>
+        <div id="dateScroller" class="date-scroller"></div>
+    </div>
+    <div class="container"><div id="contentArea"></div></div>
+  </div>
 
   <nav class="bottom-nav" id="main-bottom-nav">
       <a href="javascript:void(0)" id="nav-home" class="nav-item active" onclick="switchMainTab('home')"><i class="fas fa-home"></i></a>
       <a href="javascript:void(0)" id="nav-profile" class="nav-item" onclick="switchMainTab('profile')"><i class="fas fa-clipboard-list"></i></a>
       <a href="javascript:void(0)" id="nav-add" class="nav-item" onclick="showAddUserForm()"><i class="fas fa-user-plus"></i></a>
   </nav>
+
+  <div id="bookingModal" class="modal-overlay">
+    <div class="modal-card">
+      <div style="font-size:1.35rem; font-weight:800; margin-bottom:20px; color:#1e293b; display:flex; align-items:center; gap:12px;"><span id="t-fill-info"></span></div>
+      <div class="stepper-wrapper" id="booking-stepper">
+          <div class="step active" id="step-ind-1"><div class="step-circle">1</div><div class="step-label" id="t-step1">ข้อมูลผู้ป่วย</div></div><div class="step-line" id="line-1"></div>
+          <div class="step" id="step-ind-2"><div class="step-circle">2</div><div class="step-label" id="t-step2">เลือกบริการ</div></div><div class="step-line" id="line-2"></div>
+          <div class="step" id="step-ind-3"><div class="step-circle">3</div><div class="step-label" id="t-step3">ยืนยัน</div></div>
+      </div>
+      
+      <div id="step-1-patient">
+          <div id="auth-section" style="display: block;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                  <label class="form-label" id="lbl-idcard" style="color:var(--accent); margin:0;">เลขประจำตัวประชาชน <span style="color:red">*</span></label>
+                  <div style="display:flex; align-items:center; gap:8px; background:var(--bg-color); padding:6px 12px; border-radius:15px; box-shadow: inset 2px 2px 5px var(--shadow-dark);">
+                      <input type="checkbox" id="chk-foreigner" onchange="toggleForeignerMode()" style="accent-color:var(--accent); transform:scale(1.2);">
+                      <label for="chk-foreigner" style="font-size:0.8rem; font-weight:700; color:#475569;" id="t-foreigner-chk">ชาวต่างชาติ</label>
+                  </div>
+              </div>
+              <div id="thai-id-boxes" class="otp-container"><input type="tel" maxlength="1" class="otp-box"><input type="tel" maxlength="1" class="otp-box"><input type="tel" maxlength="1" class="otp-box"><input type="tel" maxlength="1" class="otp-box"><input type="tel" maxlength="1" class="otp-box"><input type="tel" maxlength="1" class="otp-box"><input type="tel" maxlength="1" class="otp-box"><input type="tel" maxlength="1" class="otp-box"><input type="tel" maxlength="1" class="otp-box"><input type="tel" maxlength="1" class="otp-box"><input type="tel" maxlength="1" class="otp-box"><input type="tel" maxlength="1" class="otp-box"><input type="tel" maxlength="1" class="otp-box"></div>
+              <input type="text" id="inp-idcard-foreigner" class="form-control id-card-input hidden" placeholder="Enter Passport Number" maxlength="20" oninput="checkIDCardInput()">
+              <input type="hidden" id="inp-idcard">
+              <div style="font-size:0.75rem; color:#64748b; margin-top:15px; text-align:center;" id="t-pdpa"><i class="fas fa-shield-alt" style="color:#4caf50;"></i> ปลอดภัย 100% ตามมาตรฐาน PDPA</div>
+              <div id="idcard-status" style="font-size:0.9rem; margin-top:12px; font-weight:700; text-align:center;"></div>
+          </div>
+
+          <div id="existing-user-display" class="hidden" style="background: white; padding:20px; border-radius:24px; margin-bottom:20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border:1px solid #e2e8f0;">
+              <div style="color:var(--primary); font-weight:800; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between;"><span id="t-user-info-title"><i class="fas fa-user-check"></i> ข้อมูลผู้รับบริการ</span></div>
+              <div id="masked-name" style="margin-bottom:8px;"></div>
+              <div id="masked-tel" style="font-size:1rem; font-weight:600; color:#475569; margin-left:32px;"></div>
+              <button type="button" class="btn-cancel" style="padding:12px; font-size:0.9rem; margin-top:15px; width:100%; border-radius:15px; font-weight:700;" onclick="verifyAndEditPhone()"><i class="fas fa-mobile-alt"></i> <span id="t-change-phone">เปลี่ยนเบอร์โทรติดต่อ</span></button>
+          </div>
+
+          <div id="user-details-form" class="hidden" style="background:var(--bg-color); padding:20px; border-radius:24px; margin-bottom:20px; margin-top:20px; box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light);">
+              <div style="display: flex; gap: 15px; margin-bottom: 20px;"><div style="flex: 1;"><label class="form-label" id="t-fname">ชื่อจริง <span style="color:red">*</span></label><input type="text" id="inp-fname" class="form-control" placeholder="ชื่อ" oninput="validateNameInput(this)"></div><div style="flex: 1;"><label class="form-label" id="t-lname">นามสกุล</label><input type="text" id="inp-lname" class="form-control" placeholder="นามสกุล" oninput="validateNameInput(this)"></div></div>
+              <div class="form-group" style="margin-bottom:0;"><label class="form-label" id="t-phone">เบอร์โทรศัพท์ <span style="color:red">*</span></label><input type="tel" id="inp-tel" class="form-control" placeholder="08x-xxx-xxxx" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')"></div>
+              <div id="name-lock-warning" style="display:none; font-size:0.8rem; color:#f59e0b; margin-top:10px; font-weight:600;"><i class="fas fa-lock"></i> <span id="t-lock-warn">พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้</span></div>
+          </div>
+
+          <div id="smart-book-area" class="hidden">
+              <div style="display: flex; align-items: center; text-align: center; margin: 20px 0; color: #94a3b8; font-size: 0.85rem; font-weight: 700;" id="t-or">หรือจองให้คนอื่น</div>
+              <div style="position: relative; margin-bottom: 5px;">
+                  <div class="custom-select" id="smart-trigger" onclick="document.getElementById('smart-options').classList.toggle('hidden');"><div style="display:flex; align-items:center; gap:12px; color:var(--primary); font-weight:800;"><i class="fas fa-address-book" style="font-size:1.3rem;"></i><span id="t-smart-book">เลือกจากรายชื่อที่บันทึกไว้</span></div><i class="fas fa-chevron-down" style="color:#94a3b8;"></i></div>
+                  <div class="select-items hidden" id="smart-options" style="display:block; position:absolute; top:calc(100% + 10px); background:white; border-radius:18px; box-shadow:0 15px 30px rgba(0,0,0,0.15); border:1px solid #e2e8f0; width:100%; z-index:50;"></div>
+              </div>
+          </div>
+          
+          <div class="btn-group">
+            <button type="button" class="btn btn-cancel" onclick="closeModal()" id="btn-cancel-modal1">ยกเลิก</button>
+            <button type="button" class="btn btn-confirm" id="btn-next-step" onclick="goToStep2()" disabled>ถัดไป (เลือกบริการ) <i class="fas fa-arrow-right"></i></button>
+          </div>
+      </div>
+
+      <div id="step-2-service" class="hidden">
+          <div id="normal-fields" class="hidden" style="margin-top:20px;">
+              <div class="form-group">
+                <label class="form-label" id="t-sel-svc">เลือกบริการ</label>
+                <select id="inp-service" class="form-control" style="appearance: none; padding-right: 40px; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 12px auto;" onchange="updatePriceDisplay(); checkIDCardInput();"></select>
+                <div id="price-tag" style="margin-top:15px; display:none; background:#fff; color:#0ea5e9; padding:15px; border-radius:15px; font-size:0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border:1px solid #bae6fd;">
+                    <div style="display:flex; gap:10px; align-items:flex-start;"><i class="fas fa-info-circle" style="font-size:1.2rem; margin-top:2px;"></i><div><span style="font-weight:800; display:block;" id="t-price-title">อัตราค่าบริการ/สิทธิ:</span><span id="price-val" style="font-weight:600; color:#1e293b;">-</span></div></div>
+                </div>
+              </div>
+              <div class="form-group" id="group-staff" style="display:none; position:relative;">
+                <label class="form-label" id="lbl_provider_text">ผู้ให้บริการ</label>
+                <div class="custom-select" id="staff-trigger" onclick="toggleStaffDropdown()"><div style="display:flex; align-items:center; gap:12px;"><img id="staff-display-img" src="https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png" class="select-img"><span id="staff-display-name" style="font-weight:800; color:#1e293b;">ไม่ระบุ</span></div><i class="fas fa-chevron-down" style="color:#94a3b8;"></i></div>
+                <div class="select-items hidden" id="staff-options" style="display:block; position:absolute; top:calc(100% + 10px); background:white; border-radius:18px; box-shadow:0 15px 30px rgba(0,0,0,0.15); border:1px solid #e2e8f0; max-height:200px; overflow-y:auto; z-index:50;"></div>
+                <input type="hidden" id="inp-staff-val" value="ไม่ระบุ">
+              </div>
+              <div id="box-option-2hr" style="display:none; margin-top:20px; padding:15px 20px; background:linear-gradient(135deg, #fffbeb, #fef3c7); border-radius:20px; box-shadow:0 4px 10px rgba(245, 158, 11, 0.1);">
+                  <label style="display:flex; align-items:center; gap:12px; cursor:pointer; color:#b45309; font-weight:800; margin:0; font-size:1.05rem;"><input type="checkbox" id="inp-2hr" style="width:24px; height:24px; accent-color:#f59e0b;" onchange="updatePriceDisplay()"><span id="lbl-2hr-text"><i class="fas fa-star"></i> จองต่อเนื่อง 2 ชั่วโมง</span></label>
+                  <div style="font-size:0.85rem; color:#dc2626; margin-top:8px; padding-left:36px; font-weight:600;" id="note-2hr-text">*ชั่วโมงที่ 2 ชำระเพิ่ม 250 บาท</div>
+              </div>
+              <div id="steam-addon-container" style="margin-top: 20px; padding: 20px; background: white; border-radius: 24px; box-shadow: 0 4px 15px rgba(2, 136, 209, 0.1); border: 1px solid #bae6fd; display: none;">
+                  <div style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 800; color: #0288d1; font-size: 1.1rem;" onclick="toggleSteamAddon()">
+                      <input type="checkbox" id="chk-addon-steam" style="width: 24px; height: 24px; accent-color: #0288d1;">
+                      <span id="t-addon-title">🌿 รับบริการอบไอน้ำสมุนไพรต่อเนื่อง</span>
+                  </div>
+                  <div id="addon-steam-details" style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #bae6fd; display: none; animation: fadeIn 0.3s;">
+                      <div style="background: #e0f2fe; padding: 8px 15px; border-radius: 12px; font-size: 0.9rem; color: #0369a1; font-weight: 700; display: inline-block; margin-bottom: 15px;" id="addon-steam-info"><i class="fas fa-spinner fa-spin"></i> กำลังตรวจสอบคิว...</div>
+                      <div class="form-group" style="margin-bottom:0;"><label class="form-label" style="font-size:0.9rem;" id="t-addon-gender">ระบุเพศเพื่อเข้าห้องอบ</label><select id="inp-addon-gender" class="form-control"><option value="หญิง">หญิง (Female)</option><option value="ชาย">ชาย (Male)</option></select></div>
+                  </div>
+              </div>
+          </div>
+
+          <div id="postpartum-fields" class="hidden" style="margin-top:20px;">
+              <div class="form-group"><label class="form-label" id="t-birthdate">วันคลอด</label><input type="date" id="inp-birth-date" class="form-control"></div>
+              <div class="form-group"><label class="form-label" id="t-del-type">ประเภทการคลอด</label><select id="inp-delivery-type" class="form-control"><option value="" id="t-opt-sel">-- เลือก --</option><option value="คลอดธรรมชาติ" id="t-opt-nat">คลอดธรรมชาติ</option><option value="ผ่าคลอด" id="t-opt-csec">ผ่าคลอด</option></select></div>
+              <div class="form-group"><label class="form-label" id="t-hosp">โรงพยาบาลที่คลอด</label><input type="text" id="inp-hospital" class="form-control"></div>
+          </div>
+
+          <div id="steam-fields" class="hidden" style="margin-top:20px;">
+             <div class="form-group"><label class="form-label" id="t-gender">เพศ (สำหรับล็อกรอบ)</label><select id="inp-gender" class="form-control"><option value="หญิง" id="t-g-f">หญิง</option><option value="ชาย" id="t-g-m">ชาย</option></select></div>
+          </div>
+
+          <div class="form-group" id="group-note" style="margin-top:20px;">
+            <label class="form-label" id="t-note">หมายเหตุ (ถ้ามี)</label>
+            <input type="text" id="inp-note" class="form-control" placeholder="เช่น มีไข้ / ประจำเดือน">
+          </div>
+
+          <div class="btn-group">
+            <button type="button" class="btn btn-cancel" onclick="goToStep1()" id="btn-back-1">ย้อนกลับ</button>
+            <button type="button" class="btn btn-confirm" id="btn-check-info" onclick="goToSummary()">ตรวจสอบข้อมูล</button>
+          </div>
+      </div>
+
+      <div id="step-3-summary" class="hidden">
+        <div id="summary-content"></div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-cancel" onclick="goToStep2()" id="btn-edit-sum">แก้ไข</button>
+          <button type="button" class="btn btn-confirm" id="btn-final-confirm" onclick="confirmBooking()">ยืนยันจองคิว</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="adminModal" class="modal-overlay">
+      <div class="modal-card" style="background: #f0f4f8; padding:0; border-radius:0; height:100vh; max-height:100vh;">
+          <div style="background:white; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.05); display:flex; justify-content:space-between; position:sticky; top:0; z-index:10; font-weight:700; font-size:1.1rem;">
+              <div><i class="fas fa-server" style="color:var(--primary);"></i> Command Center</div>
+              <i class="fas fa-times" style="color:#ef4444; cursor:pointer;" onclick="document.getElementById('adminModal').classList.remove('show')"></i>
+          </div>
+          <div style="padding: 20px;">
+              <div class="admin-tab-container" style="display: flex; background: #e2e8f0; border-radius: 14px; padding: 4px; margin-bottom: 20px;">
+                  <div class="admin-tab active" onclick="switchAdminTab('tab-db')" style="flex: 1; text-align: center; padding: 10px; cursor: pointer; border-radius: 10px;"><i class="fas fa-users"></i> คนไข้</div>
+                  <div class="admin-tab" onclick="switchAdminTab('tab-logs')" style="flex: 1; text-align: center; padding: 10px; cursor: pointer; border-radius: 10px;"><i class="fas fa-calendar-alt"></i> ตารางนัด</div>
+              </div>
+              <div id="tab-db" class="admin-panel active">
+                  <div style="display:flex; gap:8px; margin-bottom:15px;"><input type="text" id="adminSearchInp" class="form-control" placeholder="ค้นหา..."><button class="btn btn-confirm" style="flex:none; padding:12px 20px;" onclick="adminSearch()"><i class="fas fa-search"></i></button></div>
+                  <div class="table-responsive"><table class="log-table" style="width:100%;"><thead><tr><th>ID / ข้อมูลคนไข้</th><th style="text-align:right;">จัดการ</th></tr></thead><tbody id="adminSearchResult"><tr><td colspan="2" style="text-align:center; padding:30px;">รอค้นหา</td></tr></tbody></table></div>
+              </div>
+              <div id="tab-logs" class="admin-panel hidden" style="display:none;"></div>
+          </div>
+      </div>
+  </div>
+
   <script>
-    // 📌 สคริปต์สลับหน้าจอ (UI Navigation)
+    /* ==========================================
+       🌟 JAVASCRIPT LOGIC (ระบบเชื่อมต่อฐานข้อมูลทั้งหมด)
+    ========================================== */
+    const API_ENDPOINT = "https://script.google.com/macros/s/AKfycby0EQfBeg8ylgU9Q7IZDf-weHopsK4EFxXkqBUVvtDsEVKKpsIIDZ7y8fXXVWdyzKkbAw/exec"; 
+    const FIREBASE_BASE_URL = "https://sadao-queue-999c3-default-rtdb.asia-southeast1.firebasedatabase.app/"; 
+    
+    let currentLineUid = "";
+    const STEAM_NEXT_1HR = {"08:30":"09:30", "09:30":"10:30", "13:00":"14:00", "14:00":"15:00", "17:00":"18:00"};
+    const STEAM_NEXT_2HR = {"08:30":"10:30", "13:00":"15:00"};
+
+    let currentLang = localStorage.getItem('sdh_lang') || 'th';
+    let currentApp = ''; let globalData = []; let fullFirebaseData = null; 
+    let bookingData = {}; let selectedIndex = 0; let typingTimer;
+    let currentUserDB = null; let selectedSlotData = null; let refreshInterval; let activeBookingObj = null;
+    let isForeigner = false;
+
+    // 📌 ระบบ Navigation สำหรับสลับหน้าจอตาม Bottom Nav
     function switchMainTab(tab) {
-        // อัปเดตสีปุ่ม
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         document.getElementById('nav-' + tab).classList.add('active');
 
-        // ซ่อนทุกหน้าต่าง
         document.getElementById('view-home').classList.add('hidden');
         document.getElementById('view-profile').classList.add('hidden');
         document.getElementById('view-dashboard').classList.add('hidden');
 
-        // แสดงหน้าต่างที่เลือก
         if(tab === 'home') {
             document.getElementById('view-home').classList.remove('hidden');
             window.scrollTo({top:0, behavior:'smooth'});
         } else if(tab === 'profile') {
             document.getElementById('view-profile').classList.remove('hidden');
             window.scrollTo({top:0, behavior:'smooth'});
-            
-            // 🔥 หากเปิดหน้า Profile ให้เรนเดอร์ข้อมูลอีกรอบ (เผื่อการซิงค์)
             if(typeof renderMultiUserCard === 'function') renderMultiUserCard();
         }
     }
 
-    // 📌 แทรกการ Override ฟังก์ชัน renderMultiUserCard() เดิมให้ดีไซน์ตรงกับรูปภาพของคุณ
-    // (นำฟังก์ชันนี้ไปวางแทนที่ renderMultiUserCard เดิมในไฟล์ JS หลักของคุณ)
+    async function initializeLiff() {
+        try {
+            await liff.init({ liffId: "2010086236-cSpA2YLB" });
+            if (liff.isLoggedIn()) {
+                const profile = await liff.getProfile(); currentLineUid = profile.userId;
+            } else { liff.login(); }
+        } catch (err) { console.error("LIFF Init Error:", err); }
+    }
+    
+    let savedProfiles = [];
+    try { savedProfiles = JSON.parse(localStorage.getItem('sdh_saved_profiles') || '[]'); } catch(e) { savedProfiles = []; }
+    let activeProfileId = localStorage.getItem('sdh_active_profile_id');
+    if (activeProfileId === 'null') activeProfileId = null;
+
+    function saveProfilesToStorage() { 
+        localStorage.setItem('sdh_saved_profiles', JSON.stringify(savedProfiles));
+        if (activeProfileId) { localStorage.setItem('sdh_active_profile_id', activeProfileId); }
+        else { localStorage.removeItem('sdh_active_profile_id'); }
+    }
+    
+    function addOrUpdateProfile(id, fname, lname, tel, label) { 
+        let idx = savedProfiles.findIndex(p => p.id === id);
+        let safeLabel = (label !== undefined && label !== null) ? label : (idx > -1 ? savedProfiles[idx].label : "");
+        if(idx > -1) { savedProfiles[idx] = { id, fname, lname, tel, label: safeLabel }; } 
+        else { savedProfiles.push({ id, fname, lname, tel, label: safeLabel }); } 
+        activeProfileId = id; saveProfilesToStorage();
+    }
+
+    function switchUser() { activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
+    function removeUser(id) { savedProfiles = savedProfiles.filter(p => p.id !== id); if(activeProfileId === id) activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
+
+    const I18N = {
+        th: {
+            lang_toggle: "EN", app_ttm: "แพทย์แผนไทย", desc_ttm: "นวดรักษา, ประคบ, นวดส่งเสริมฯ", app_tcm: "แพทย์แผนจีน", desc_tcm: "ฝังเข็ม, ครอบแก้ว, ฝังเข็มใบหน้า", app_postpartum: "บริการหลังคลอด", desc_post: "หลังคลอดธรรมชาติ 7 วัน / ผ่า 1 เดือน", app_steam: "อบไอน้ำสมุนไพร", desc_steam: "ช่วยการไหลเวียนโลหิต ภูมิแพ้", h1: "โรงพยาบาลสะเดา", h2: "กลุ่มงานการแพทย์แผนไทยและการแพทย์ทางเลือก", online: "เปิดให้บริการออนไลน์ 24 ชม.", change_user: "สลับผู้ใช้", history_title: "คิวที่กำลังจะมาถึง / ล่าสุด", syncing: "กำลังซิงค์ข้อมูล...", fill_info: "กรอกข้อมูลจองคิว", id_card: "เลขประจำตัวประชาชน", foreigner: "ชาวต่างชาติ", fname: "ชื่อจริง", lname: "นามสกุล", phone: "เบอร์โทรศัพท์", lock_warn: "พบประวัติในระบบ ชื่อ-สกุล ไม่สามารถแก้ไขได้", user_info_title: "ข้อมูลผู้รับบริการ", change_phone: "เปลี่ยนเบอร์โทรติดต่อ", sel_svc: "เลือกบริการ", btn_cancel: "ยกเลิก", btn_check: "ตรวจสอบข้อมูล", sum_title: "ยืนยันการนัดหมาย", btn_edit: "แก้ไข", btn_confirm: "ยืนยันจองคิว", saving: "ระบบรับข้อมูลแล้ว", saving_sub: "กรุณารอสักครู่ เพื่อยืนยันข้อมูล...", loading: "กำลังโหลด...", opt_sel: "-- เลือก --", opt_nat: "คลอดธรรมชาติ", opt_csec: "ผ่าคลอด", g_f: "หญิง", g_m: "ชาย", mu_title: "บัญชีของคุณ", btn_add_user: "เพิ่มผู้ใช้งานใหม่", act_user: "ใช้งานในชื่อ", aps_hist: "คิวล่าสุดของคุณ", cancel_q: "แจ้งยกเลิกนัดหมายนี้", addon_title: "🌿 รับบริการอบไอน้ำสมุนไพรต่อเนื่อง", addon_gender: "ระบุเพศเพื่อเข้าห้องอบ", no_profile: "ไม่มีผู้ใช้งานในเครื่องนี้", right_title: "💳 เลือกสิทธิการรักษา", right_uc30: "สิทธิบัตรทอง (ร่วมจ่าย 30 บาท)", right_desc30: "(ช่วงอายุ 12-59 ปี)", right_uc_free: "สิทธิบัตรทอง (ยกเว้นร่วมจ่าย)", right_desc_free: "(ผู้สูงอายุ ผู้มีรายได้น้อย อสม. ฯลฯ)", right_gov: "สิทธิเบิกตรงข้าราชการ / อปท.", right_desc_gov: "(ไม่ต้องสำรองจ่าย)", right_enterprise: "สิทธิรัฐวิสาหกิจ", right_desc_enterprise: "(สำรองจ่ายเบิกต้นสังกัด)", right_ss: "สิทธิประกันสังคม / ชำระเงินเอง", right_desc_ss: "(สำรองจ่าย/เงินสด)", btn_confirm_right: "ยืนยันสิทธิและประมวลผล", warn_select_right: "กรุณาเลือกสิทธิการรักษาก่อนครับ", calc_title: "กำลังคำนวณค่าบริการ...", calc_sub: "ระบบกำลังประมวลผลตามสิทธิของคุณ...", bill_title: "สรุปค่าบริการ (โดยประมาณ)", bill_right: "💳 สิทธิ:", bill_base: "ค่าบริการพื้นฐาน:", bill_ooh: "ค่าบริการนอกเวลา/วันหยุด:", bill_2hr: "บริการต่อเนื่องชั่วโมงที่ 2:", bill_steam: "บริการอบไอน้ำสมุนไพร:", bill_total: "ยอดชำระสุทธิ:", baht: "บาท", opt_2hr_ttm: "จองต่อเนื่อง 2 ชั่วโมง", opt_2hr_tcm: "จองต่อเนื่อง ฝังเข็ม + ครอบแก้ว", note_2hr_ttm: "*ชั่วโมงที่ 2 ชำระเพิ่ม 250 บาท", note_2hr_tcm: "*ระบบจะลงคิว 2 ชม.ให้ทันที", err_req_fields: "กรุณากรอกข้อมูลให้ครบถ้วน", warn_title: "แจ้งเตือน", swal_success: "สำเร็จ!", swal_error: "ผิดพลาด", swal_saved: "บันทึกข้อมูลเรียบร้อยแล้ว", swal_cancelled: "ระบบได้ยกเลิกคิวให้ท่านเรียบร้อยแล้ว", swal_cancel_title: "ยืนยันการยกเลิกนัด", swal_cancel_warn3: "คุณต้องการยกเลิกคิวนี้ใช่หรือไม่?", btn_yes_cancel: "ยอมรับและยกเลิกคิว", btn_close: "ปิดหน้าต่างนี้", swal_book_success: "จองคิวสำเร็จ!", swal_processing: "กำลังประมวลผล...", swal_sys_err: "⚠️ ระบบขัดข้อง (กรุณาลองใหม่)", swal_record_found: "พบข้อมูลประวัติ", swal_new_patient: "ผู้รับบริการใหม่ กรุณากรอกข้อมูล", plh_label: "สรรพนาม (เช่น ตัวฉัน, พ่อ, แม่)", sb_title: "เลือกจากรายชื่อที่บันทึกไว้", sb_or: "หรือจองให้คนอื่น", edit_label: "แก้ไขสรรพนาม", btn_book_other: "จองให้บุคคลอื่น (กรอกใหม่)", btn_next: "ถัดไป (เลือกบริการ)", btn_back: "ย้อนกลับ", step1_title: "ข้อมูลผู้ป่วย", step2_title: "เลือกบริการ", step3_title: "ยืนยันข้อมูล"
+        },
+        en: {
+            lang_toggle: "TH", app_ttm: "Thai Traditional Med.", desc_ttm: "Massage, Compress, Wellness", app_tcm: "Chinese Medicine", desc_tcm: "Acupuncture, Cupping, Facial", app_postpartum: "Postpartum Care", desc_post: "Normal delivery 7 days / C-Section 1 mo.", app_steam: "Herbal Steam", desc_steam: "Blood circulation, Allergy relief", h1: "Sadao Hospital", h2: "Thai Traditional & Alternative Medicine", online: "Online Booking 24/7", change_user: "Switch User", history_title: "Upcoming / Recent Appointments", syncing: "Syncing data...", fill_info: "Booking Details", id_card: "Passport / ID Number", foreigner: "Foreigner", fname: "First Name", lname: "Last Name", phone: "Phone Number", lock_warn: "Profile found. Name cannot be changed.", user_info_title: "Patient Details", change_phone: "Change Phone Number", sel_svc: "Select Service", btn_cancel: "Cancel", btn_check: "Check Info", sum_title: "Confirm Appointment", btn_edit: "Edit", btn_confirm: "Confirm Booking", saving: "Data Received", saving_sub: "Processing confirmation...", loading: "Loading...", opt_sel: "-- Select --", opt_nat: "Normal Delivery", opt_csec: "C-Section", g_f: "Female", g_m: "Male", mu_title: "Your Account", btn_add_user: "Add New User", act_user: "Active Profile", aps_hist: "Recent Appointment", cancel_q: "Cancel Appointment", addon_title: "🌿 Add Continuous Steam Therapy", addon_gender: "Select gender for steam room", no_profile: "No profiles saved", right_title: "💳 Select Treatment Right", right_uc30: "Universal Coverage (Co-pay 30 THB)", right_desc30: "(Age 12-59 years old)", right_uc_free: "Universal Coverage (Exempt)", right_desc_free: "(Elderly, Low-income, VHV, etc.)", right_gov: "Civil Servant / LGO", right_desc_gov: "(Direct Billing)", right_enterprise: "State Enterprise", right_desc_enterprise: "(Pay and Claim back)", right_ss: "Social Security / Self-Pay", right_desc_ss: "(Cash Payment)", btn_confirm_right: "Confirm & Calculate", warn_select_right: "Please select your treatment right.", calc_title: "Calculating Fee...", calc_sub: "Processing based on your selected right...", bill_title: "Estimated Service Fee", bill_right: "💳 Right:", bill_base: "Base Service Fee:", bill_ooh: "Out-of-Hours Fee:", bill_2hr: "2nd Hour Session:", bill_steam: "Herbal Steam Therapy:", bill_total: "Total Estimated Amount:", baht: "THB", opt_2hr_ttm: "Cont. 2 Hrs Session", opt_2hr_tcm: "Cont. Acu + Cupping", note_2hr_ttm: "*Extra 250 THB for 2nd hour", note_2hr_tcm: "*Auto 2-hour slot", err_req_fields: "Please fill all required fields", warn_title: "Warning", swal_success: "Success!", swal_error: "Error", swal_saved: "Appointment saved.", swal_cancelled: "Appointment cancelled.", swal_cancel_title: "Cancel Appointment?", swal_cancel_warn3: "Do you want to cancel this appointment?", btn_yes_cancel: "Yes, Cancel", btn_close: "Close window", swal_book_success: "Booking Successful!", swal_processing: "Processing...", swal_sys_err: "⚠️ System error. Please try again.", swal_record_found: "Record found!", swal_new_patient: "New Patient: Please fill out details", plh_label: "Label (e.g. Me, Mom, Son)", sb_title: "Select from saved profiles", sb_or: "OR BOOK FOR OTHERS", edit_label: "Edit Label", btn_book_other: "Book for someone else (New)", btn_next: "Next (Select Service)", btn_back: "Back", step1_title: "Patient Info", step2_title: "Select Service", step3_title: "Confirm Details"
+        }
+    };
+
+    function _t(key) { return I18N[currentLang][key] || key; }
+
+    window.selectRight = function(val) {
+        document.querySelectorAll('.right-option').forEach(el => el.classList.remove('selected'));
+        document.getElementById('opt-right-' + val).classList.add('selected');
+        document.getElementById('selected-right-val').value = val;
+    }
+
+    function toggleLanguage() { 
+        currentLang = currentLang === 'th' ? 'en' : 'th'; localStorage.setItem('sdh_lang', currentLang); 
+        applyLanguageToUI(); if(globalData.length > 0) renderSlots(selectedIndex); renderMultiUserCard(); 
+    }
+
+    function applyLanguageToUI() {
+        try {
+            document.getElementById('current-lang-text').innerText = _t('lang_toggle');
+            document.getElementById('current-lang-dash').innerText = _t('lang_toggle');
+            document.getElementById('t-h2').innerText = _t('h2'); document.getElementById('t-h1').innerText = _t('h1'); document.getElementById('t-online').innerText = _t('online');
+            document.getElementById('t-menu-ttm').innerText = _t('app_ttm'); document.getElementById('t-desc-ttm').innerText = _t('desc_ttm');
+            document.getElementById('t-menu-tcm').innerText = _t('app_tcm'); document.getElementById('t-desc-tcm').innerText = _t('desc_tcm');
+            document.getElementById('t-menu-post').innerText = _t('app_postpartum'); document.getElementById('t-desc-post').innerText = _t('desc_post');
+            document.getElementById('t-menu-steam').innerText = _t('app_steam'); document.getElementById('t-desc-steam').innerText = _t('desc_steam');
+            document.getElementById('t-foreigner-chk').innerText = _t('foreigner');
+            document.getElementById('t-fname').innerHTML = `${_t('fname')} <span style="color:red">*</span>`; document.getElementById('t-lname').innerText = _t('lname');
+            document.getElementById('t-phone').innerHTML = `${_t('phone')} <span style="color:red">*</span>`; document.getElementById('t-lock-warn').innerText = _t('lock_warn');
+            document.getElementById('t-user-info-title').innerHTML = `<i class="fas fa-user-check"></i> ${_t('user_info_title')}`;
+            document.getElementById('t-change-phone').innerText = _t('change_phone');
+            document.getElementById('t-sel-svc').innerText = _t('sel_svc');
+            if(document.getElementById('t-addon-title')) document.getElementById('t-addon-title').innerHTML = _t('addon_title'); 
+            document.getElementById('btn-cancel-modal1').innerText = _t('btn_cancel'); 
+            document.getElementById('btn-edit-sum').innerText = _t('btn_edit'); document.getElementById('btn-final-confirm').innerText = _t('btn_confirm');
+            document.getElementById('t-saving').innerText = _t('saving'); document.getElementById('t-loading').innerText = _t('loading'); 
+            
+            let btnNext = document.getElementById('btn-next-step');
+            if(btnNext) {
+                if(btnNext.innerHTML.includes('fa-spinner')) btnNext.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${_t('loading')}`;
+                else btnNext.innerHTML = `${_t('btn_next')} <i class="fas fa-arrow-right"></i>`;
+            }
+            
+            let btnCheck = document.getElementById('btn-check-info'); if(btnCheck) btnCheck.innerText = _t('btn_check');
+            let btnBack1 = document.getElementById('btn-back-1'); if(btnBack1) btnBack1.innerText = _t('btn_back');
+            
+            if(document.getElementById('t-step1')) document.getElementById('t-step1').innerText = _t('step1_title');
+            if(document.getElementById('t-step2')) document.getElementById('t-step2').innerText = _t('step2_title');
+            if(document.getElementById('t-step3')) document.getElementById('t-step3').innerText = _t('step3_title');
+            
+            toggleForeignerMode(); renderSmartBookDropdown();
+        } catch(e) {}
+    }
+
+    const APP_CONFIG = { ttm: { title: "แพทย์แผนไทย", logo: "https://img2.pic.in.th/pic/619e72dc2124132ccf4620717d4fa58d.md.png", color: "#2e7d32" }, tcm: { title: "แพทย์แผนจีน", logo: "https://img2.pic.in.th/pic/--06d2d95efaba2074.md.png", color: "#c62828" }, postpartum: { title: "บริการหลังคลอด", logo: "https://img2.pic.in.th/pic/eb06897c542c79b64690c8e794fa84a4.png", color: "#ec4899" }, steam: { title: "อบไอน้ำสมุนไพร", logo: "https://img2.pic.in.th/pic/-3b445847427fcbfd.png", color: "#0288d1" } };
+    const SERVICE_OPTIONS = { ttm: ["นวดและประคบเพื่อการรักษา", "นวดตัวส่งเสริมสุขภาพ(ชำระเงินเอง)", "นวดเท้าส่งเสริมสุขภาพ(ชำระเงินเอง)"], tcm: ["ฝังเข็มเพื่อการรักษา", "ครอบแก้ว", "ฝังเข็มใบหน้า", "เม็ดผักกาดแปะหู", "ปรึกษาแพทย์แผนจีน"] };
+    const STAFF_IMAGES = { "รจนา M": "https://img1.pic.in.th/images/29cf568d9d3f548b07.png", "อรรถพล B": "https://img2.pic.in.th/3002857ed55bcb783e.png", "ศินารัตน์ C": "https://img2.pic.in.th/35b2f9d14beddf4380.png", "จุฑามาศ F": "https://img1.pic.in.th/images/3160d8e760be1bc51e.png", "รัตน์ชนก KW": "https://img2.pic.in.th/323086fe6798ca5dce.png", "นิกษ์นิภา T": "https://img2.pic.in.th/33bea174c8b0315ff4.png", "ณิชาภัทร W": "https://img1.pic.in.th/images/3438c14aad54d74a1a.png", "จินดา J": "https://img2.pic.in.th/-2569d4d2a9b79e0efa9e.png", "แพทย์แผนจีน": "https://img2.pic.in.th/55c47176d1c28f966a1289b3b1d48837.png" };
+    const STAFF_NAME_MAP = { "จินดา J": "จินดา (เจี๊ยบ)", "รจนา M": "รจนา (แหม่ม)", "อรรถพล B": "อรรถพล (บ่าว)", "ศินารัตน์ C": "ศินารัตน์ (ซี)", "จุฑามาศ F": "จุฑามาศ (ฝน)", "รัตน์ชนก KW": "รัตน์ชนก (กวาง)", "นิกษ์นิภา T": "นิกษ์นิภา (การ์ตูน)", "ณิชาภัทร W": "ณิชาภัทร (วาวา)", "แพทย์แผนจีน": "แพทย์แผนจีน (TCM)" };
+    const STAFF_EN_NAMES = { "จินดา J": "Jinda (Jeab)", "รจนา M": "Rotjana (Maam)", "อรรถพล B": "Attapon (Bao)", "ศินารัตน์ C": "Sinarat (C)", "จุฑามาศ F": "Jutamat (Fon)", "รัตน์ชนก KW": "Ratchanok (Kwang)", "นิกษ์นิภา T": "Niknipha (Kartoon)", "ณิชาภัทร W": "Nichapat (Wawa)", "แพทย์แผนจีน": "TCM Doctor" };
+    const DEFAULT_IMG = "https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png"; const DAY_COLORS = ["#ef4444", "#eab308", "#ec4899", "#22c55e", "#f97316", "#3b82f6", "#a855f7"];
+    
+    // 📌 Override renderMultiUserCard (ปรับตามแบบที่ส่งมา)
     function renderMultiUserCard() {
         try {
             let container = document.getElementById('main-auth-card');
@@ -245,16 +667,16 @@
                 if (activeUser) { 
                     container.innerHTML = `
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                            <div style="font-size:0.85rem; color:#16a34a; font-weight:800; display:flex; align-items:center; gap:6px;"><i class="fas fa-check-circle"></i> ใช้งานในชื่อ</div>
+                            <div style="font-size:0.85rem; color:#16a34a; font-weight:800; display:flex; align-items:center; gap:6px;"><i class="fas fa-check-circle"></i> ${_t('act_user')}</div>
                             <button style="background:#f1f5f9; border:none; color:#475569; padding:6px 15px; border-radius:20px; font-size:0.85rem; font-weight:800; cursor:pointer; transition:0.2s;"
-                            onclick="switchUser()">สลับผู้ใช้</button>
+                            onclick="switchUser()">${_t('change_user')}</button>
                         </div>
                         <div style="display:flex; align-items:center; gap:15px; margin-top:5px;">
                             <div class="mu-avatar">${activeUser.fname.substring(0,1)}</div>
                             <div style="font-size:1.3rem; font-weight:800; color:#1e293b;">${getMaskedFullName(activeUser.fname, activeUser.lname)}</div>
                         </div>
                         <div class="aps-history">
-                            <div style="font-size:0.95rem; color:#475569; font-weight:800; margin-bottom:12px; display:flex; align-items:center; gap:8px;"><i class="fas fa-calendar-check"></i> คิวล่าสุดของคุณ</div>
+                            <div style="font-size:0.95rem; color:#475569; font-weight:800; margin-bottom:12px; display:flex; align-items:center; gap:8px;"><i class="fas fa-calendar-check"></i> ${_t('aps_hist')}</div>
                             <div id="aps-history-content" style="display:flex; gap:15px; align-items:center;">
                                 <div style="color:var(--accent); font-size:1.5rem;"><i class="fas fa-spinner fa-spin"></i></div><div style="font-size:0.95rem; font-weight:600;">กำลังตรวจสอบคิว...</div>
                             </div>
@@ -265,26 +687,457 @@
                 } else { activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
             } else {
                 let listHtml = '';
-                if (!savedProfiles || savedProfiles.length === 0) { listHtml = `<div style="text-align:center; padding:15px; color:#64748b; font-size:0.9rem; font-weight:600;">ไม่มีผู้ใช้งานในเครื่องนี้</div>`; } 
+                if (!savedProfiles || savedProfiles.length === 0) { listHtml = `<div style="text-align:center; padding:15px; color:#64748b; font-size:0.9rem; font-weight:600;">${_t('no_profile')}</div>`; } 
                 else {
                     savedProfiles.forEach(p => { 
                         let mName = getMaskedFullName(p.fname, p.lname); let mTel = getMaskedTel(p.tel); 
                         listHtml += `<div class="mu-profile" onclick="selectUser('${p.id}')"><div class="mu-info"><div class="mu-avatar">${p.fname.substring(0,1)}</div><div class="mu-name">${mName}<span><i class="fas fa-phone"></i> ${mTel}</span></div></div><div class="mu-delete" onclick="event.stopPropagation(); removeUser('${p.id}')"><i class="fas fa-times"></i></div></div>`; 
                     });
                 }
-                container.innerHTML = `<div style="font-size:1.1rem; font-weight:800; color:#1e293b; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;"><span>บัญชีของคุณ</span> <i class="fas fa-users" style="color:var(--accent);"></i></div><div class="mu-profile-list">${listHtml}</div><button class="btn-add-user" onclick="showAddUserForm()"><i class="fas fa-plus"></i> เพิ่มผู้ใช้งานใหม่</button>`;
+                container.innerHTML = `<div style="font-size:1.1rem; font-weight:800; color:#1e293b; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;"><span>${_t('mu_title')}</span> <i class="fas fa-users" style="color:var(--accent);"></i></div><div class="mu-profile-list">${listHtml}</div><button class="btn-add-user" onclick="showAddUserForm()"><i class="fas fa-plus"></i> ${_t('btn_add_user')}</button>`;
             }
         } catch(e) { console.error("Card UI Error:", e); }
     }
 
-    // 📌 Override ปุ่ม Back ในหน้า Dashboard ให้กลับมาที่ Home แบบเช็ค Navigation
+    function selectUser(id) { activeProfileId = id; saveProfilesToStorage(); renderMultiUserCard(); }
+
+    function showAddUserForm() { 
+        Swal.fire({
+            title: _t('btn_add_user'),
+            html: `<input id="swal-add-id" class="form-control" style="margin-bottom:15px;" placeholder="${_t('id_card')}" maxlength="20"><div style="display:flex; gap:10px;"><input id="swal-add-fname" class="form-control" placeholder="${_t('fname')}"><input id="swal-add-lname" class="form-control" placeholder="${_t('lname')}"></div><input id="swal-add-tel" class="form-control" style="margin-top:15px;" placeholder="${_t('phone')}" maxlength="10" type="tel" oninput="this.value=this.value.replace(/[^0-9]/g,'')">`,
+            showCancelButton: true, confirmButtonText: currentLang==='en'?'Save':'บันทึก', confirmButtonColor: 'var(--accent)', cancelButtonText: _t('btn_cancel'), customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' },
+            preConfirm: () => { return { idCard: document.getElementById('swal-add-id').value, fname: document.getElementById('swal-add-fname').value, lname: document.getElementById('swal-add-lname').value, tel: document.getElementById('swal-add-tel').value } }
+        }).then((res) => {
+            if (res.isConfirmed) {
+                let v = res.value;
+                if(v.idCard && v.fname && v.tel) { addOrUpdateProfile(v.idCard, v.fname, v.lname, v.tel, ""); Swal.fire({title:_t('swal_success'), icon:'success', customClass: { popup: 'swal-3d-popup' }}); renderMultiUserCard(); switchMainTab('profile'); } 
+                else { Swal.fire({title:_t('swal_error'), text:_t('err_req_fields'), icon:'error', customClass: { popup: 'swal-3d-popup' }}); }
+            }
+        });
+    }
+
+    function renderSmartBookDropdown() {
+        let area = document.getElementById('smart-book-area');
+        if (!area) return;
+        if (savedProfiles.length === 0) {
+            area.classList.add('hidden');
+        } else {
+            area.classList.remove('hidden');
+            let opts = document.getElementById('smart-options'); let html = "";
+            html += `<div style="padding:15px 20px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:12px; cursor:pointer; color:var(--primary); font-weight:800; justify-content:center; background:#f0fdf4;" onclick="clearForNewPatient()">
+                        <i class="fas fa-user-plus"></i> ${_t('btn_book_other')}
+                     </div>`;
+            savedProfiles.forEach(p => {
+                let mName = getMaskedFullName(p.fname, p.lname);
+                let displayLabel = p.label ? p.label : (currentLang === 'en' ? '+ Add Nickname' : '+ กดเพื่อตั้งชื่อเล่น');
+                html += `<div style="padding:15px 20px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:15px; cursor:pointer;" onclick="selectProfileForBooking('${p.id}')">
+                            <div style="width:40px; height:40px; border-radius:50%; background:var(--bg-color); box-shadow: 2px 2px 5px var(--shadow-dark); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:1.2rem;"><i class="fas fa-user"></i></div>
+                            <div><div style="font-weight:800; color:#1e293b; font-size:1.05rem;">${displayLabel}</div><div style="font-size:0.85rem; color:#64748b; font-weight:500;">${mName}</div></div>
+                         </div>`;
+            });
+            opts.innerHTML = html;
+        }
+    }
+
+    function clearForNewPatient() {
+        document.getElementById('smart-options').classList.add('hidden');
+        document.getElementById('inp-idcard').value = ''; document.getElementById('inp-idcard-foreigner').value = '';
+        document.querySelectorAll('.otp-box').forEach(b => { b.value = ''; b.classList.remove('filled'); });
+        document.getElementById('idcard-status').innerHTML = ''; document.getElementById('inp-fname').value = ''; document.getElementById('inp-lname').value = ''; document.getElementById('inp-tel').value = ''; document.getElementById('inp-fname').readOnly = false; document.getElementById('inp-lname').readOnly = false;
+        document.getElementById('existing-user-display').classList.add('hidden'); document.getElementById('user-details-form').classList.remove('hidden'); document.getElementById('name-lock-warning').style.display = 'none';
+        let btnNext = document.getElementById('btn-next-step'); btnNext.disabled = true; btnNext.innerHTML = `${_t('btn_next')} <i class="fas fa-arrow-right"></i>`;
+        currentUserDB = null; activeProfileId = null;
+        if(!isForeigner) { setTimeout(() => { let oBox = document.querySelector('.otp-box'); if(oBox) oBox.focus(); }, 100); }
+    }
+
+    function selectProfileForBooking(id) {
+        let p = savedProfiles.find(x => x.id === id);
+        if(p) {
+            document.getElementById('chk-foreigner').checked = false; toggleForeignerMode();
+            if(id.length === 13 && !isForeigner) {
+                let boxes = document.querySelectorAll('.otp-box');
+                for(let i=0; i<13; i++) { if(boxes[i]) { boxes[i].value = id[i]; boxes[i].classList.add('filled'); } }
+            } else {
+                document.getElementById('chk-foreigner').checked = true; toggleForeignerMode();
+                document.getElementById('inp-idcard-foreigner').value = id;
+            }
+            document.getElementById('inp-idcard').value = id;
+            document.getElementById('smart-options').classList.add('hidden'); checkIDCardInput();
+        }
+    }
+
+    window.onload = function() { initializeLiff(); applyLanguageToUI(); setupIDBoxes(); renderMultiUserCard(); };
+
+    function setupIDBoxes() {
+        const boxes = document.querySelectorAll('.otp-box');
+        boxes.forEach((box, index) => {
+            box.addEventListener('input', (e) => { box.value = box.value.replace(/[^0-9]/g, ''); if (box.value) { box.classList.add('filled'); if (index < boxes.length - 1) boxes[index + 1].focus(); } else { box.classList.remove('filled'); } updateHiddenID(); });
+            box.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !box.value && index > 0) { boxes[index - 1].focus(); boxes[index - 1].value = ''; boxes[index - 1].classList.remove('filled'); updateHiddenID(); } });
+            box.addEventListener('paste', (e) => { e.preventDefault(); const pastedData = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, ''); if(!pastedData) return; for (let i = 0; i < pastedData.length && index + i < boxes.length; i++) { boxes[index + i].value = pastedData[i]; boxes[index + i].classList.add('filled'); } if (index + pastedData.length < boxes.length) boxes[index + pastedData.length].focus(); else boxes[boxes.length - 1].focus(); updateHiddenID(); });
+        });
+    }
+
+    function updateHiddenID() { 
+        if(isForeigner) return;
+        const boxes = document.querySelectorAll('.otp-box'); let id = Array.from(boxes).map(b => b.value).join(''); document.getElementById('inp-idcard').value = id;
+        if (id.length === 13) { checkIDCardInput(); } else { document.getElementById('idcard-status').innerHTML = ''; document.getElementById('btn-next-step').disabled = true; document.getElementById('btn-next-step').innerHTML = `${_t('btn_next')} <i class="fas fa-arrow-right"></i>`; document.getElementById('existing-user-display').classList.add('hidden'); document.getElementById('user-details-form').classList.remove('hidden'); } 
+    }
+
+    function toggleForeignerMode() {
+        isForeigner = document.getElementById('chk-foreigner').checked;
+        let hiddenId = document.getElementById('inp-idcard'); let boxContainer = document.getElementById('thai-id-boxes'); let foreignInput = document.getElementById('inp-idcard-foreigner'); let lblId = document.getElementById('lbl-idcard');
+        document.getElementById('idcard-status').innerHTML = ""; document.getElementById('user-details-form').classList.remove('hidden'); document.getElementById('existing-user-display').classList.add('hidden'); document.getElementById('btn-next-step').disabled = true;
+        if(isForeigner) { lblId.innerHTML = 'Passport / ID Number <span style="color:red">*</span>'; boxContainer.style.display = 'none'; foreignInput.classList.remove('hidden'); hiddenId.value = ""; foreignInput.value = ""; } 
+        else { lblId.innerHTML = `${_t('id_card')} <span style="color:red">*</span>`; boxContainer.style.display = 'flex'; foreignInput.classList.add('hidden'); hiddenId.value = ""; document.querySelectorAll('.otp-box').forEach(b => { b.value=''; b.classList.remove('filled'); }); }
+        document.getElementById('btn-next-step').innerHTML = `${_t('btn_next')} <i class="fas fa-arrow-right"></i>`;
+    }
+
+    function validateNameInput(input) { if(isForeigner) input.value = input.value.replace(/[^a-zA-Z\s]/g, ''); }
+    function maskString(str) { if(!str) return ""; let s = str.toString().trim(); if(s.length <= 2) return s.substring(0, 1) + "***"; if(s.length <= 4) return s.substring(0, 2) + "***"; return s.substring(0, 3) + "***"; }
+    function getMaskedFullName(fname, lname) { return maskString(fname) + " " + maskString(lname); }
+    function getMaskedTel(tel) { if(!tel || tel.length < 10) return tel; return tel.substring(0,3) + "-xxx-x" + tel.substring(8); }
+
+    function fetchPatientHistory(idCard) {
+        fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'get_my_history', idCard: idCard }) }).then(r=>r.json()).then(data => {
+            if (data.status === 'success' && data.history) {
+                let h = data.history; let icon = h.service.includes('ฝังเข็ม') ? '<i class="fas fa-yin-yang"></i>' : (h.service.includes('อบ') ? '<i class="fas fa-hot-tub-person"></i>' : '<i class="fas fa-leaf"></i>');
+                let apsCont = document.getElementById('aps-history-content');
+                if(apsCont) apsCont.innerHTML = `<div style="background:white; color:var(--primary); width:45px; height:45px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">${icon}</div><div style="flex:1;"><div style="color:#1e293b; font-weight:800; font-size:1.05rem;">${_t(h.service)}</div><div style="color:#475569; font-size:0.85rem; font-weight:600;"><i class="far fa-calendar-alt"></i> ${h.date} | ${h.time} น.</div></div>`;
+                let btnArea = document.getElementById('btn-cancel-area');
+                if(h.sysDate && btnArea) { activeBookingObj = { idCard: idCard, service: h.service, date: h.date, sysDate: h.sysDate, time: h.time }; btnArea.innerHTML = `<button type="button" class="btn-cancel-q" onclick="reqCancelBooking()"><i class="fas fa-times-circle"></i> ${_t('cancel_q')}</button>`; } 
+                else if(btnArea) { btnArea.innerHTML = `<div style="text-align:right; font-size:0.85rem; color:#4ade80; margin-top:8px; font-weight:800;"><i class="fas fa-check-circle"></i> ${h.status || 'Completed'}</div>`; activeBookingObj = null; }
+            } else { 
+                let apsCont = document.getElementById('aps-history-content');
+                if(apsCont) apsCont.innerHTML = `<div style="color:#94a3b8; font-size:0.9rem; font-weight:600; width:100%; text-align:center; padding:15px 0;">No record found</div>`; 
+                if(document.getElementById('btn-cancel-area')) document.getElementById('btn-cancel-area').innerHTML = ''; 
+            }
+        }).catch(e=>{});
+    }
+
+    function reqCancelBooking() {
+        if(!activeBookingObj) return; let today = new Date(); today.setHours(0,0,0,0); let bParts = activeBookingObj.sysDate.split('-'); let bDate = new Date(bParts[0], bParts[1]-1, bParts[2]); let diffTime = Math.abs(bDate - today); let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        let warnMsg = _t('swal_cancel_warn3');
+        Swal.fire({ title: _t('swal_cancel_title'), text: warnMsg, icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#cbd5e1', confirmButtonText: _t('btn_yes_cancel'), cancelButtonText: _t('btn_cancel'), customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' } }).then((result) => { if (result.isConfirmed) executeCancelBooking(); });
+    }
+
+    function executeCancelBooking() {
+        Swal.fire({ title: _t('swal_processing'), allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }, customClass: { popup: 'swal-3d-popup' } });
+        let bParts = activeBookingObj.sysDate.split('-'); let sheetN = parseInt(bParts[2]) + "/" + parseInt(bParts[1]); let sDept = 'ttm'; if(activeBookingObj.service.includes('ฝังเข็ม')||activeBookingObj.service.includes('ครอบแก้ว')) sDept='tcm'; else if(activeBookingObj.service.includes('อบ')) sDept='steam';
+        
+        let payload = { action: 'cancel_booking', idCard: activeBookingObj.idCard, sysDate: activeBookingObj.sysDate, time: activeBookingObj.time, sheetName: sheetN, dept: sDept, service: activeBookingObj.service };
+        fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(payload) })
+        .then(async response => { let resText = await response.text(); try { return JSON.parse(resText); } catch(err) { return { status: 'success', penaltyDays: 0 }; } })
+        .then(res => { 
+            if(res.status === 'success' || res.status === 'error_but_done') { 
+                Swal.fire({ title:_t('swal_success'), text: "กำลังส่งข้อความยกเลิกเข้าแชท...", icon:'success', showConfirmButton: false, allowOutsideClick: false, timer: 3000, timerProgressBar: true, customClass:{popup:'swal-3d-popup'} });
+                fetchPatientHistory(activeBookingObj.idCard); fetch(API_ENDPOINT, {method:'POST', body:JSON.stringify({action:'background_sync', dept:sDept})}); 
+            } else Swal.fire({title:_t('swal_error'), text:(res.message || 'Error occurred'), icon:'error', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}});
+        })
+        .catch(e=>{ fetchPatientHistory(activeBookingObj.idCard); });
+    }
+
+    function openApp(type) { 
+        proceedToApp(type); 
+        document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active')); 
+        document.getElementById('nav-home').classList.add('active'); 
+    }
+
+    function proceedToApp(type) { 
+        currentApp = type; let conf = APP_CONFIG[type]; 
+        document.documentElement.style.setProperty('--primary', conf.color); 
+        document.documentElement.style.setProperty('--primary-light', type==='tcm'?'#ffebee':type==='postpartum'?'#fce4ec':type==='steam'?'#e0f2fe':'#e8f5e9');
+        document.getElementById('app-title').innerText = _t('app_' + type); 
+        document.getElementById('app-logo').src = conf.logo; 
+        
+        // Hide views
+        document.getElementById('view-home').classList.add('hidden'); 
+        document.getElementById('view-profile').classList.add('hidden'); 
+        document.getElementById('view-dashboard').classList.remove('hidden'); 
+        window.scrollTo(0,0); 
+        
+        fetchData(true); 
+        if(refreshInterval) clearInterval(refreshInterval); 
+        refreshInterval = setInterval(() => { fetchData(false); }, 15000); 
+    }
+    
     function goHome() { 
         document.getElementById('view-dashboard').classList.add('hidden'); 
         switchMainTab('home'); 
         if(refreshInterval) clearInterval(refreshInterval); 
     }
 
-  </script>
+    function fetchData(showLoader) {
+      if(showLoader) document.getElementById('pageLoader').classList.remove('hidden');
+      const syncIcon = document.getElementById('sync-icon'); const syncText = document.getElementById('sync-text');
+      if(!showLoader) syncIcon.classList.add('spin-active');
+      fetch(FIREBASE_BASE_URL + "sadaoData.json?t=" + new Date().getTime(), { cache: 'no-store' }).then(res => res.json()).then(data => {
+            let now = new Date(); let timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+            syncIcon.classList.remove('spin-active'); syncText.innerText = (currentLang === 'en' ? 'Updated ' : 'อัปเดตล่าสุด ') + timeStr; 
+            fullFirebaseData = data; globalData = currentApp==='ttm'?data.ttm:currentApp==='tcm'?data.tcm:currentApp==='postpartum'?data.postpartum:data.steam;
+            renderScroller(); renderSlots(selectedIndex); if(showLoader) document.getElementById('pageLoader').classList.add('hidden');
+      }).catch(e => { syncIcon.classList.remove('spin-active'); syncText.innerText = 'Offline'; if(showLoader) document.getElementById('pageLoader').classList.add('hidden'); });
+    }
 
-  </body>
+    function renderScroller() {
+      let html = ''; let days = currentLang === 'en' ? ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"] : ["อา.","จ.","อ.","พ.","พฤ.","ศ.","ส."];
+      globalData.forEach((d, i) => { let active = (i === selectedIndex) ? 'active' : ''; html += `<div class="date-chip ${active}" onclick="selectDate(${i})"><small>${days[d.dayOfWeek]}</small><span>${d.displayDate.split(" ")[0]}</span></div>`; });
+      document.getElementById('dateScroller').innerHTML = html;
+      if(globalData[selectedIndex]) { let dColor = DAY_COLORS[globalData[selectedIndex].dayOfWeek]; let style = document.getElementById('dynamic-day-color'); if(!style) { style = document.createElement('style'); style.id = 'dynamic-day-color'; document.head.appendChild(style); } style.innerHTML = `.date-chip.active { background: ${dColor} !important; box-shadow: 0 10px 20px ${dColor}66 !important; }`; }
+    }
+    
+    function selectDate(index) { selectedIndex = index; renderScroller(); renderSlots(index); }
+
+    function renderSlots(index) {
+        let day = globalData[index]; let container = document.getElementById('contentArea');
+        if (!day || !day.slots || day.slots.length === 0) { container.innerHTML = `<div style="text-align:center; padding:80px 20px; color:#94a3b8;"><i class="fas fa-calendar-times" style="font-size:4rem; margin-bottom:20px; opacity:0.3;"></i><h3 style="margin:0; font-weight:800;">${currentLang === 'en' ? 'No slots available' : 'ไม่มีรอบว่างในวันนี้'}</h3></div>`; return; }
+        let now = new Date(); let currentMins = now.getHours() * 60 + now.getMinutes(); let todaySysDate = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, '0') + "-" + String(now.getDate()).padStart(2, '0'); let isToday = (day.sysDate === todaySysDate);
+        let validSlots = []; day.slots.forEach(slot => { if (isToday) { let tP = slot.time.split(":"); let sM = parseInt(tP[0]) * 60 + parseInt(tP[1]); if (sM <= currentMins) return; } validSlots.push(slot); });
+        if(validSlots.length === 0) { container.innerHTML = `<div style="text-align:center; padding:80px 20px; color:#94a3b8;"><i class="fas fa-clock" style="font-size:4rem; margin-bottom:20px; opacity:0.3;"></i><h3 style="margin:0; font-weight:800;">${currentLang === 'en' ? 'All slots have passed' : 'รอบบริการวันนี้ผ่านไปหมดแล้ว'}</h3></div>`; return; }
+        let dtLabel = day.fullLabel; if(currentLang === 'en') { let mEn = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; let dParts = day.sysDate.split("-"); dtLabel = `${dParts[2]} ${mEn[parseInt(dParts[1])-1]} ${dParts[0]}`; }
+        let html = `<div class="selected-date-header"><span class="header-bar"></span>${dtLabel}</div><div class="grid-container">`;
+        let deptIcon = '<i class="fas fa-calendar-check"></i>'; if (currentApp === 'ttm') deptIcon = '<i class="fas fa-leaf"></i>'; else if (currentApp === 'tcm') deptIcon = '<i class="fas fa-yin-yang"></i>'; else if (currentApp === 'postpartum') deptIcon = '<i class="fas fa-hands-holding-child"></i>'; else if (currentApp === 'steam') deptIcon = '<i class="fas fa-hot-tub-person"></i>';
+        validSlots.forEach((slot, i) => {
+            let isFull = slot.val.includes('เต็ม') || slot.val.includes('งด'); let count = slot.count || 0; let slotGender = slot.gender || ""; let gClass = "";
+            if (currentApp === 'tcm') gClass = "theme-tcm"; if (currentApp === 'postpartum') gClass = "theme-postpartum";
+            let twoHrBadge = ""; if (!isFull && slot.count2Hr > 0 && (currentApp === 'ttm' || currentApp === 'tcm')) { let bText = currentApp === 'tcm' ? "Acu+Cup" : `2Hr (${slot.count2Hr})`; twoHrBadge = `<div class="badge-2hr"><i class="fas fa-bolt"></i> ${bText}</div>`; }
+            let iconsHtml = ''; 
+            if (!isFull && count > 0) { 
+                iconsHtml = `<div class="queue-icons" style="display:flex; align-items:center;">`; 
+                if (currentApp === 'tcm') {
+                    let displayCount = Math.min(count, 4); let tcmImg = 'https://img2.pic.in.th/55c47176d1c28f966a1289b3b1d48837.png';
+                    for(let k=0; k<displayCount; k++) { let marginLeft = k > 0 ? '-10px' : '0'; iconsHtml += `<img src="${tcmImg}" style="width:28px; height:28px; border-radius:50%; border:2px solid white; margin-left:${marginLeft}; z-index:${10-k}; position:relative; object-fit:cover; box-shadow:0 2px 5px rgba(0,0,0,0.1);">`; }
+                    if (count > displayCount) { iconsHtml += `<span style="font-weight:800; margin-left:8px; font-size:0.8rem; color:var(--accent);">+${count - displayCount}</span>`; }
+                } else if (currentApp === 'ttm' && slot.staff && slot.staff.length > 0) {
+                    let uniqueStaffNames = [...new Set(slot.staff.map(s => s.name))]; let displayCount = Math.min(uniqueStaffNames.length, 4);
+                    for(let k=0; k<displayCount; k++) { let sName = uniqueStaffNames[k]; let imgUrl = STAFF_IMAGES[sName] || DEFAULT_IMG; let marginLeft = k > 0 ? '-10px' : '0'; iconsHtml += `<img src="${imgUrl}" style="width:28px; height:28px; border-radius:50%; border:2px solid white; margin-left:${marginLeft}; z-index:${10-k}; position:relative; object-fit:cover; box-shadow:0 2px 5px rgba(0,0,0,0.1);">`; }
+                    if (count > displayCount) { iconsHtml += `<span style="font-weight:800; margin-left:8px; font-size:0.8rem; color:var(--accent);">+${count - displayCount}</span>`; }
+                } else {
+                    for(let k=0; k<Math.min(count, 4); k++) iconsHtml += `<i class="fas fa-user" style="font-size:0.85rem; color:var(--accent);"></i>`; 
+                    if (count > 4) iconsHtml += `<span style="font-weight:900; margin-left:4px; font-size:0.8rem; color:var(--accent);">+</span>`; 
+                }
+                iconsHtml += `</div>`; 
+            }
+            let genderBadge = ''; if (currentApp === 'steam' && slotGender && !isFull) { if (slotGender === "ชาย" || slotGender === "ช") genderBadge = `<div style="background:#e0f2fe; color:#0288d1; padding:4px 10px; border-radius:10px; font-size:0.75rem; font-weight:800;"><i class="fas fa-mars"></i> Male</div>`; else if (slotGender === "หญิง" || slotGender === "ญ") genderBadge = `<div style="background:#fce7f3; color:#db2777; padding:4px 10px; border-radius:10px; font-size:0.75rem; font-weight:800;"><i class="fas fa-venus"></i> Female</div>`; }
+            let statusTxt = isFull ? (currentLang==='en'?'FULL':'เต็ม') : (currentLang==='en'?`${count} Left`:`ว่าง ${count}`);
+            let badgeHtml = isFull ? `<div class="status-capsule"><div class="status-text">${statusTxt}</div></div>` : `<div class="slot-info-right">${genderBadge}${twoHrBadge}<div class="status-capsule">${iconsHtml}<div class="status-text">${statusTxt}</div></div></div>`;
+            let staffJsonEncoded = encodeURIComponent(JSON.stringify(slot.staff || [])); let action = isFull ? '' : `onclick="openBooking('${slot.time}', '${dtLabel}', '${day.sysDate}', ${index}, '${staffJsonEncoded}', '${slotGender}')"`;
+            html += `<div class="slot-card ${isFull?'is-full':''} ${gClass}" style="animation-delay:${i*0.05}s; ${isFull?'':'cursor:pointer'}" ${action}><div class="time-wrap"><div class="icon-status">${isFull ? '<i class="fas fa-lock"></i>' : deptIcon}</div><div class="time-text">${slot.time}<small>${currentApp==='steam'?(currentLang==='en'?'Round':'รอบบริการ'):(currentLang==='en'?'Start':'เริ่มให้บริการ')}</small></div></div>${badgeHtml}</div>`;
+        });
+        container.innerHTML = html + '</div>';
+    }
+
+    function updateStepper(step) {
+        for(let i=1; i<=3; i++) {
+            let ind = document.getElementById('step-ind-'+i); let line = document.getElementById('line-'+(i-1));
+            if(i < step) { ind.className = 'step completed'; ind.querySelector('.step-circle').innerHTML = '<i class="fas fa-check"></i>'; if(line) line.className = 'step-line active'; } 
+            else if(i === step) { ind.className = 'step active'; ind.querySelector('.step-circle').innerHTML = i; if(line) line.className = 'step-line active'; } 
+            else { ind.className = 'step'; ind.querySelector('.step-circle').innerHTML = i; if(line) line.className = 'step-line'; }
+        }
+    }
+
+    function goToStep1() { document.getElementById('step-1-patient').classList.remove('hidden'); document.getElementById('step-2-service').classList.add('hidden'); document.getElementById('step-3-summary').classList.add('hidden'); updateStepper(1); document.getElementById('t-fill-info').innerHTML = `<i class="fas fa-user-edit" style="color:var(--accent);"></i> <span id="t-modal-title">${_t('step1_title')}</span>`; }
+    function goToStep2() { let id = document.getElementById('inp-idcard').value; let f = document.getElementById('inp-fname').value.trim(); let t = document.getElementById('inp-tel').value; if(!id || !f || !t) return Swal.fire({title:_t('warn_title'), text:_t('err_req_fields'), icon:'warning', customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' }}); document.getElementById('step-1-patient').classList.add('hidden'); document.getElementById('step-2-service').classList.remove('hidden'); document.getElementById('step-3-summary').classList.add('hidden'); updateStepper(2); document.getElementById('t-fill-info').innerHTML = `<i class="fas fa-stethoscope" style="color:var(--accent);"></i> <span id="t-modal-title">${_t('step2_title')}</span>`; }
+    function goToStep3() { document.getElementById('step-1-patient').classList.add('hidden'); document.getElementById('step-2-service').classList.add('hidden'); document.getElementById('step-3-summary').classList.remove('hidden'); updateStepper(3); document.getElementById('t-fill-info').innerHTML = `<i class="fas fa-clipboard-check" style="color:var(--accent);"></i> <span id="t-modal-title">${_t('step3_title')}</span>`; }
+
+    function toggleStaffDropdown() { document.getElementById('staff-options').classList.toggle('hidden'); }
+    
+    function selectStaffNew(sObj, thaiName) { 
+        let dName = currentLang === 'en' ? (STAFF_EN_NAMES[thaiName] || thaiName) : (STAFF_NAME_MAP[thaiName] || thaiName);
+        if(document.getElementById('staff-display-name')) document.getElementById('staff-display-name').innerText = dName;
+        document.getElementById('inp-staff-val').value = thaiName; selectedSlotData = { sheetName: sObj.sheetName, row: sObj.row, col: sObj.col }; 
+        let box = document.getElementById('box-option-2hr'); let chk = document.getElementById('inp-2hr'); let lText = document.getElementById('lbl-2hr-text'); let nText = document.getElementById('note-2hr-text'); 
+        if ((currentApp === 'ttm' || currentApp === 'tcm') && sObj.can2Hr) { box.style.display = 'block'; chk.disabled = false; if (currentApp === 'tcm') { lText.innerHTML = `<i class="fas fa-star"></i> ${_t('opt_2hr_tcm')}`; nText.innerText = _t('note_2hr_tcm'); } else { lText.innerHTML = `<i class="fas fa-star"></i> ${_t('opt_2hr_ttm')}`; nText.innerText = _t('note_2hr_ttm'); } } else { box.style.display = 'none'; chk.checked = false; } 
+        document.getElementById('staff-options').classList.add('hidden'); updatePriceDisplay(); if(typeof updateSteamAddonUI === "function") updateSteamAddonUI();
+    }
+    
+    function updatePriceDisplay() { 
+        let svc = document.getElementById('inp-service').value; let price = "-"; let day = globalData[selectedIndex]; let isOOH = false;
+        if (day) { let hasEvening = day.slots.some(s => s.time === '17:00' || s.time === '18:00'); let isHolidaySheet = (day.dayOfWeek >= 1 && day.dayOfWeek <= 5) && !hasEvening && day.slots.length > 0; if (day.dayOfWeek === 0 || day.dayOfWeek === 6 || bookingData.time === '17:00' || bookingData.time === '18:00' || isHolidaySheet) isOOH = true; }
+        bookingData.isOOH = isOOH;
+        if (currentApp === 'ttm') { price = _t('calc_sub'); } else if (currentApp === 'tcm') { if (svc.includes('ฝังเข็มเพื่อการรักษา')) price = _t('calc_sub'); else price = "-"; } else { price = _t('calc_sub'); }
+        let tag = document.getElementById('price-tag'); let val = document.getElementById('price-val'); 
+        if (tag && val) { if (price !== "-") { val.innerHTML = price; tag.style.display = 'block'; } else { tag.style.display = 'none'; } } 
+    }
+    document.addEventListener('DOMContentLoaded', () => { let c = document.getElementById('inp-2hr'); if(c) c.addEventListener('change', updatePriceDisplay); });
+    function toggleSteamAddon() { let chk = document.getElementById('chk-addon-steam'); let details = document.getElementById('addon-steam-details'); if(chk.checked) { details.style.display = 'block'; } else { details.style.display = 'none'; } }
+    function updateSteamAddonUI() {
+        if(currentApp !== 'ttm') return; let cont = document.getElementById('steam-addon-container'); let info = document.getElementById('addon-steam-info'); let chk = document.getElementById('chk-addon-steam');
+        let is2Hr = document.getElementById('inp-2hr') ? document.getElementById('inp-2hr').checked : false; let targetTime = is2Hr ? STEAM_NEXT_2HR[bookingData.time] : STEAM_NEXT_1HR[bookingData.time];
+        if(!targetTime || !fullFirebaseData || !fullFirebaseData.steam) { cont.style.display = 'none'; chk.checked = false; bookingData.steamTime = null; return; }
+        let dayData = fullFirebaseData.steam.find(d => d.sysDate === bookingData.sysDate); let steamSlot = dayData ? dayData.slots.find(s => s.time === targetTime) : null;
+        if(steamSlot && steamSlot.count > 0 && !steamSlot.rawSpots.isHoliday) {
+            cont.style.display = 'block'; bookingData.steamTime = targetTime;
+            let gT = steamSlot.gender === "" ? (currentLang==='en'?'Any Gender':'ไม่จำกัดเพศ') : (steamSlot.gender === "ชาย" || steamSlot.gender === "ช" ? (currentLang==='en'?'Male Round':'รอบผู้ชาย') : (currentLang==='en'?'Female Round':'รอบผู้หญิง'));
+            info.innerHTML = `<i class="fas fa-clock"></i> ${targetTime} น. | ${currentLang==='en'?`${steamSlot.count} Left` : `ว่าง ${steamSlot.count} คิว`} (${gT})`;
+            let selG = document.getElementById('inp-addon-gender');
+            if(steamSlot.gender !== "") { selG.value = (steamSlot.gender === "ชาย" || steamSlot.gender === "ช") ? "ชาย" : "หญิง"; selG.disabled = true; } else selG.disabled = false;
+        } else { cont.style.display = 'none'; chk.checked = false; bookingData.steamTime = null; }
+    }
+
+    function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGender) {
+      try {
+          let staffs = staffDataEncoded ? JSON.parse(decodeURIComponent(staffDataEncoded)) : [];
+          bookingData = { dept: APP_CONFIG[currentApp].title, date: dateFull, sysDate: sysDate, time: time, appType: currentApp, sheetName: globalData[dayIndex].sheetName, ppExtraData: staffDataEncoded };
+          document.getElementById('auth-section').style.display = 'block'; 
+          if(activeProfileId) { 
+              let idStr = activeProfileId.toString();
+              if(idStr.length === 13 && !isForeigner) { let boxes = document.querySelectorAll('.otp-box'); for(let i=0; i<13; i++) { if(boxes[i]) { boxes[i].value = idStr[i]; boxes[i].classList.add('filled'); } } } else { document.getElementById('chk-foreigner').checked = true; toggleForeignerMode(); document.getElementById('inp-idcard-foreigner').value = idStr; }
+              document.getElementById('inp-idcard').value = idStr; document.getElementById('existing-user-display').classList.remove('hidden'); document.getElementById('user-details-form').classList.add('hidden'); document.getElementById('masked-name').innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${_t('loading')}`; 
+              renderSmartBookDropdown(); checkIDCardInput();
+          } else { clearForNewPatient(); }
+          
+          document.getElementById('inp-note').value = ''; if(document.getElementById('inp-2hr')) document.getElementById('inp-2hr').checked = false;
+          ['normal-fields', 'postpartum-fields', 'steam-fields'].forEach(id => document.getElementById(id).classList.add('hidden'));
+          
+          if (currentApp === 'postpartum') { document.getElementById('postpartum-fields').classList.remove('hidden'); bookingData.service = "บริการหลังคลอด"; document.getElementById('group-staff').style.display = 'none'; document.getElementById('inp-staff-val').value = "ไม่ระบุ"; } 
+          else if (currentApp === 'steam') { document.getElementById('steam-fields').classList.remove('hidden'); bookingData.service = "อบไอน้ำ"; document.getElementById('group-staff').style.display = 'none'; if (slotGender === 'ช' || slotGender === 'ชาย') document.getElementById('inp-gender').value = 'ชาย'; else if (slotGender === 'ญ' || slotGender === 'หญิง') document.getElementById('inp-gender').value = 'หญิง'; } 
+          else {
+              document.getElementById('normal-fields').classList.remove('hidden'); let sel = document.getElementById('inp-service'); sel.innerHTML = ''; SERVICE_OPTIONS[currentApp].forEach(s => { let o = document.createElement('option'); o.value=s; o.innerText= _t(s); sel.appendChild(o); }); updatePriceDisplay();
+              let cCont = document.getElementById('staff-options'); cCont.innerHTML = ''; 
+              if (staffs.length > 0 && staffs[0].row !== undefined) { 
+                  document.getElementById('group-staff').style.display = 'block'; let grouped = {}; staffs.forEach(s => { let k = s.name; if(!grouped[k]) grouped[k] = Object.assign({}, s); else if(s.can2Hr) grouped[k] = Object.assign({}, s); });
+                  let unique = Object.values(grouped); if(unique.length > 0) selectStaffNew(unique[0], unique[0].name);
+                  unique.forEach(s => { 
+                      let baseN = s.name; let dN = currentLang === 'en' ? (STAFF_EN_NAMES[baseN] || baseN) : (STAFF_NAME_MAP[baseN] || baseN); 
+                      let defaultAppImg = currentApp === 'tcm' ? 'https://img2.pic.in.th/55c47176d1c28f966a1289b3b1d48837.png' : DEFAULT_IMG; let img = STAFF_IMAGES[baseN] || defaultAppImg; 
+                      let badge1Hr = `<span style="background:#dcfce7; color:#16a34a; font-size:0.75rem; padding:4px 8px; border-radius:8px; margin-left:8px; font-weight:800;"><i class="fas fa-clock"></i> 1Hr</span>`;
+                      let badge2Hr = s.can2Hr ? `<span style="background:#fef3c7; color:#d97706; font-size:0.75rem; padding:4px 8px; border-radius:8px; margin-left:6px; font-weight:800;"><i class="fas fa-bolt"></i> 2Hr</span>` : '';
+                      let div = document.createElement('div'); div.style.cssText = "padding:12px 18px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:12px; cursor:pointer;";
+                      div.innerHTML = `<img src="${img}" class="select-img"><div style="font-weight:800; flex:1; color:#1e293b;">${dN} <div style="margin-top:6px;">${badge1Hr}${badge2Hr}</div></div>`; 
+                      div.onclick = () => selectStaffNew(s, baseN); cCont.appendChild(div); 
+                  }); 
+                  setTimeout(updateSteamAddonUI, 100);
+              } else { document.getElementById('group-staff').style.display = 'none'; document.getElementById('inp-staff-val').value = "ไม่ระบุ"; }
+          }
+      } catch(e) {}
+      goToStep1(); document.getElementById('bookingModal').classList.add('show');
+    }
+
+    async function checkIDCardInput() {
+        if(isForeigner) document.getElementById('inp-idcard').value = document.getElementById('inp-idcard-foreigner').value;
+        clearTimeout(typingTimer);
+        let id = document.getElementById('inp-idcard').value; let stat = document.getElementById('idcard-status'); let btn = document.getElementById('btn-next-step');
+        if (isForeigner ? id.length >= 6 : id.length === 13) { 
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${_t('loading')}`;
+            stat.innerHTML = '<span style="color:var(--accent);"><i class="fas fa-spinner fa-spin"></i> Checking...</span>';
+            try { 
+                let p = savedProfiles.find(x => x.id === id);
+                if(p) { stat.innerHTML = `<span style="color:var(--primary);">✅ ${_t('swal_record_found')}</span>`; fillUserDataUI(id, p.fname, p.lname, p.tel); } 
+                else { let fRes = await fetch(FIREBASE_BASE_URL + "patientRegistry/" + id + ".json"); let fUser = await fRes.json(); if(fUser) { stat.innerHTML = `<span style="color:var(--primary);">✅ ${_t('swal_record_found')}</span>`; fillUserDataUI(id, fUser.fname, fUser.lname, fUser.tel); } }
+            } catch(e) {}
+
+            typingTimer = setTimeout(async () => { 
+                try {
+                    let res = await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'check_user', idCard: id, serviceCategory: currentApp }) }); let data = await res.json(); btn.innerHTML = `${_t('btn_next')} <i class="fas fa-arrow-right"></i>`; 
+                    if (data.status === 'success') {
+                        if (data.user) { currentUserDB = data.user; fillUserDataUI(id, data.user.fname, data.user.lname, data.user.tel); stat.innerHTML = ''; document.getElementById('inp-fname').readOnly = true; document.getElementById('inp-lname').readOnly = true; document.getElementById('name-lock-warning').style.display = 'block'; } 
+                        else { currentUserDB = null; document.getElementById('inp-fname').value = ''; document.getElementById('inp-lname').value = ''; document.getElementById('inp-tel').value = ''; document.getElementById('inp-fname').readOnly = false; document.getElementById('inp-lname').readOnly = false; document.getElementById('name-lock-warning').style.display = 'none'; document.getElementById('user-details-form').classList.remove('hidden'); stat.innerHTML = `<span style="color:#0ea5e9;">${_t('swal_new_patient')}</span>`; document.getElementById('existing-user-display').classList.add('hidden'); }
+                        btn.disabled = false;
+                    }
+                } catch(e) { stat.innerHTML = `<span style="color:red;">${_t('swal_sys_err')}</span>`; document.getElementById('user-details-form').classList.remove('hidden'); btn.disabled = false; btn.innerHTML = `${_t('btn_next')} <i class="fas fa-arrow-right"></i>`; }
+            }, 600); 
+        } else { stat.innerHTML = ''; btn.innerHTML = `${_t('btn_next')} <i class="fas fa-arrow-right"></i>`; btn.disabled = true; }
+    }
+
+    function fillUserDataUI(id, f, l, t) { 
+        let p = savedProfiles.find(x => x.id === id); let label = (p && p.label) ? p.label : (currentLang === 'en' ? '+ Add Nickname' : '+ กดเพื่อตั้งชื่อเล่น');
+        document.getElementById('inp-fname').value = f; document.getElementById('inp-lname').value = l || ""; document.getElementById('inp-tel').value = t; 
+        let mName = getMaskedFullName(f, l);
+        document.getElementById('masked-name').innerHTML = `
+            <div style="display:flex; align-items:center; gap:12px;">
+                <i class="fas fa-user-circle" style="color:var(--primary); font-size:1.5rem;"></i> 
+                <button type="button" onclick="editCurrentLabel()" style="background:var(--bg-color); border:none; color:var(--accent); border-radius:20px; padding:6px 15px; cursor:pointer; font-family:'Prompt'; font-size:0.9rem; font-weight:800; transition:0.2s; box-shadow: 2px 2px 5px var(--shadow-dark), -2px -2px 5px var(--shadow-light);" onactive="this.style.transform='scale(0.95)'">
+                    ${label} <i class="fas fa-pen" style="font-size:0.75rem; margin-left:6px;"></i>
+                </button>
+            </div>
+            <div style="font-size:0.9rem; color:#64748b; margin-left:36px; font-weight:500; margin-top:6px;">(${mName})</div>
+        `;
+        document.getElementById('masked-tel').innerHTML = `<i class="fas fa-phone-alt" style="width:20px; text-align:center; color:var(--primary);"></i> ${getMaskedTel(t)}`; 
+        document.getElementById('existing-user-display').classList.remove('hidden'); document.getElementById('user-details-form').classList.add('hidden'); renderSmartBookDropdown();
+    }
+    
+    function goToSummary() {
+      let id = document.getElementById('inp-idcard').value; let f = document.getElementById('inp-fname').value.trim(); let l = document.getElementById('inp-lname').value.trim(); let t = document.getElementById('inp-tel').value;
+      if(!id || !f || !t) return Swal.fire({title:_t('warn_title'), text:_t('err_req_fields'), icon:'warning', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}});
+      bookingData.idCard = id; bookingData.fname = f; bookingData.lname = l; bookingData.name = f + " " + l; bookingData.tel = t; bookingData.note = document.getElementById('inp-note').value; bookingData.extraInfo = "";
+      let existingProfile = savedProfiles.find(p => p.id === id); if(!existingProfile) { addOrUpdateProfile(id, f, l, t, ""); }
+
+      let day = globalData[selectedIndex]; let isOOH = false;
+      if (day) { let hasEvening = day.slots.some(s => s.time === '17:00' || s.time === '18:00'); let isHolidaySheet = (day.dayOfWeek >= 1 && day.dayOfWeek <= 5) && !hasEvening && day.slots.length > 0; if (day.dayOfWeek === 0 || day.dayOfWeek === 6 || bookingData.time === '17:00' || bookingData.time === '18:00' || isHolidaySheet) isOOH = true; }
+      bookingData.isOOH = isOOH;
+
+      let baseStaffName = document.getElementById('inp-staff-val').value; let displayStaff = currentLang === 'en' ? (STAFF_EN_NAMES[baseStaffName] || baseStaffName) : (STAFF_NAME_MAP[baseStaffName] || baseStaffName);
+
+      if (currentApp === 'postpartum') { 
+          let bd = document.getElementById('inp-birth-date').value; let dt = document.getElementById('inp-delivery-type').value; let h = document.getElementById('inp-hospital').value;
+          if(!bd || !dt || !h) return Swal.fire({title:_t('warn_title'), text:currentLang==='en'?'Please fill delivery details':'กรุณากรอกข้อมูลการคลอดให้ครบ', icon:'warning', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}});
+          bookingData.extraInfo = currentLang==='en' ? `Birth: ${bd} (${dt}) Hosp: ${h}` : `คลอด: ${bd} (${dt}) รพ.${h}`; bookingData.service = "บริการหลังคลอด"; bookingData.staff = "ไม่ระบุ"; bookingData.is2Hr = true; 
+      } else if (currentApp === 'steam') { bookingData.extraInfo = currentLang==='en' ? `Gender: ${document.getElementById('inp-gender').value}` : `เพศ: ${document.getElementById('inp-gender').value}`; bookingData.service = "อบไอน้ำ"; bookingData.staff = "ไม่ระบุ"; } 
+      else { bookingData.service = document.getElementById('inp-service').value.split(' (')[0]; bookingData.staff = baseStaffName; bookingData.is2Hr = document.getElementById('inp-2hr') ? document.getElementById('inp-2hr').checked : false; bookingData.addSteam = document.getElementById('chk-addon-steam') ? document.getElementById('chk-addon-steam').checked : false; if(bookingData.addSteam) bookingData.steamGender = document.getElementById('inp-addon-gender').value; }
+      
+      if (currentApp === 'ttm' || currentApp === 'tcm') { if(currentApp === 'tcm' && !bookingData.service.includes("ฝังเข็มเพื่อการรักษา")) { buildSummaryAndShow(null); } else { promptRightSelection(); } } 
+      else { buildSummaryAndShow(null); }
+    }
+
+    function promptRightSelection() {
+        Swal.fire({
+            title: _t('right_title'),
+            html: `<div style="text-align:left; font-size:0.95rem; margin-top:10px;">
+                    <div class="right-option" onclick="selectRight('1')" id="opt-right-1"><div class="right-title-row"><i class="fas fa-id-card" style="color:#f59e0b;"></i> ${_t('right_uc30')}</div><div class="right-desc">${_t('right_desc30')}</div></div>
+                    <div class="right-option" onclick="selectRight('2')" id="opt-right-2"><div class="right-title-row"><i class="fas fa-id-card" style="color:#10b981;"></i> ${_t('right_uc_free')}</div><div class="right-desc">${_t('right_desc_free')}</div></div>
+                    <div class="right-option" onclick="selectRight('3')" id="opt-right-3"><div class="right-title-row"><i class="fas fa-id-badge" style="color:#3b82f6;"></i> ${_t('right_gov')}</div><div class="right-desc">${_t('right_desc_gov')}</div></div>
+                    <div class="right-option" onclick="selectRight('4')" id="opt-right-4"><div class="right-title-row"><i class="fas fa-landmark" style="color:#8b5cf6;"></i> ${_t('right_enterprise')}</div><div class="right-desc">${_t('right_desc_enterprise')}</div></div>
+                    <div class="right-option" onclick="selectRight('5')" id="opt-right-5"><div class="right-title-row"><i class="fas fa-wallet" style="color:#f97316;"></i> ${_t('right_ss')}</div><div class="right-desc">${_t('right_desc_ss')}</div></div>
+                </div><input type="hidden" id="selected-right-val" value="">`,
+            showCancelButton: true, confirmButtonText: _t('btn_confirm_right'), cancelButtonText: _t('btn_cancel'),
+            customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' },
+            preConfirm: () => { let v = document.getElementById('selected-right-val').value; if(!v) { Swal.showValidationMessage(_t('warn_select_right')); return false; } return v; }
+        }).then((r) => { if(r.isConfirmed) calculateAnimation(r.value); });
+    }
+
+    function calculateAnimation(rV) {
+        Swal.fire({ title: _t('calc_title'), html: `<div style="font-size:4rem; color:var(--accent); margin:20px 0;"><i class="fas fa-calculator fa-beat-fade"></i></div><div style="font-size:1.05rem; font-weight:800; color:#64748b;">${_t('calc_sub')}</div>`, showConfirmButton: false, allowOutsideClick: false, timer: 1500, customClass: { popup: 'swal-3d-popup' } }).then(() => buildSummaryAndShow(rV));
+    }
+
+    function buildSummaryAndShow(rV) {
+        let f = bookingData.fname; let l = bookingData.lname; let t = bookingData.tel; let mN = getMaskedFullName(f, l);
+        let sN = bookingData.staff; let dS = currentLang === 'en' ? (STAFF_EN_NAMES[sN] || sN) : (STAFF_NAME_MAP[sN] || sN);
+        let p = savedProfiles.find(x => x.id === bookingData.idCard); let pLabel = (p && p.label) ? p.label : (currentLang === 'en' ? 'Patient' : 'ผู้รับบริการ');
+
+        let infoH = `
+            <div style="display:flex; gap:15px; align-items:center; margin-bottom:20px;">
+                <div style="width:56px; height:56px; border-radius:18px; background:linear-gradient(135deg, var(--accent), #fbbf24); display:flex; justify-content:center; align-items:center; font-size:1.8rem; color:white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);"><i class="fas fa-user-circle"></i></div>
+                <div><div style="font-weight:800; font-size:1.2rem; color:#1e293b;">${pLabel} <span style="font-size:0.85rem; font-weight:500; color:#64748b;">(${mN})</span></div><div style="color:#64748b; font-size:0.95rem; font-weight:600;"><i class="fas fa-phone-alt" style="color:var(--primary);"></i> ${getMaskedTel(t)}</div></div>
+            </div>
+            <div style="background:white; border-radius:20px; padding:18px; margin-bottom:20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border:1px solid #e2e8f0;">
+                <div style="margin-bottom:8px; font-size:1.05rem;"><b>${currentLang==='en'?'Service':'บริการ'}:</b> <span style="color:var(--accent); font-weight:800;">${_t(bookingData.service)}</span></div>
+                <div style="margin-bottom:8px; font-size:1.05rem;"><b>${currentLang==='en'?'Time':'เวลา'}:</b> ${bookingData.date} <span style="background:var(--primary); color:white; padding:4px 10px; border-radius:10px; font-size:0.95rem; font-weight:800; box-shadow:0 2px 8px rgba(46,125,50,0.4); margin-left:6px;">${bookingData.time}</span></div>
+            </div>
+        `;
+        document.getElementById('summary-content').innerHTML = infoH; goToStep3();
+    }
+
+    function confirmBooking() {
+        document.getElementById('btn-final-confirm').disabled = true; showPercentageLoader(); 
+        let fCombined = (bookingData.fname + " " + (bookingData.lname || "")).trim(); 
+        let payload = { lineUid: currentLineUid, appType: bookingData.appType, sheetName: bookingData.sheetName, idCard: bookingData.idCard, fname: bookingData.fname, lname: bookingData.lname, fullName: fCombined, tel: bookingData.tel, service: bookingData.service, time: bookingData.time, date: bookingData.date, sysDate: bookingData.sysDate };
+        if ((currentApp === 'ttm' || currentApp === 'tcm') && selectedSlotData) { payload.row = selectedSlotData.row; payload.col = selectedSlotData.col; }
+        
+        fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(payload) }).then(async r => { 
+            finishPercentageLoader(() => { closeModal(); switchMainTab('profile'); fetchData(true); });
+        }).catch(e => finishPercentageLoader(() => { closeModal(); switchMainTab('profile'); fetchData(true); }));
+    }
+
+    let loadInterval; let tipsInterval; let currentPercent = 0;
+    function showPercentageLoader() { document.getElementById('saveLoader').classList.remove('hidden'); currentPercent = 0; loadInterval = setInterval(() => { currentPercent += 1.5; if(currentPercent >= 95) currentPercent = 95; document.getElementById('progress-circle').style.strokeDashoffset = 326 - (currentPercent / 100) * 326; document.getElementById('progress-text').innerText = Math.floor(currentPercent) + "%"; }, 500); }
+    function finishPercentageLoader(cb) { clearInterval(loadInterval); document.getElementById('progress-circle').style.strokeDashoffset = 0; document.getElementById('progress-text').innerText = "100%"; setTimeout(() => { document.getElementById('saveLoader').classList.add('hidden'); if(cb) cb(); }, 500); }
+    function closeModal() { document.getElementById('bookingModal').classList.remove('show'); }
+
+    /* Admin Scripts */
+    let logoTaps = 0; let tapTimer; let currentAdminSort = 'created';
+    function handleAdminTap() { logoTaps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => logoTaps = 0, 2000); if (logoTaps >= 7) { logoTaps = 0; Swal.fire({ title: '🛡️ Admin Login', input: 'password', showCancelButton: true, customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'} }).then((r) => { if (r.isConfirmed && r.value === "11395") { document.getElementById('adminModal').classList.add('show'); loadAdminLogs(); } }); } }
+    function switchAdminTab(tId) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-panel').forEach(p => p.classList.add('hidden')); event.currentTarget.classList.add('active'); document.getElementById(tId).classList.remove('hidden'); }
+    async function adminSearch() { let q = document.getElementById('adminSearchInp').value; if(!q) return; let resA = document.getElementById('adminSearchResult'); resA.innerHTML = "<tr><td colspan='2' style='text-align:center;'>Loading...</td></tr>"; let r = await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'admin_search', pass: '11395', query: q }) }); let d = await r.json(); if(d.status === 'success') { let h = ''; if(d.data.length === 0) h = "<tr><td colspan='2' style='text-align:center; color:red;'>No data</td></tr>"; d.data.forEach(u => { h += `<tr><td><div style="font-weight:700;">${u.fname} ${u.lname||''}</div><div>${u.idCard}</div><div>📞 ${u.tel}</div></td><td style="text-align:right;"><button class="btn-icon btn-edit"><i class="fas fa-edit"></i></button></td></tr>`; }); resA.innerHTML = h; } }
+  </script>
+</body>
 </html>
