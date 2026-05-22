@@ -118,7 +118,16 @@
     .btn-cancel-q:active { transform: scale(0.97); }
 
     /* --- 3D Department Cards --- */
-    .menu-container { width: 100%; padding: 0 25px; z-index: 2; display: flex; flex-direction: column; gap: 16px; margin-top: -50px;}
+   .menu-container { 
+        width: 100%; 
+        padding: 0 25px; 
+        z-index: 10; /* ดันให้อยู่บนสุดเพื่อไม่ให้โดนบัง */
+        position: relative; /* สำคัญมาก เพื่อให้ z-index ทำงาน */
+        display: flex; 
+        flex-direction: column; 
+        gap: 16px; 
+        margin-top: -40px; 
+    }
     .dept-card { 
         background: var(--bg-color); border-radius: 24px; padding: 18px 20px; display: flex; align-items: center; cursor: pointer;
         box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light); 
@@ -190,20 +199,16 @@
   <div id="view-profile" class="home-container hidden fade-in">
     <div style="width: 100%; padding: 40px 25px 20px;">
         <h2 style="color: #1e293b; font-weight: 800; font-size: 1.5rem; margin-bottom: 20px;"><i class="fas fa-user-circle" style="color:var(--accent);"></i> ข้อมูลผู้ใช้งาน</h2>
-        
-        <div id="main-auth-card" class="premium-glass-card" style="margin:0; width:100%; max-width:100%;"></div>
-    </div>
   </div>
 
   <div id="view-dashboard" class="hidden">
       </div>
 
   <nav class="bottom-nav" id="main-bottom-nav">
-      <a href="#" id="nav-home" class="nav-item active" onclick="switchMainTab('home')"><i class="fas fa-home"></i></a>
-      <a href="#" id="nav-profile" class="nav-item" onclick="switchMainTab('profile')"><i class="fas fa-clipboard-list"></i></a>
-      <a href="#" id="nav-add" class="nav-item" onclick="showAddUserForm()"><i class="fas fa-user-plus"></i></a>
+      <a href="javascript:void(0)" id="nav-home" class="nav-item active" onclick="switchMainTab('home')"><i class="fas fa-home"></i></a>
+      <a href="javascript:void(0)" id="nav-profile" class="nav-item" onclick="switchMainTab('profile')"><i class="fas fa-clipboard-list"></i></a>
+      <a href="javascript:void(0)" id="nav-add" class="nav-item" onclick="showAddUserForm()"><i class="fas fa-user-plus"></i></a>
   </nav>
-
   <script>
     // 📌 สคริปต์สลับหน้าจอ (UI Navigation)
     function switchMainTab(tab) {
