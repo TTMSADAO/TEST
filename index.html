@@ -25,255 +25,112 @@
     }
     
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { 
-        font-family: 'Prompt', sans-serif; 
-        background-color: var(--bg-color); 
-        margin: 0; padding: 0; min-height: 100vh; color: #1e293b;
-        padding-bottom: 90px; 
-    }
-    
+    body { font-family: 'Prompt', sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; min-height: 100vh; color: #1e293b; padding-bottom: 90px; }
     .hidden { display: none !important; }
     .fade-in { animation: fadeIn 0.4s ease-in-out; }
 
     /* --- Language & Badges --- */
-    .lang-toggle-btn { 
-        position: absolute; top: 15px; right: 15px; 
-        background: rgba(255,255,255,0.9); 
-        color: var(--primary-dark); 
-        padding: 8px 18px; 
-        border-radius: 25px; font-size: 0.95rem; font-weight: 800; cursor: pointer; 
-        display: flex; align-items: center; gap: 8px; z-index: 10; 
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.5);
-    }
+    .lang-toggle-btn { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.9); color: var(--primary-dark); padding: 8px 18px; border-radius: 25px; font-size: 0.95rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.5); }
     .lang-toggle-btn i { font-size: 1.1rem; color: var(--accent); } 
     .lang-toggle-btn:active { transform: scale(0.96); }
 
-    .online-badge { 
-        background: rgba(255,255,255,0.25); padding: 8px 18px; border-radius: 20px; 
-        font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; 
-        backdrop-filter: blur(8px); box-shadow: 0 4px 15px rgba(0,0,0,0.15); margin-top:12px; border: 1px solid rgba(255,255,255,0.3);
-    }
+    .online-badge { background: rgba(255,255,255,0.25); padding: 8px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; backdrop-filter: blur(8px); box-shadow: 0 4px 15px rgba(0,0,0,0.15); margin-top:12px; border: 1px solid rgba(255,255,255,0.3); }
     .online-dot { width: 10px; height: 10px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 10px #4ade80; animation: pulseDot 2s infinite; }
 
     /* --- Hero Banner Soft UI --- */
     .home-container { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; position: relative; }
-    .hero-banner { 
-        width: 100%; height: 280px; 
-        background-image: url('https://img2.pic.in.th/pic/2e56ebb3c838125fd55c9db5dcd51baf.png'); 
-        background-size: cover; background-position: center;
-        position: relative; border-radius: 0 0 40px 40px; 
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1); margin-bottom: 30px; overflow: hidden;
-    }
-    .hero-overlay { 
-        position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(to bottom, rgba(46,125,50,0.3), rgba(27,94,32,0.95)); 
-        display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; padding: 20px;
-    }
-    .main-logo { 
-        width: 85px; height: 85px; object-fit: cover; margin-bottom: 12px; 
-        background: white; border-radius: 50%; padding: 4px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.25); cursor: pointer; transition: 0.2s; 
-    } 
+    .hero-banner { width: 100%; height: 280px; background-image: url('https://img2.pic.in.th/pic/2e56ebb3c838125fd55c9db5dcd51baf.png'); background-size: cover; background-position: center; position: relative; border-radius: 0 0 40px 40px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); margin-bottom: 30px; overflow: hidden; }
+    .hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(46,125,50,0.3), rgba(27,94,32,0.95)); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; padding: 20px; }
+    .main-logo { width: 85px; height: 85px; object-fit: cover; margin-bottom: 12px; background: white; border-radius: 50%; padding: 4px; box-shadow: 0 8px 20px rgba(0,0,0,0.25); cursor: pointer; transition: 0.2s; } 
     .main-logo:active { transform: scale(0.9); }
 
-    /* --- 3D Profile Card (สำหรับหน้า Profile) --- */
-    .premium-glass-card { 
-        width: 100%; 
-        background: var(--bg-color);
-        border: 1px solid rgba(255,255,255,0.7); 
-        border-radius: 30px; padding: 25px; position: relative; overflow: hidden;
-        box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); 
-        margin-bottom: 25px; z-index: 5;
-    }
+    /* --- 3D Profile Card --- */
+    .premium-glass-card { width: 100%; background: var(--bg-color); border: 1px solid rgba(255,255,255,0.7); border-radius: 30px; padding: 25px; position: relative; overflow: hidden; box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); margin-bottom: 25px; z-index: 5; }
     .mu-profile-list { display: flex; flex-direction: column; gap: 15px; }
-    .mu-profile { 
-        display: flex; align-items: center; justify-content: space-between; 
-        background: var(--bg-color); padding: 15px; border-radius: 20px; 
-        border: 1px solid rgba(255,255,255,0.5); cursor: pointer; transition: 0.2s;
-        box-shadow: 5px 5px 12px var(--shadow-dark), -5px -5px 12px var(--shadow-light); 
-    }
+    .mu-profile { display: flex; align-items: center; justify-content: space-between; background: var(--bg-color); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.5); cursor: pointer; transition: 0.2s; box-shadow: 5px 5px 12px var(--shadow-dark), -5px -5px 12px var(--shadow-light); }
     .mu-profile:active { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); transform: translateY(2px); }
     .mu-info { display: flex; align-items: center; gap: 15px; }
-    .mu-avatar { 
-        width: 48px; height: 48px; 
-        background: linear-gradient(135deg, var(--accent), #fbbf24); color: white; 
-        border-radius: 16px; display: flex; align-items: center; justify-content: center; 
-        font-weight: 800; font-size: 1.3rem; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
-    }
-    .mu-name { font-weight: 700; color: #1e293b; font-size: 1.05rem; } 
-    .mu-name span { display: block; font-size: 0.8rem; color: #64748b; font-weight: 500; margin-top: 2px;}
+    .mu-avatar { width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), #fbbf24); color: white; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.3rem; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); }
+    .mu-name { font-weight: 700; color: #1e293b; font-size: 1.05rem; } .mu-name span { display: block; font-size: 0.8rem; color: #64748b; font-weight: 500; margin-top: 2px;}
     .mu-delete { color: #ef4444; background: #fee2e2; border-radius: 50%; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; } 
-    .mu-delete:active { transform: scale(0.9); }
-    
-    .btn-add-user { 
-        background: var(--bg-color); border: 2px dashed #cbd5e1; color: #64748b; 
-        width: 100%; padding: 15px; border-radius: 20px; font-weight: 700; cursor: pointer; 
-        transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top:15px;
-    }
+    .btn-add-user { background: var(--bg-color); border: 2px dashed #cbd5e1; color: #64748b; width: 100%; padding: 15px; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top:15px; }
     .btn-add-user:active { background: #e2e8f0; transform: scale(0.98); }
-
-    .aps-history { 
-        background: var(--bg-color); border-radius: 20px; padding: 20px; margin-top: 20px; 
-        box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light); border: 1px solid rgba(255,255,255,0.4);
-    }
-    .btn-cancel-q { 
-        background: #fee2e2; color: #ef4444; border: none; padding: 12px; border-radius: 15px; font-size: 0.95rem;
-        font-weight: 700; cursor:pointer; width:100%; margin-top:15px; transition:0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;
-        box-shadow: 3px 3px 8px rgba(239, 68, 68, 0.2);
-    }
+    .aps-history { background: var(--bg-color); border-radius: 20px; padding: 20px; margin-top: 20px; box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light); border: 1px solid rgba(255,255,255,0.4); }
+    .btn-cancel-q { background: #fee2e2; color: #ef4444; border: none; padding: 12px; border-radius: 15px; font-size: 0.95rem; font-weight: 700; cursor:pointer; width:100%; margin-top:15px; transition:0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 3px 3px 8px rgba(239, 68, 68, 0.2); }
     .btn-cancel-q:active { box-shadow: inset 3px 3px 6px rgba(239, 68, 68, 0.3); transform: scale(0.97); }
 
     /* --- 3D Department Cards --- */
     .menu-container { width: 100%; padding: 0 25px; display: flex; flex-direction: column; gap: 18px; margin-top: -30px; position: relative; z-index: 10; }
-    .dept-card { 
-        background: var(--bg-color); border-radius: 24px; padding: 20px; display: flex; align-items: center; cursor: pointer;
-        box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light); 
-        position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.6); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    .dept-card { background: var(--bg-color); border-radius: 24px; padding: 20px; display: flex; align-items: center; cursor: pointer; box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.6); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
     .dept-card:active { box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light); transform: translateY(2px); }
     .dept-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; border-radius: 8px 0 0 8px; }
     .card-ttm::before { background: #2e7d32; } .card-tcm::before { background: #c62828; } .card-postpartum::before { background: #ec4899; } .card-steam::before { background: #0288d1; }
-    
     .dept-icon { width: 70px; height: 70px; border-radius: 20px; margin-right: 18px; object-fit: cover; background: #ffffff; padding: 4px; box-shadow: 2px 2px 8px rgba(0,0,0,0.05); }
-    .dept-info h3 { margin: 0 0 4px 0; font-size: 1.2rem; font-weight: 700; color: #1e293b; } 
-    .dept-info p { margin: 0; font-size: 0.85rem; color: #64748b; line-height: 1.4; }
-    .arrow-btn { 
-        margin-left: auto; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-        background: var(--bg-color); color: var(--accent); font-size: 1.1rem; box-shadow: 3px 3px 8px var(--shadow-dark), -3px -3px 8px var(--shadow-light);
-    }
+    .dept-info h3 { margin: 0 0 4px 0; font-size: 1.2rem; font-weight: 700; color: #1e293b; } .dept-info p { margin: 0; font-size: 0.85rem; color: #64748b; line-height: 1.4; }
+    .arrow-btn { margin-left: auto; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--bg-color); color: var(--accent); font-size: 1.1rem; box-shadow: 3px 3px 8px var(--shadow-dark), -3px -3px 8px var(--shadow-light); }
 
     /* --- Dashboard Top Section --- */
-    .top-section { 
-        background: var(--bg-color); color: #1e293b; padding: 20px 0 10px 0; position: sticky; top: 0; z-index: 100; 
-        box-shadow: 0 10px 20px rgba(209, 217, 230, 0.4); border-radius: 0 0 30px 30px;
-    }
+    .top-section { background: var(--bg-color); color: #1e293b; padding: 20px 0 10px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 10px 20px rgba(209, 217, 230, 0.4); border-radius: 0 0 30px 30px; }
     .header-top-row { display: flex; align-items: center; justify-content: center; position: relative; padding: 0 20px; margin-bottom: 12px; }
-    .back-btn { 
-        position: absolute; left: 20px; background: var(--bg-color); width: 44px; height: 44px; border-radius: 16px; 
-        display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; color: #1e293b;
-        box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light); border: 1px solid rgba(255,255,255,0.4);
-    }
+    .back-btn { position: absolute; left: 20px; background: var(--bg-color); width: 44px; height: 44px; border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; color: #1e293b; box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light); border: 1px solid rgba(255,255,255,0.4); }
     .back-btn:active { box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light); }
-    
-    .header-logo-title { display: flex; align-items: center; gap: 12px; } 
-    .header-logo-title img { width: 42px; height: 42px; background: white; border-radius: 14px; padding: 4px; box-shadow: 2px 2px 8px rgba(0,0,0,0.1); object-fit: contain; } 
-    .header-logo-title h1 { margin: 0; font-size: 1.4rem; font-weight: 800; color: var(--primary); }
-    
-    .sync-badge { 
-        display: inline-flex; align-items: center; gap: 6px; background: #e2e8f0; color: #475569; padding: 6px 16px; border-radius: 20px; 
-        font-size: 0.8rem; font-weight: 600; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
-    }
+    .header-logo-title { display: flex; align-items: center; gap: 12px; } .header-logo-title img { width: 42px; height: 42px; background: white; border-radius: 14px; padding: 4px; box-shadow: 2px 2px 8px rgba(0,0,0,0.1); object-fit: contain; } .header-logo-title h1 { margin: 0; font-size: 1.4rem; font-weight: 800; color: var(--primary); }
+    .sync-badge { display: inline-flex; align-items: center; gap: 6px; background: #e2e8f0; color: #475569; padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05); }
     .spin-active { animation: spin 1s linear infinite; color: var(--accent); }
 
     /* --- 3D Date Scroller --- */
-    .date-scroller { display: flex; overflow-x: auto; padding: 15px 20px 10px 20px; gap: 15px; scrollbar-width: none; } 
-    .date-scroller::-webkit-scrollbar { display: none; }
-    .date-chip { 
-        background: var(--bg-color); color: #64748b; border-radius: 18px; padding: 12px 0; min-width: 65px; 
-        text-align: center; cursor: pointer; flex-shrink: 0; position: relative; transition: 0.3s;
-        box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light); border: 1px solid rgba(255,255,255,0.4);
-    }
-    .date-chip small { font-size: 0.75rem; display: block; margin-bottom: 4px; font-weight: 600; } 
-    .date-chip span { font-size: 1.25rem; display: block; font-weight: 800; line-height: 1; }
+    .date-scroller { display: flex; overflow-x: auto; padding: 15px 20px 10px 20px; gap: 15px; scrollbar-width: none; } .date-scroller::-webkit-scrollbar { display: none; }
+    .date-chip { background: var(--bg-color); color: #64748b; border-radius: 18px; padding: 12px 0; min-width: 65px; text-align: center; cursor: pointer; flex-shrink: 0; position: relative; transition: 0.3s; box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light); border: 1px solid rgba(255,255,255,0.4); }
+    .date-chip small { font-size: 0.75rem; display: block; margin-bottom: 4px; font-weight: 600; } .date-chip span { font-size: 1.25rem; display: block; font-weight: 800; line-height: 1; }
     .date-chip.active { background: var(--primary); color: white; transform: translateY(-4px); box-shadow: 0 10px 20px rgba(46, 125, 50, 0.4); border: none; } 
 
     .container { max-width: 600px; margin: 0 auto; padding: 0 20px 100px; }
-    .selected-date-header { font-size: 1.2rem; font-weight: 800; color: #1e293b; padding: 25px 5px 15px; display: flex; align-items: center; } 
-    .header-bar { width: 6px; height: 24px; border-radius: 6px; margin-right: 12px; background-color: var(--accent); box-shadow: 0 2px 8px rgba(245, 158, 11, 0.5); }
+    .selected-date-header { font-size: 1.2rem; font-weight: 800; color: #1e293b; padding: 25px 5px 15px; display: flex; align-items: center; } .header-bar { width: 6px; height: 24px; border-radius: 6px; margin-right: 12px; background-color: var(--accent); box-shadow: 0 2px 8px rgba(245, 158, 11, 0.5); }
     
     /* --- 3D Slot Cards --- */
     .grid-container { display: flex; flex-direction: column; gap: 18px; }
-    .slot-card { 
-        display: flex; justify-content: space-between; align-items: center; 
-        background: var(--bg-color); border-radius: 24px; padding: 18px 20px; 
-        box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light); 
-        border: 1px solid rgba(255,255,255,0.6); position: relative; overflow: hidden; animation: slideUp 0.3s forwards; opacity: 0; transition: 0.2s; 
-    }
+    .slot-card { display: flex; justify-content: space-between; align-items: center; background: var(--bg-color); border-radius: 24px; padding: 18px 20px; box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light); border: 1px solid rgba(255,255,255,0.6); position: relative; overflow: hidden; animation: slideUp 0.3s forwards; opacity: 0; transition: 0.2s; }
     .slot-card:active { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); transform: scale(0.98); } 
     .slot-card.is-full { background: #e2e8f0; box-shadow: inset 3px 3px 8px rgba(0,0,0,0.05); opacity: 0.7; pointer-events: none; border: none; }
-    
     .theme-tcm .icon-status { color: #c62828; } .theme-postpartum .icon-status { color: #ec4899; }
     
     .time-wrap { display: flex; align-items: center; gap: 16px; } 
-    .icon-status { 
-        width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; 
-        font-size: 1.4rem; background: var(--bg-color); color: var(--primary); 
-        box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
-    } 
+    .icon-status { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; background: var(--bg-color); color: var(--primary); box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); } 
     .is-full .icon-status { background: transparent; box-shadow: none; color: #94a3b8; }
-    
-    .time-text { font-weight: 800; font-size: 1.25rem; color: #1e293b; display: flex; flex-direction: column; line-height: 1.1; } 
-    .time-text small { font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 4px; }
+    .time-text { font-weight: 800; font-size: 1.25rem; color: #1e293b; display: flex; flex-direction: column; line-height: 1.1; } .time-text small { font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 4px; }
     
     .slot-info-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-    .status-capsule { 
-        display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 10px; 
-        background: white; padding: 10px 18px; border-radius: 20px; min-width: 100px; 
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #f1f5f9;
-    } 
+    .status-capsule { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 10px; background: white; padding: 10px 18px; border-radius: 20px; min-width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; } 
     .is-full .status-capsule { background: transparent; box-shadow: none; border: none; }
-    .queue-icons { display: flex; gap: 4px; color: var(--accent); font-size: 1rem; } 
-    .status-text { font-size: 1rem; font-weight: 800; color: var(--primary); line-height: 1; } 
-    .is-full .status-text { color: #64748b; }
-    
+    .queue-icons { display: flex; gap: 4px; color: var(--accent); font-size: 1rem; } .status-text { font-size: 1rem; font-weight: 800; color: var(--primary); line-height: 1; } .is-full .status-text { color: #64748b; }
     .badge-2hr { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; font-size: 0.75rem; padding: 4px 10px; border-radius: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4); }
 
     /* --- Loaders --- */
-    .loading-screen, .page-loader { 
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(240,244,248,0.95);
-        z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; backdrop-filter: blur(10px);
-    } 
+    .loading-screen, .page-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(240,244,248,0.95); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; backdrop-filter: blur(10px); } 
     .loading-screen.hidden, .page-loader.hidden { opacity: 0; pointer-events: none; }
-    .circle-wrap svg { transform: rotate(-90deg); width: 120px; height: 120px; }
-    .circle-bg { fill: none; stroke: var(--shadow-dark); stroke-width: 8; }
-    .circle-progress { fill: none; stroke: var(--accent); stroke-width: 8; stroke-dasharray: 326; stroke-dashoffset: 326; stroke-linecap: round; }
+    .circle-wrap svg { transform: rotate(-90deg); width: 120px; height: 120px; } .circle-bg { fill: none; stroke: var(--shadow-dark); stroke-width: 8; } .circle-progress { fill: none; stroke: var(--accent); stroke-width: 8; stroke-dasharray: 326; stroke-dashoffset: 326; stroke-linecap: round; }
     .percent-text { font-size: 1.6rem; font-weight: 800; color: var(--accent); position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);}
     .tips-box { background: white; padding: 25px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 85%; max-width: 350px; text-align: center; margin-top:25px; }
-    
-    @keyframes spin { 100% { transform: rotate(360deg); } } 
-    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } 
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes spin { 100% { transform: rotate(360deg); } } @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     /* --- 3D Modal Forms --- */
-    .modal-overlay { 
-        position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.5); 
-        z-index: 1000; display: flex; align-items: flex-end; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(8px); 
-    } 
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.5); z-index: 1000; display: flex; align-items: flex-end; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(8px); } 
     .modal-overlay.show { opacity: 1; visibility: visible; }
-    .modal-card { 
-        background: var(--bg-color); width: 100%; max-width: 600px; 
-        border-radius: 35px 35px 0 0; padding: 35px 25px 45px; 
-        box-shadow: 0 -15px 40px rgba(0,0,0,0.15); transform: translateY(100%); transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); max-height: 92vh; overflow-y: auto; 
-    } 
+    .modal-card { background: var(--bg-color); width: 100%; max-width: 600px; border-radius: 35px 35px 0 0; padding: 35px 25px 45px; box-shadow: 0 -15px 40px rgba(0,0,0,0.15); transform: translateY(100%); transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); max-height: 92vh; overflow-y: auto; } 
     .modal-overlay.show .modal-card { transform: translateY(0); }
     
-    .form-group { margin-bottom: 20px; } 
-    .form-label { display: block; margin-bottom: 8px; font-size: 0.95rem; color: #475569; font-weight: 700; }
-    
-    .form-control { 
-        width: 100%; padding: 15px 18px; border-radius: 18px; font-family: 'Prompt', sans-serif; font-size: 1.05rem; 
-        background: var(--bg-color); border: none; color: #1e293b; outline: none; transition: 0.2s;
-        box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
-    }
+    .form-group { margin-bottom: 20px; } .form-label { display: block; margin-bottom: 8px; font-size: 0.95rem; color: #475569; font-weight: 700; }
+    .form-control { width: 100%; padding: 15px 18px; border-radius: 18px; font-family: 'Prompt', sans-serif; font-size: 1.05rem; background: var(--bg-color); border: none; color: #1e293b; outline: none; transition: 0.2s; box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light); }
     .form-control:focus { box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light), 0 0 0 3px rgba(245, 158, 11, 0.2); }
     .form-control[readonly] { background: #e2e8f0; color: #64748b; box-shadow: none; cursor: not-allowed; border: 1px solid #cbd5e1; }
     
     .otp-container { display: flex; gap: 8px; justify-content: space-between; margin-bottom: 10px; }
-    .otp-box { 
-        width: 100%; aspect-ratio: 1/1.2; text-align: center; font-size: 1.3rem; font-weight: 800; 
-        border-radius: 12px; background: var(--bg-color); border: none; color: var(--primary-dark); transition: all 0.2s; padding: 0; outline: none; font-family: 'Prompt', sans-serif;
-        box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
-    }
+    .otp-box { width: 100%; aspect-ratio: 1/1.2; text-align: center; font-size: 1.3rem; font-weight: 800; border-radius: 12px; background: var(--bg-color); border: none; color: var(--primary-dark); transition: all 0.2s; padding: 0; outline: none; font-family: 'Prompt', sans-serif; box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); }
     .otp-box:focus { background: white; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3); transform: translateY(-2px); }
     .otp-box.filled { background: var(--primary-light); color: var(--primary); box-shadow: inset 2px 2px 5px rgba(46,125,50,0.2); }
-    
     .id-card-input { text-align: center; font-size: 1.3rem !important; font-weight: 800 !important; letter-spacing: 2px !important; }
 
-    .custom-select { 
-        width: 100%; padding: 12px 18px; border-radius: 18px; background: var(--bg-color); 
-        display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s;
-        box-shadow: 5px 5px 12px var(--shadow-dark), -5px -5px 12px var(--shadow-light); border: 1px solid rgba(255,255,255,0.5);
-    }
+    .custom-select { width: 100%; padding: 12px 18px; border-radius: 18px; background: var(--bg-color); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; box-shadow: 5px 5px 12px var(--shadow-dark), -5px -5px 12px var(--shadow-light); border: 1px solid rgba(255,255,255,0.5); }
     .custom-select:active { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); }
     .select-img { width: 40px; height: 40px; border-radius: 14px; object-fit: cover; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
     
@@ -281,7 +138,6 @@
     .btn { flex: 1; padding: 16px; border: none; border-radius: 20px; font-size: 1.1rem; cursor: pointer; font-family: 'Prompt', sans-serif; font-weight: 800; transition: 0.2s; text-align:center; }
     .btn-cancel { background: #e2e8f0; color: #64748b; box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light); } 
     .btn-cancel:active { box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light); transform: scale(0.96); }
-    
     .btn-confirm { background: linear-gradient(135deg, var(--accent), #d97706); color: white; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); text-shadow: 0 1px 2px rgba(0,0,0,0.2); } 
     .btn-confirm:active { transform: scale(0.96); box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4); }
     .btn-confirm:disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; box-shadow: none; text-shadow: none; }
@@ -303,6 +159,13 @@
     .right-title-row { display: flex; align-items: center; gap: 12px; font-weight: 800; color: #1e293b; font-size: 1.05rem; }
     .right-desc { font-size: 0.8rem; color: #64748b; margin-left: 34px; line-height: 1.4; font-weight: 500; }
 
+    /* 🔥 3D REALISTIC BILL STYLES 🔥 */
+    .receipt-3d { background: #ffffff; border-radius: 20px; padding: 20px; box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light); border: 1px solid #f1f5f9; margin-top: 15px; position: relative; overflow: hidden; }
+    .receipt-3d::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: repeating-linear-gradient(45deg, #f59e0b, #f59e0b 10px, #fbbf24 10px, #fbbf24 20px); }
+    .total-box-3d { background: #f8fafc; border-radius: 16px; padding: 15px 20px; box-shadow: inset 4px 4px 8px #e2e8f0, inset -4px -4px 8px #ffffff; display: flex; justify-content: space-between; align-items: center; margin-top: 15px; border: 1px solid #f1f5f9; }
+    .price-red { color: #dc2626; text-shadow: 1px 1px 0px rgba(220, 38, 38, 0.2); }
+    .price-green { color: #16a34a; text-shadow: 1px 1px 0px rgba(22, 163, 74, 0.2); }
+
     /* 🔥 3D SWEETALERT OVERRIDE 🔥 */
     .swal2-popup { border-radius: 30px !important; background: var(--bg-color) !important; box-shadow: 15px 15px 35px var(--shadow-dark), -15px -15px 35px var(--shadow-light) !important; border: 1px solid rgba(255,255,255,0.5) !important; padding: 2.5em 2em !important; }
     .swal2-title { color: #1e293b !important; font-family: 'Prompt', sans-serif !important; font-weight: 800 !important; }
@@ -311,22 +174,10 @@
     .swal2-cancel { background: #e2e8f0 !important; color: #475569 !important; border-radius: 18px !important; font-weight: 800 !important; padding: 14px 28px !important; box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light) !important; }
 
     /* --- FLOATING BOTTOM NAVIGATION --- */
-    .bottom-nav {
-        position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-        display: flex; justify-content: space-around; align-items: center;
-        width: 90%; max-width: 400px; padding: 10px 15px; border-radius: 35px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,1); z-index: 999;
-    }
-    .nav-item {
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        color: #94a3b8; text-decoration: none; font-size: 1.3rem; padding: 12px; border-radius: 50%;
-        transition: all 0.3s ease; width: 50px; height: 50px;
-    }
+    .bottom-nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; justify-content: space-around; align-items: center; width: 90%; max-width: 400px; padding: 10px 15px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,1); z-index: 999; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; text-decoration: none; font-size: 1.3rem; padding: 12px; border-radius: 50%; transition: all 0.3s ease; width: 50px; height: 50px; }
     .nav-item.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); transform: translateY(-5px); }
     .nav-item:active i { transform: scale(0.85); }
-    
-    @keyframes pulseDot { 0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); } 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); } }
   </style>
 </head>
 <body>
@@ -335,7 +186,6 @@
       <div class="circle-wrap"><svg><circle class="circle-bg" cx="60" cy="60" r="52"></circle><circle class="circle-progress" id="progress-circle" cx="60" cy="60" r="52"></circle></svg><div class="percent-text" id="progress-text">0%</div></div>
       <div class="loading-title" id="t-saving" style="color:#1e293b; margin-top:20px;">กำลังบันทึกข้อมูล...</div>
       <div style="color:#dc2626; font-weight:800; font-size:0.95rem; margin-top:5px;" id="t-saving-sub">⚠️ กรุณาอย่าปิดหน้าจอนี้ จนกว่าจะสำเร็จ</div>
-      <div class="tips-box"><div class="tips-title" id="tip-title"><i class="fas fa-clock"></i> มาก่อนเวลา 15 นาที</div><div class="tips-text" id="tip-text">หากไม่มาติดต่อภายในเวลาที่กำหนด<br>ถือว่าท่านสละสิทธิ์</div></div>
   </div>
 
   <div id="pageLoader" class="page-loader hidden">
@@ -366,7 +216,6 @@
   <div id="view-profile" class="home-container hidden fade-in">
     <div style="width: 100%; padding: 40px 25px 20px;">
         <h2 style="color: #1e293b; font-weight: 800; font-size: 1.5rem; margin-bottom: 20px;"><i class="fas fa-user-circle" style="color:var(--accent);"></i> ข้อมูลผู้ใช้งาน</h2>
-        
         <div id="main-auth-card" class="premium-glass-card" style="margin:0; width:100%; max-width:100%;"></div>
     </div>
   </div>
@@ -396,7 +245,7 @@
       <div class="stepper-wrapper" id="booking-stepper">
           <div class="step active" id="step-ind-1"><div class="step-circle">1</div><div class="step-label" id="t-step1">ข้อมูลผู้ป่วย</div></div><div class="step-line" id="line-1"></div>
           <div class="step" id="step-ind-2"><div class="step-circle">2</div><div class="step-label" id="t-step2">เลือกบริการ</div></div><div class="step-line" id="line-2"></div>
-          <div class="step" id="step-ind-3"><div class="step-circle">3</div><div class="step-label" id="t-step3">ยืนยัน</div></div>
+          <div class="step" id="step-ind-3"><div class="step-circle">3</div><div class="step-label" id="t-step3">ยืนยันข้อมูล</div></div>
       </div>
       
       <div id="step-1-patient">
@@ -504,30 +353,10 @@
     </div>
   </div>
 
-  <div id="adminModal" class="modal-overlay">
-      <div class="modal-card" style="background: #f0f4f8; padding:0; border-radius:0; height:100vh; max-height:100vh;">
-          <div style="background:white; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.05); display:flex; justify-content:space-between; position:sticky; top:0; z-index:10; font-weight:700; font-size:1.1rem;">
-              <div><i class="fas fa-server" style="color:var(--primary);"></i> Command Center</div>
-              <i class="fas fa-times" style="color:#ef4444; cursor:pointer;" onclick="document.getElementById('adminModal').classList.remove('show')"></i>
-          </div>
-          <div style="padding: 20px;">
-              <div class="admin-tab-container" style="display: flex; background: #e2e8f0; border-radius: 14px; padding: 4px; margin-bottom: 20px;">
-                  <div class="admin-tab active" onclick="switchAdminTab('tab-db')" style="flex: 1; text-align: center; padding: 10px; cursor: pointer; border-radius: 10px;"><i class="fas fa-users"></i> คนไข้</div>
-                  <div class="admin-tab" onclick="switchAdminTab('tab-logs')" style="flex: 1; text-align: center; padding: 10px; cursor: pointer; border-radius: 10px;"><i class="fas fa-calendar-alt"></i> ตารางนัด</div>
-              </div>
-              <div id="tab-db" class="admin-panel active">
-                  <div style="display:flex; gap:8px; margin-bottom:15px;"><input type="text" id="adminSearchInp" class="form-control" placeholder="ค้นหา..."><button class="btn btn-confirm" style="flex:none; padding:12px 20px;" onclick="adminSearch()"><i class="fas fa-search"></i></button></div>
-                  <div class="table-responsive"><table class="log-table" style="width:100%;"><thead><tr><th>ID / ข้อมูลคนไข้</th><th style="text-align:right;">จัดการ</th></tr></thead><tbody id="adminSearchResult"><tr><td colspan="2" style="text-align:center; padding:30px;">รอค้นหา</td></tr></tbody></table></div>
-              </div>
-              <div id="tab-logs" class="admin-panel hidden" style="display:none;"></div>
-          </div>
-      </div>
-  </div>
-
   <script>
-    /* ==========================================
-       🌟 JAVASCRIPT LOGIC (ระบบเชื่อมต่อฐานข้อมูลทั้งหมด)
-    ========================================== */
+    // ==========================================
+    // 🌟 JAVASCRIPT LOGIC 
+    // ==========================================
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycby0EQfBeg8ylgU9Q7IZDf-weHopsK4EFxXkqBUVvtDsEVKKpsIIDZ7y8fXXVWdyzKkbAw/exec"; 
     const FIREBASE_BASE_URL = "https://sadao-queue-999c3-default-rtdb.asia-southeast1.firebasedatabase.app/"; 
     
@@ -657,7 +486,7 @@
     const STAFF_EN_NAMES = { "จินดา J": "Jinda (Jeab)", "รจนา M": "Rotjana (Maam)", "อรรถพล B": "Attapon (Bao)", "ศินารัตน์ C": "Sinarat (C)", "จุฑามาศ F": "Jutamat (Fon)", "รัตน์ชนก KW": "Ratchanok (Kwang)", "นิกษ์นิภา T": "Niknipha (Kartoon)", "ณิชาภัทร W": "Nichapat (Wawa)", "แพทย์แผนจีน": "TCM Doctor" };
     const DEFAULT_IMG = "https://img2.pic.in.th/pic/1c189d2a727f532d391a5ab0604ccd2f.png"; const DAY_COLORS = ["#ef4444", "#eab308", "#ec4899", "#22c55e", "#f97316", "#3b82f6", "#a855f7"];
     
-    // 📌 Override renderMultiUserCard (ปรับตามแบบที่ส่งมา)
+    // 📌 Override renderMultiUserCard (หน้าต่างบัญชี)
     function renderMultiUserCard() {
         try {
             let container = document.getElementById('main-auth-card');
@@ -797,21 +626,44 @@
     function getMaskedFullName(fname, lname) { return maskString(fname) + " " + maskString(lname); }
     function getMaskedTel(tel) { if(!tel || tel.length < 10) return tel; return tel.substring(0,3) + "-xxx-x" + tel.substring(8); }
 
+    // 🚀 ระบบดึงประวัติจาก Firebase แบบ Realtime (ไม่ต้องรอ GAS)
     function fetchPatientHistory(idCard) {
-        fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'get_my_history', idCard: idCard }) }).then(r=>r.json()).then(data => {
-            if (data.status === 'success' && data.history) {
-                let h = data.history; let icon = h.service.includes('ฝังเข็ม') ? '<i class="fas fa-yin-yang"></i>' : (h.service.includes('อบ') ? '<i class="fas fa-hot-tub-person"></i>' : '<i class="fas fa-leaf"></i>');
-                let apsCont = document.getElementById('aps-history-content');
-                if(apsCont) apsCont.innerHTML = `<div style="background:white; color:var(--primary); width:45px; height:45px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">${icon}</div><div style="flex:1;"><div style="color:#1e293b; font-weight:800; font-size:1.05rem;">${_t(h.service)}</div><div style="color:#475569; font-size:0.85rem; font-weight:600;"><i class="far fa-calendar-alt"></i> ${h.date} | ${h.time} น.</div></div>`;
-                let btnArea = document.getElementById('btn-cancel-area');
-                if(h.sysDate && btnArea) { activeBookingObj = { idCard: idCard, service: h.service, date: h.date, sysDate: h.sysDate, time: h.time }; btnArea.innerHTML = `<button type="button" class="btn-cancel-q" onclick="reqCancelBooking()"><i class="fas fa-times-circle"></i> ${_t('cancel_q')}</button>`; } 
-                else if(btnArea) { btnArea.innerHTML = `<div style="text-align:right; font-size:0.85rem; color:#4ade80; margin-top:8px; font-weight:800;"><i class="fas fa-check-circle"></i> ${h.status || 'Completed'}</div>`; activeBookingObj = null; }
-            } else { 
-                let apsCont = document.getElementById('aps-history-content');
-                if(apsCont) apsCont.innerHTML = `<div style="color:#94a3b8; font-size:0.9rem; font-weight:600; width:100%; text-align:center; padding:15px 0;">No record found</div>`; 
-                if(document.getElementById('btn-cancel-area')) document.getElementById('btn-cancel-area').innerHTML = ''; 
+        fetch(FIREBASE_BASE_URL + "patientHistory/" + idCard + ".json?t=" + new Date().getTime(), { cache: 'no-store' })
+        .then(r => r.json())
+        .then(h => {
+            if (h) { renderHistoryUI(idCard, h); } 
+            else {
+                // 🐢 ถ้า Firebase ยังไม่มี ให้วิ่งไปดึงจาก MySQL (GAS) เป็น Fallback
+                fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'get_my_history', idCard: idCard }) })
+                .then(r=>r.json()).then(data => {
+                    if (data.status === 'success' && data.history) { renderHistoryUI(idCard, data.history); } 
+                    else { renderNoHistory(); }
+                }).catch(e=> renderNoHistory());
             }
-        }).catch(e=>{});
+        }).catch(e=> renderNoHistory());
+    }
+
+    function renderHistoryUI(idCard, h) {
+        let icon = h.service.includes('ฝังเข็ม') ? '<i class="fas fa-yin-yang"></i>' : (h.service.includes('อบ') ? '<i class="fas fa-hot-tub-person"></i>' : '<i class="fas fa-leaf"></i>');
+        let apsCont = document.getElementById('aps-history-content');
+        if(apsCont) apsCont.innerHTML = `<div style="background:white; color:var(--primary); width:45px; height:45px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">${icon}</div><div style="flex:1;"><div style="color:#1e293b; font-weight:800; font-size:1.05rem;">${_t(h.service)}</div><div style="color:#475569; font-size:0.85rem; font-weight:600;"><i class="far fa-calendar-alt"></i> ${h.date || h.sysDate} | ${h.time} น.</div></div>`;
+        
+        let btnArea = document.getElementById('btn-cancel-area');
+        if(h.status === 'รอรับบริการ' && h.sysDate && btnArea) { 
+            activeBookingObj = { idCard: idCard, service: h.service, date: h.date || h.sysDate, sysDate: h.sysDate, time: h.time }; 
+            btnArea.innerHTML = `<button type="button" class="btn-cancel-q" onclick="reqCancelBooking()"><i class="fas fa-times-circle"></i> ${_t('cancel_q')}</button>`; 
+        } else if(btnArea) { 
+            let statusColor = (h.status && h.status.includes('ยกเลิก')) ? '#ef4444' : '#4ade80';
+            let statusIcon = (h.status && h.status.includes('ยกเลิก')) ? 'fa-times-circle' : 'fa-check-circle';
+            btnArea.innerHTML = `<div style="text-align:right; font-size:0.85rem; color:${statusColor}; margin-top:8px; font-weight:800;"><i class="fas ${statusIcon}"></i> ${h.status || 'เสร็จสิ้น'}</div>`; 
+            activeBookingObj = null; 
+        }
+    }
+
+    function renderNoHistory() {
+        let apsCont = document.getElementById('aps-history-content');
+        if(apsCont) apsCont.innerHTML = `<div style="color:#94a3b8; font-size:0.9rem; font-weight:600; width:100%; text-align:center; padding:15px 0;">ไม่มีประวัติการจองเร็วๆ นี้</div>`; 
+        if(document.getElementById('btn-cancel-area')) document.getElementById('btn-cancel-area').innerHTML = ''; 
     }
 
     function reqCancelBooking() {
@@ -849,7 +701,6 @@
         document.getElementById('app-title').innerText = _t('app_' + type); 
         document.getElementById('app-logo').src = conf.logo; 
         
-        // Hide views
         document.getElementById('view-home').classList.add('hidden'); 
         document.getElementById('view-profile').classList.add('hidden'); 
         document.getElementById('view-dashboard').classList.remove('hidden'); 
@@ -937,7 +788,14 @@
 
     function goToStep1() { document.getElementById('step-1-patient').classList.remove('hidden'); document.getElementById('step-2-service').classList.add('hidden'); document.getElementById('step-3-summary').classList.add('hidden'); updateStepper(1); document.getElementById('t-fill-info').innerHTML = `<i class="fas fa-user-edit" style="color:var(--accent);"></i> <span id="t-modal-title">${_t('step1_title')}</span>`; }
     function goToStep2() { let id = document.getElementById('inp-idcard').value; let f = document.getElementById('inp-fname').value.trim(); let t = document.getElementById('inp-tel').value; if(!id || !f || !t) return Swal.fire({title:_t('warn_title'), text:_t('err_req_fields'), icon:'warning', customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' }}); document.getElementById('step-1-patient').classList.add('hidden'); document.getElementById('step-2-service').classList.remove('hidden'); document.getElementById('step-3-summary').classList.add('hidden'); updateStepper(2); document.getElementById('t-fill-info').innerHTML = `<i class="fas fa-stethoscope" style="color:var(--accent);"></i> <span id="t-modal-title">${_t('step2_title')}</span>`; }
-    function goToStep3() { document.getElementById('step-1-patient').classList.add('hidden'); document.getElementById('step-2-service').classList.add('hidden'); document.getElementById('step-3-summary').classList.remove('hidden'); updateStepper(3); document.getElementById('t-fill-info').innerHTML = `<i class="fas fa-clipboard-check" style="color:var(--accent);"></i> <span id="t-modal-title">${_t('step3_title')}</span>`; }
+    
+    function goToStep3() { 
+        document.getElementById('step-1-patient').classList.add('hidden'); 
+        document.getElementById('step-2-service').classList.add('hidden'); 
+        document.getElementById('step-3-summary').classList.remove('hidden'); 
+        updateStepper(3); 
+        document.getElementById('t-fill-info').innerHTML = `<i class="fas fa-clipboard-check" style="color:var(--accent);"></i> <span id="t-modal-title">${_t('step3_title')}</span>`; 
+    }
 
     function toggleStaffDropdown() { document.getElementById('staff-options').classList.toggle('hidden'); }
     
@@ -1056,6 +914,9 @@
         document.getElementById('existing-user-display').classList.remove('hidden'); document.getElementById('user-details-form').classList.add('hidden'); renderSmartBookDropdown();
     }
     
+    // ==========================================
+    // 🌟 3D RECEIPT & CONFIRMATION
+    // ==========================================
     function goToSummary() {
       let id = document.getElementById('inp-idcard').value; let f = document.getElementById('inp-fname').value.trim(); let l = document.getElementById('inp-lname').value.trim(); let t = document.getElementById('inp-tel').value;
       if(!id || !f || !t) return Swal.fire({title:_t('warn_title'), text:_t('err_req_fields'), icon:'warning', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}});
@@ -1075,8 +936,12 @@
       } else if (currentApp === 'steam') { bookingData.extraInfo = currentLang==='en' ? `Gender: ${document.getElementById('inp-gender').value}` : `เพศ: ${document.getElementById('inp-gender').value}`; bookingData.service = "อบไอน้ำ"; bookingData.staff = "ไม่ระบุ"; } 
       else { bookingData.service = document.getElementById('inp-service').value.split(' (')[0]; bookingData.staff = baseStaffName; bookingData.is2Hr = document.getElementById('inp-2hr') ? document.getElementById('inp-2hr').checked : false; bookingData.addSteam = document.getElementById('chk-addon-steam') ? document.getElementById('chk-addon-steam').checked : false; if(bookingData.addSteam) bookingData.steamGender = document.getElementById('inp-addon-gender').value; }
       
-      if (currentApp === 'ttm' || currentApp === 'tcm') { if(currentApp === 'tcm' && !bookingData.service.includes("ฝังเข็มเพื่อการรักษา")) { buildSummaryAndShow(null); } else { promptRightSelection(); } } 
-      else { buildSummaryAndShow(null); }
+      // ✅ เรียกหน้าต่างเลือกสิทธิสำหรับบริการทุกประเภท
+      if (currentApp === 'tcm' && bookingData.service.includes("ปรึกษา")) { 
+          buildSummaryAndShow('3'); // ถ้าปรึกษาฟรีให้ข้าม
+      } else { 
+          promptRightSelection(); 
+      }
     }
 
     function promptRightSelection() {
@@ -1104,23 +969,78 @@
         let sN = bookingData.staff; let dS = currentLang === 'en' ? (STAFF_EN_NAMES[sN] || sN) : (STAFF_NAME_MAP[sN] || sN);
         let p = savedProfiles.find(x => x.id === bookingData.idCard); let pLabel = (p && p.label) ? p.label : (currentLang === 'en' ? 'Patient' : 'ผู้รับบริการ');
 
+        // ข้อมูลหลักตามแบบในภาพ 
         let infoH = `
-            <div style="display:flex; gap:15px; align-items:center; margin-bottom:20px;">
-                <div style="width:56px; height:56px; border-radius:18px; background:linear-gradient(135deg, var(--accent), #fbbf24); display:flex; justify-content:center; align-items:center; font-size:1.8rem; color:white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);"><i class="fas fa-user-circle"></i></div>
-                <div><div style="font-weight:800; font-size:1.2rem; color:#1e293b;">${pLabel} <span style="font-size:0.85rem; font-weight:500; color:#64748b;">(${mN})</span></div><div style="color:#64748b; font-size:0.95rem; font-weight:600;"><i class="fas fa-phone-alt" style="color:var(--primary);"></i> ${getMaskedTel(t)}</div></div>
+            <div style="display:flex; gap:15px; align-items:center; margin-bottom:20px; background:white; padding:15px; border-radius:20px; box-shadow:0 4px 15px rgba(0,0,0,0.05); border:1px solid #f1f5f9;">
+                <div style="width:55px; height:55px; border-radius:16px; background:linear-gradient(135deg, #f59e0b, #d97706); display:flex; justify-content:center; align-items:center; font-size:1.8rem; color:white; box-shadow:0 4px 10px rgba(245,158,11,0.3);"><i class="fas fa-user"></i></div>
+                <div>
+                    <div style="font-weight:800; font-size:1.15rem; color:#1e293b;">${pLabel} <span style="font-size:0.85rem; font-weight:500; color:#64748b;">(${mN})</span></div>
+                    <div style="color:#16a34a; font-size:0.95rem; font-weight:700; margin-top:4px;"><i class="fas fa-phone-alt"></i> ${getMaskedTel(t)}</div>
+                </div>
             </div>
-            <div style="background:white; border-radius:20px; padding:18px; margin-bottom:20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border:1px solid #e2e8f0;">
-                <div style="margin-bottom:8px; font-size:1.05rem;"><b>${currentLang==='en'?'Service':'บริการ'}:</b> <span style="color:var(--accent); font-weight:800;">${_t(bookingData.service)}</span></div>
-                <div style="margin-bottom:8px; font-size:1.05rem;"><b>${currentLang==='en'?'Time':'เวลา'}:</b> ${bookingData.date} <span style="background:var(--primary); color:white; padding:4px 10px; border-radius:10px; font-size:0.95rem; font-weight:800; box-shadow:0 2px 8px rgba(46,125,50,0.4); margin-left:6px;">${bookingData.time}</span></div>
+            <div style="background:white; border-radius:20px; padding:20px; margin-bottom:20px; box-shadow:0 4px 15px rgba(0,0,0,0.05); border:1px solid #f1f5f9;">
+                <div style="margin-bottom:12px; font-size:1.05rem; display:flex; align-items:center; gap:8px;"><b>${currentLang==='en'?'Service':'บริการ'}:</b> <span style="color:#f59e0b; font-weight:800;">${_t(bookingData.service)}</span></div>
+                <div style="font-size:1.05rem; display:flex; align-items:center; gap:8px;"><b>${currentLang==='en'?'Time':'เวลา'}:</b> ${bookingData.date} <span style="background:#16a34a; color:white; padding:4px 12px; border-radius:10px; font-size:0.95rem; font-weight:800; box-shadow:0 2px 8px rgba(22,163,74,0.3);">${bookingData.time}</span></div>
+                ${(currentApp === 'ttm' || currentApp === 'tcm') ? `<div style="margin-top:12px; font-size:1.05rem; display:flex; align-items:center; gap:8px;"><b>${currentLang==='en'?'Provider':'ผู้ให้บริการ'}:</b> <span style="color:#1e293b; font-weight:700;">${dS}</span></div>` : ''}
             </div>
         `;
-        document.getElementById('summary-content').innerHTML = infoH; goToStep3();
+        
+        let brk = []; let total = 0; let rName = ""; 
+        if (rV === '1') rName = _t('right_uc30'); else if (rV === '2') rName = _t('right_uc_free'); else if (rV === '3') rName = _t('right_gov'); else if (rV === '4') rName = _t('right_enterprise'); else if (rV === '5') rName = _t('right_ss');
+
+        // Logic การคำนวณราคา
+        if (currentApp === 'ttm') {
+            let base = 0; let oohFee = bookingData.isOOH ? 60 : 0; 
+            if (bookingData.service.includes("นวดและประคบ")) { 
+                if (rV === '3') { base = 0; } else if (rV === '1' || rV === '2') { base = 100; if (bookingData.isOOH) oohFee = 0; } else { base = 250; } 
+            } else { base = 250; } 
+            
+            brk.push(`<div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>${_t('bill_base')}</span><b>${base} ${_t('baht')}</b></div>`); total += base;
+            if (bookingData.isOOH) { brk.push(`<div style="display:flex; justify-content:space-between; color:#ea580c; margin-bottom:6px;"><span>${_t('bill_ooh')}</span><b>${oohFee} ${_t('baht')}</b></div>`); total += oohFee; }
+            if (bookingData.is2Hr) { brk.push(`<div style="display:flex; justify-content:space-between; color:#d97706; margin-bottom:6px;"><span>${_t('bill_2hr')}</span><b>250 ${_t('baht')}</b></div>`); total += 250; }
+            if (bookingData.addSteam) { let stF = (rV === '5' || rV === '4') ? 100 : 0; brk.push(`<div style="display:flex; justify-content:space-between; color:#0288d1; margin-bottom:6px;"><span>${_t('bill_steam')}</span><b>${stF} ${_t('baht')}</b></div>`); total += stF; }
+            
+        } else if (currentApp === 'tcm') {
+            let base = 0; let sv = bookingData.service;
+            if (sv.includes("ฝังเข็มเพื่อการรักษา")) base = (rV === '3') ? 0 : 200; else if (sv.includes("ครอบแก้ว")) base = 150; else if (sv.includes("ฝังเข็มใบหน้า")) base = 300; else if (sv.includes("เม็ดผักกาด")) base = 50; else if (sv.includes("ปรึกษา")) base = 0;
+            
+            brk.push(`<div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>${_t('bill_base')}</span><b>${base} ${_t('baht')}</b></div>`); total += base;
+            if (bookingData.is2Hr) { brk.push(`<div style="display:flex; justify-content:space-between; color:#d97706; margin-bottom:6px;"><span>${currentLang==='en'?"Cupping:":"ครอบแก้ว:"}</span><b>150 ${_t('baht')}</b></div>`); total += 150; }
+            
+        } else if (currentApp === 'postpartum') {
+            let base = 0; if (rV === '2' || rV === '3') base = 0; else if (rV === '1') base = 30; else if (rV === '4') base = 670; else if (rV === '5') base = 500;
+            brk.push(`<div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>${_t('bill_base')}</span><b>${base} ${_t('baht')}</b></div>`); total += base;
+            if (bookingData.isOOH) { brk.push(`<div style="display:flex; justify-content:space-between; color:#ea580c; margin-bottom:6px;"><span>${_t('bill_ooh')}</span><b>60 ${_t('baht')}</b></div>`); total += 60; }
+            
+        } else if (currentApp === 'steam') {
+            let base = 0; if (rV === '2' || rV === '3') base = 0; else if (rV === '1') base = 30; else if (rV === '4') base = 120; else if (rV === '5') base = 100;
+            brk.push(`<div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>${_t('bill_base')}</span><b>${base} ${_t('baht')}</b></div>`); total += base;
+            if (bookingData.isOOH) { brk.push(`<div style="display:flex; justify-content:space-between; color:#ea580c; margin-bottom:6px;"><span>${_t('bill_ooh')}</span><b>60 ${_t('baht')}</b></div>`); total += 60; }
+        }
+
+        bookingData.rightName = rName; bookingData.totalFee = total; bookingData.breakdownLines = brk;
+        let totalC = total > 0 ? "price-red" : "price-green";
+        let noteBill = rV === '4' ? `<div style="font-size:0.8rem; color:#dc2626; margin-top:12px; font-weight:700; text-align:center;">${_t('bill_enterprise_note')}</div>` : '';
+        
+        // 3D Receipt Box 
+        let billH = `<div class="receipt-3d">
+                        <div style="font-weight:800; color:#1e293b; margin-bottom:12px; border-bottom:2px dashed #cbd5e1; padding-bottom:12px; display:flex; align-items:center; gap:10px;"><i class="fas fa-file-invoice-dollar" style="color:var(--accent); font-size:1.6rem;"></i><span style="font-size:1.15rem;">${_t('bill_title')}</span></div>
+                        <div style="font-size:0.9rem; color:#16a34a; font-weight:800; margin-bottom:15px; background:#f0fdf4; padding:10px 15px; border-radius:12px; border:1px solid #bbf7d0;">${_t('bill_right')} ${rName}</div>
+                        <div style="font-size:0.95rem; color:#475569; line-height:1.5; margin-bottom:15px; padding:0 5px;">${brk.join('')}</div>
+                        <div class="total-box-3d"><span style="font-weight:800; color:#475569; font-size:1.1rem;">${_t('bill_total')}</span><span class="${totalC}" style="font-size:1.8rem; font-weight:800;">${total} ${_t('baht')}</span></div>
+                        ${noteBill}
+                    </div>`;
+                    
+        let nH = (bookingData.extraInfo ? `<div style="margin-top:20px; color:#0ea5e9; font-size:0.95rem; font-weight:600;"><i class="fas fa-info-circle"></i> ${bookingData.extraInfo}</div>` : '') + (bookingData.note ? `<div style="margin-top:12px; font-size:0.95rem;"><b>${_t('note')}:</b> <span style="color:#dc2626; font-weight:700;">${bookingData.note}</span></div>` : '');
+        
+        document.getElementById('summary-content').innerHTML = infoH + billH + nH; 
+        goToStep3();
     }
 
     function confirmBooking() {
         document.getElementById('btn-final-confirm').disabled = true; showPercentageLoader(); 
         let fCombined = (bookingData.fname + " " + (bookingData.lname || "")).trim(); 
-        let payload = { lineUid: currentLineUid, appType: bookingData.appType, sheetName: bookingData.sheetName, idCard: bookingData.idCard, fname: bookingData.fname, lname: bookingData.lname, fullName: fCombined, tel: bookingData.tel, service: bookingData.service, time: bookingData.time, date: bookingData.date, sysDate: bookingData.sysDate };
+        let payload = { lineUid: currentLineUid, appType: bookingData.appType, sheetName: bookingData.sheetName, idCard: bookingData.idCard, fname: bookingData.fname, lname: bookingData.lname, fullName: fCombined, tel: bookingData.tel, service: bookingData.service, time: bookingData.time, date: bookingData.date, sysDate: bookingData.sysDate, right: bookingData.rightName, totalFee: bookingData.totalFee };
         if ((currentApp === 'ttm' || currentApp === 'tcm') && selectedSlotData) { payload.row = selectedSlotData.row; payload.col = selectedSlotData.col; }
         
         fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(payload) }).then(async r => { 
