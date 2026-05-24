@@ -1174,13 +1174,42 @@
                     let p = savedProfiles.find(x => x.id === bookingData.idCard); 
                     addOrUpdateProfile(bookingData.idCard, bookingData.fname, bookingData.lname, bookingData.tel, p ? p.label : ''); 
                     
-                    Swal.fire({ title: _t('swal_book_success'), text: "กำลังส่งข้อความยืนยันเข้าแชท...", icon: 'success', showConfirmButton: false, allowOutsideClick: false, timer: 3000, timerProgressBar: true, customClass: { popup: 'swal-3d-popup' } });
+                    // ปิดหน้าต่างจองคิว
+                    closeModal(); 
+                    
+                    // 🔥 FIX: แสดง Popup สำเร็จ และ "รอ" 3 วินาทีเพื่อให้ Backend บันทึกข้อมูลเสร็จ
+                    Swal.fire({ 
+                        title: _t('swal_book_success'), 
+                        text: "กำลังซิงค์ข้อมูลลงระบบ...", 
+                        icon: 'success', 
+                        showConfirmButton: false, 
+                        allowOutsideClick: false, 
+                        timer: 3000, 
+                        timerProgressBar: true, 
+                        customClass: { popup: 'swal-3d-popup' } 
+                    }).then(() => {
+                        // เมื่อครบ 3 วินาที ค่อยสลับไปหน้า Profile
+                        switchMainTab('profile'); 
+                        fetchData(true); 
+                        
+                        // 🔥 บังคับแสดงข้อมูลที่เพิ่งจองลงใน UI ทันที (Optimistic UI) ป้องกันเน็ตช้า
+                        setTimeout(() => {
+                            let instantHistory = {
+                                service: fSvc,
+                                date: bookingData.date,
+                                sysDate: bookingData.sysDate,
+                                time: bookingData.time,
+                                status: "รอรับบริการ"
+                            };
+                            renderHistoryUI(bookingData.idCard, instantHistory);
+                        }, 200);
+                    });
 
                     if (liff.isInClient()) {
                         let msgText = currentLang === 'en' ? `🖥️ [Auto] New Booking ✅\n👨‍⚕️ Service: ${_t(bookingData.service)}\n🕒 Date: ${bookingData.date}` : `🖥️ [ระบบอัตโนมัติ] แจ้งทำรายการนัดหมายสำเร็จ ✅\n👨‍⚕️ บริการ : ${_t(bookingData.service)}\n🕒 วันที่: ${bookingData.date}`;
                         liff.sendMessages([{ type: 'text', text: msgText }]).then(() => { setTimeout(() => liff.closeWindow(), 800); }).catch(() => { setTimeout(() => liff.closeWindow(), 800); });
                     }
-                    closeModal(); switchMainTab('profile'); fetchData(true); 
+
                 } else { 
                     let errTitle = _t('swal_error'); let errMsg = res.message || 'Slot unavailable'; let errIcon = 'error'; let btnColor = '#ef4444';
                     if (res.status === 'error_blocked' && res.reason === 'duplicate_person') {
@@ -1197,15 +1226,30 @@
                 } 
             });
         }).catch(e => finishPercentageLoader(() => { 
-            Swal.fire({ title:_t('swal_success'), text: "กำลังส่งข้อความยืนยันเข้าแชท...", icon:'success', showConfirmButton: false, timer: 3000, timerProgressBar: true, customClass:{popup:'swal-3d-popup'} });
+            closeModal(); 
+            Swal.fire({ 
+                title:_t('swal_success'), 
+                text: "กำลังซิงค์ข้อมูลลงระบบ...", 
+                icon:'success', 
+                showConfirmButton: false, 
+                timer: 3000, 
+                timerProgressBar: true, 
+                customClass:{popup:'swal-3d-popup'} 
+            }).then(() => {
+                switchMainTab('profile'); 
+                fetchData(true);
+                setTimeout(() => {
+                    let instantHistory = { service: fSvc, date: bookingData.date, sysDate: bookingData.sysDate, time: bookingData.time, status: "รอรับบริการ" };
+                    renderHistoryUI(bookingData.idCard, instantHistory);
+                }, 200);
+            });
+            
             if (liff.isInClient()) {
                 let msgText = currentLang === 'en' ? `🖥️ [Auto] New Booking ✅\n👨‍⚕️ Service: ${_t(bookingData.service)}\n🕒 Date: ${bookingData.date}` : `🖥️ [ระบบอัตโนมัติ] แจ้งทำรายการนัดหมายสำเร็จ ✅\n👨‍⚕️ บริการ : ${_t(bookingData.service)}\n🕒 วันที่: ${bookingData.date}`;
                 liff.sendMessages([{ type: 'text', text: msgText }]).then(() => { setTimeout(() => liff.closeWindow(), 800); }).catch(() => { setTimeout(() => liff.closeWindow(), 800); });
             }
-            closeModal(); switchMainTab('profile'); fetchData(true); 
         }));
     }
-
     let loadInterval; let currentPercent = 0;
     function showPercentageLoader() { document.getElementById('saveLoader').classList.remove('hidden'); currentPercent = 0; loadInterval = setInterval(() => { currentPercent += 1.5; if(currentPercent >= 95) currentPercent = 95; document.getElementById('progress-circle').style.strokeDashoffset = 326 - (currentPercent / 100) * 326; document.getElementById('progress-text').innerText = Math.floor(currentPercent) + "%"; }, 500); }
     function finishPercentageLoader(cb) { clearInterval(loadInterval); document.getElementById('progress-circle').style.strokeDashoffset = 0; document.getElementById('progress-text').innerText = "100%"; setTimeout(() => { document.getElementById('saveLoader').classList.add('hidden'); if(cb) cb(); }, 500); }
