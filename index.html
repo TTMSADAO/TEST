@@ -793,7 +793,7 @@
       fetch(FIREBASE_BASE_URL + "sadaoData.json?t=" + new Date().getTime(), { cache: 'no-store' }).then(res => res.json()).then(data => {
             let now = new Date(); let timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
             syncIcon.classList.remove('spin-active'); syncText.innerText = (currentLang === 'en' ? 'Updated ' : 'อัปเดตล่าสุด ') + timeStr; 
-            fullFirebaseData = data; globalData = currentApp==='ttm'?data.ttm:currentApp==='tcm'?data.tcm:currentApp==='postpartum'?data.postpartum:data.steam;
+            fullFirebaseData = data; globalData = currentApp==='ttm'?data.ttm:currentApp==='tcm'?data.postpartum:currentApp==='postpartum'?data.postpartum:data.steam;
             renderScroller(); renderSlots(selectedIndex); if(showLoader) document.getElementById('pageLoader').classList.add('hidden');
       }).catch(e => { syncIcon.classList.remove('spin-active'); syncText.innerText = 'Offline'; if(showLoader) document.getElementById('pageLoader').classList.add('hidden'); });
     }
@@ -1174,10 +1174,8 @@
                     let p = savedProfiles.find(x => x.id === bookingData.idCard); 
                     addOrUpdateProfile(bookingData.idCard, bookingData.fname, bookingData.lname, bookingData.tel, p ? p.label : ''); 
                     
-                    // ปิดหน้าต่างจองคิว
                     closeModal(); 
                     
-                    // 🔥 FIX: แสดง Popup สำเร็จ และ "รอ" 3 วินาทีเพื่อให้ Backend บันทึกข้อมูลเสร็จ
                     Swal.fire({ 
                         title: _t('swal_book_success'), 
                         text: "กำลังซิงค์ข้อมูลลงระบบ...", 
@@ -1188,11 +1186,9 @@
                         timerProgressBar: true, 
                         customClass: { popup: 'swal-3d-popup' } 
                     }).then(() => {
-                        // เมื่อครบ 3 วินาที ค่อยสลับไปหน้า Profile
                         switchMainTab('profile'); 
                         fetchData(true); 
                         
-                        // 🔥 บังคับแสดงข้อมูลที่เพิ่งจองลงใน UI ทันที (Optimistic UI) ป้องกันเน็ตช้า
                         setTimeout(() => {
                             let instantHistory = {
                                 service: fSvc,
@@ -1250,6 +1246,7 @@
             }
         }));
     }
+
     let loadInterval; let currentPercent = 0;
     function showPercentageLoader() { document.getElementById('saveLoader').classList.remove('hidden'); currentPercent = 0; loadInterval = setInterval(() => { currentPercent += 1.5; if(currentPercent >= 95) currentPercent = 95; document.getElementById('progress-circle').style.strokeDashoffset = 326 - (currentPercent / 100) * 326; document.getElementById('progress-text').innerText = Math.floor(currentPercent) + "%"; }, 500); }
     function finishPercentageLoader(cb) { clearInterval(loadInterval); document.getElementById('progress-circle').style.strokeDashoffset = 0; document.getElementById('progress-text').innerText = "100%"; setTimeout(() => { document.getElementById('saveLoader').classList.add('hidden'); if(cb) cb(); }, 500); }
