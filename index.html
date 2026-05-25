@@ -686,24 +686,62 @@
     function getMaskedFullName(fname, lname) { return maskString(fname) + " " + maskString(lname); }
     function getMaskedTel(tel) { if(!tel || tel.length < 10) return tel; return tel.substring(0,3) + "-xxx-x" + tel.substring(8); }
 
-    // 🚀 ระบบดึงประวัติจาก Firebase แบบ Realtime
+    // 🚀 ระบบดึงประวัติจาก Firebase แบบ Realtime (อัปเกรดความอึดและเช็ค Local Storage)
     function fetchPatientHistory(idCard) {
         fetch(FIREBASE_BASE_URL + "patientHistory/" + idCard + ".json?t=" + new Date().getTime(), { cache: 'no-store' })
         .then(r => r.json())
         .then(h => {
-            if (h) { renderHistoryUI(idCard, h); } 
+            // เช็คให้ชัวร์ว่าข้อมูลที่ตอบกลับมา ไม่ใช่ Error (h.error) และมีฟิลด์ข้อมูลบริการ (h.service) จริงๆ
+            if (h && !h.error && h.service) { 
+                renderHistoryUI(idCard, h); 
+            } 
             else {
-                // Fallback to GAS if Firebase is empty
+                // ถ้า Firebase รวน, ติดสิทธิ์, หรือยังว่างเปล่า ให้วิ่งไปดึงข้อมูลก๊อกสองจาก Google Sheet
                 fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'get_my_history', idCard: idCard }) })
                 .then(r=>r.json()).then(data => {
-                    if (data.status === 'success' && data.history) { renderHistoryUI(idCard, data.history); } 
-                    else { renderNoHistory(); }
-                }).catch(e=> renderNoHistory());
+                    if (data.status === 'success') {
+                        if (data.history) {
+                            renderHistoryUI(idCard, data.history); 
+                        } else {
+                            // ถ้า Google Sheet คอนเฟิร์มว่าไม่มีคิวจริงๆ ให้ล้างคิวจำลองทิ้งด้วย
+                            localStorage.removeItem('sdh_history_' + idCard);
+                            renderNoHistory();
+                        }
+                    } 
+                    else { 
+                        // ถ้า Google Sheet ก็ล่ม ให้ไปงัดข้อมูลก๊อกสามจากหน่วยความจำเครื่อง (Local Storage)
+                        checkLocalHistoryFallback(idCard); 
+                    }
+                }).catch(e=> checkLocalHistoryFallback(idCard));
             }
-        }).catch(e=> renderNoHistory());
+        }).catch(e=> checkLocalHistoryFallback(idCard));
+    }
+
+    // 🚀 ฟังก์ชันก๊อกสาม: งัดข้อมูลจำลองจากเครื่องมาโชว์ (Offline-First)
+    function checkLocalHistoryFallback(idCard) {
+        try {
+            let local = localStorage.getItem('sdh_history_' + idCard);
+            if(local) {
+                let h = JSON.parse(local);
+                // ตรวจสอบก่อนว่าคิวนี้เลยวันที่ไปหรือยัง ถ้ายังไม่เลยก็เอามาโชว์แก้ขัด
+                let today = new Date(); today.setHours(0,0,0,0);
+                let bParts = h.sysDate.split('-');
+                let bDate = new Date(bParts[0], bParts[1]-1, bParts[2]);
+                if(bDate >= today) {
+                    renderHistoryUI(idCard, h);
+                    return;
+                } else {
+                    // ถ้าวันที่ผ่านไปแล้ว แปลว่าคิวนั้นหมดอายุ ลบออกจากความจำเครื่อง
+                    localStorage.removeItem('sdh_history_' + idCard);
+                }
+            }
+        } catch(e) {}
+        renderNoHistory();
     }
 
     function renderHistoryUI(idCard, h) {
+        if(!h || !h.service) { renderNoHistory(); return; } // ป้องกันบักในกรณีที่ข้อมูลแหว่ง
+        
         let icon = h.service.includes('ฝังเข็ม') ? '<i class="fas fa-yin-yang"></i>' : (h.service.includes('อบ') ? '<i class="fas fa-hot-tub-person"></i>' : '<i class="fas fa-leaf"></i>');
         let apsCont = document.getElementById('aps-history-content');
         if(apsCont) apsCont.innerHTML = `<div style="background:white; color:var(--primary); width:45px; height:45px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">${icon}</div><div style="flex:1;"><div style="color:#1e293b; font-weight:800; font-size:1.05rem;">${_t(h.service)}</div><div style="color:#475569; font-size:0.85rem; font-weight:600;"><i class="far fa-calendar-alt"></i> ${h.date || h.sysDate} | ${h.time} น.</div></div>`;
@@ -741,6 +779,9 @@
         .then(async response => { let resText = await response.text(); try { return JSON.parse(resText); } catch(err) { return { status: 'success', penaltyDays: 0 }; } })
         .then(res => { 
             if(res.status === 'success' || res.status === 'error_but_done') { 
+                // ลบประวัติจำลองออกจากเครื่องเมื่อกดยกเลิก
+                localStorage.removeItem('sdh_history_' + activeBookingObj.idCard); 
+
                 Swal.fire({ title:_t('swal_success'), text: "กำลังส่งข้อความยกเลิกเข้าแชท...", icon:'success', showConfirmButton: false, allowOutsideClick: false, timer: 3000, timerProgressBar: true, customClass:{popup:'swal-3d-popup'} });
                 
                 if (liff.isInClient()) {
@@ -758,7 +799,6 @@
         proceedToApp(type); 
         document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active')); 
         document.getElementById('nav-home').classList.add('active'); 
-        // 🌟 ซ่อนเมนูด้านล่างเมื่อเข้าหน้าจองคิว
         let nav = document.getElementById('main-bottom-nav');
         if(nav) nav.classList.add('nav-hidden');
     }
@@ -793,7 +833,7 @@
       fetch(FIREBASE_BASE_URL + "sadaoData.json?t=" + new Date().getTime(), { cache: 'no-store' }).then(res => res.json()).then(data => {
             let now = new Date(); let timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
             syncIcon.classList.remove('spin-active'); syncText.innerText = (currentLang === 'en' ? 'Updated ' : 'อัปเดตล่าสุด ') + timeStr; 
-            fullFirebaseData = data; globalData = currentApp==='ttm'?data.ttm:currentApp==='tcm'?data.postpartum:currentApp==='postpartum'?data.postpartum:data.steam;
+            fullFirebaseData = data; globalData = currentApp==='ttm'?data.ttm:currentApp==='tcm'?data.tcm:currentApp==='postpartum'?data.postpartum:data.steam;
             renderScroller(); renderSlots(selectedIndex); if(showLoader) document.getElementById('pageLoader').classList.add('hidden');
       }).catch(e => { syncIcon.classList.remove('spin-active'); syncText.innerText = 'Offline'; if(showLoader) document.getElementById('pageLoader').classList.add('hidden'); });
     }
@@ -1197,6 +1237,8 @@
                                 time: bookingData.time,
                                 status: "รอรับบริการ"
                             };
+                            // 🌟 ฝังข้อมูลจำลองลงในความจำมือถือทันที (Local Storage Offline-First)
+                            localStorage.setItem('sdh_history_' + bookingData.idCard, JSON.stringify(instantHistory));
                             renderHistoryUI(bookingData.idCard, instantHistory);
                         }, 200);
                     });
@@ -1236,6 +1278,7 @@
                 fetchData(true);
                 setTimeout(() => {
                     let instantHistory = { service: fSvc, date: bookingData.date, sysDate: bookingData.sysDate, time: bookingData.time, status: "รอรับบริการ" };
+                    localStorage.setItem('sdh_history_' + bookingData.idCard, JSON.stringify(instantHistory)); // เซฟลงเครื่องกันเหนียว
                     renderHistoryUI(bookingData.idCard, instantHistory);
                 }, 200);
             });
