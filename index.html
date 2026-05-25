@@ -108,11 +108,17 @@
     /* --- Loaders --- */
     .loading-screen, .page-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(240,244,248,0.95); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; backdrop-filter: blur(10px); } 
     .loading-screen.hidden, .page-loader.hidden { opacity: 0; pointer-events: none; }
-    .circle-wrap svg { transform: rotate(-90deg); width: 120px; height: 120px; } .circle-bg { fill: none; stroke: var(--shadow-dark); stroke-width: 8; } .circle-progress { fill: none; stroke: var(--accent); stroke-width: 8; stroke-dasharray: 326; stroke-dashoffset: 326; stroke-linecap: round; }
-    .percent-text { font-size: 1.6rem; font-weight: 800; color: var(--accent); position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);}
+    
+    /* 🔥 แก้ไขจุดที่ตัวเลข % เบี้ยวตรงนี้ครับ */
+    .circle-wrap { position: relative; display: flex; align-items: center; justify-content: center; width: 120px; height: 120px; }
+    .circle-wrap svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotate(-90deg); } 
+    .circle-bg { fill: none; stroke: var(--shadow-dark); stroke-width: 8; } 
+    .circle-progress { fill: none; stroke: var(--accent); stroke-width: 8; stroke-dasharray: 326; stroke-dashoffset: 326; stroke-linecap: round; }
+    .percent-text { font-size: 1.6rem; font-weight: 800; color: var(--accent); position: relative; z-index: 2; margin: 0; }
+    /* 🔥 สิ้นสุดจุดที่แก้ไข */
+    
     .tips-box { background: white; padding: 25px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 85%; max-width: 350px; text-align: center; margin-top:25px; }
     @keyframes spin { 100% { transform: rotate(360deg); } } @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
     /* --- 3D Modal Forms --- */
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.5); z-index: 1000; display: flex; align-items: flex-end; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(8px); } 
     .modal-overlay.show { opacity: 1; visibility: visible; }
