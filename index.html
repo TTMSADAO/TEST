@@ -318,7 +318,7 @@
                   </div>
               </div>
 
-             <!-- 🔴 เพิ่ม UI ข้ามแผนก (Cross-Booking) แบบมี Dropdown -->
+              <!-- 🔴 เพิ่ม UI ข้ามแผนก (Cross-Booking) แบบมี Dropdown -->
               <div id="cross-dept-container" style="margin-top: 20px; padding: 20px; background: white; border-radius: 24px; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.1); border: 1px solid #fde68a; display: none;">
                   <div style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 800; color: #d97706; font-size: 1.1rem;" onclick="document.getElementById('chk-cross-dept').click()">
                       <input type="checkbox" id="chk-cross-dept" style="width: 24px; height: 24px; accent-color: #d97706;" onchange="toggleCrossDeptDetails()">
@@ -333,6 +333,7 @@
                       </div>
                   </div>
               </div>
+          </div> <!-- 👈 แท็กปิดที่หล่นหายไป กลับมาแล้วครับ! -->
 
           <div id="postpartum-fields" class="hidden" style="margin-top:20px;">
               <div class="form-group"><label class="form-label" id="t-birthdate">วันคลอด</label><input type="date" id="inp-birth-date" class="form-control"></div>
@@ -362,8 +363,6 @@
           <button type="button" class="btn btn-confirm" id="btn-final-confirm" onclick="confirmBooking()">ยืนยันจองคิว</button>
         </div>
       </div>
-    </div>
-  </div>
 
   <div id="adminModal" class="modal-overlay">
       <div class="modal-card" style="background: #f0f4f8; padding:0; border-radius:0; height:100vh; max-height:100vh;">
