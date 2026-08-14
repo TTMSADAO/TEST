@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Prompt', sans-serif; padding: 15px; text-align: center; background-color: #f8fafc; }
+    .btn {
+      width: 100%; padding: 15px; margin-bottom: 12px;
+      font-size: 16px; font-weight: bold; border: 2px solid rgba(0,0,0,0.1);
+      border-radius: 12px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .btn:active { transform: scale(0.95); box-shadow: 0 2px 3px rgba(0,0,0,0.05); }
+    
+    .btn-yellow { background-color: #fde047; color: #1e293b; border-color: #facc15; }
+    .btn-magenta { background-color: #f472b6; color: #ffffff; border-color: #ec4899; }
+    .btn-green { background-color: #4ade80; color: #1e293b; border-color: #22c55e; }
+    .btn-gray { background-color: #94a3b8; color: #ffffff; text-decoration: line-through; border-color: #64748b; }
+    
+    #status { margin-top: 15px; font-size: 14px; font-weight: bold; color: #475569; min-height: 24px; }
+  </style>
+</head>
+<body>
+  <h3 style="margin-top:0; color: #1e293b;">อัปเดตสถานะคิว</h3>
+  <p style="font-size:12px; color:#64748b; margin-bottom: 20px;">คลิกที่เซลล์ชื่อคนไข้ แล้วกดปุ่มด้านล่าง</p>
+
+  <button class="btn btn-yellow" onclick="sendStatus('NO_CONTACT')">ติดต่อไม่ได้</button>
+  <button class="btn btn-magenta" onclick="sendStatus('CALLED')">โทรแจ้งคนไข้แล้ว</button>
+  <button class="btn btn-green" onclick="sendStatus('ARRIVED')">คนไข้มาแล้ว</button>
+  <button class="btn btn-gray" onclick="sendStatus('CANCELLED')">ผิดนัด</button>
+
+  <div id="status"></div>
+
+  <script>
+    function sendStatus(statusType) {
+      document.getElementById('status').innerText = '⏳ กำลังอัปเดต...';
+      google.script.run
+        .withSuccessHandler(function(msg) {
+          document.getElementById('status').innerText = '✅ ' + msg;
+          setTimeout(() => document.getElementById('status').innerText = '', 3000);
+        })
+        .withFailureHandler(function(err) {
+          document.getElementById('status').innerText = '❌ ผิดพลาด: ' + err.message;
+        })
+        .processSidebarAction(statusType);
+    }
+  </script>
+</body>
+</html>
