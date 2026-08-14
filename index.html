@@ -1442,20 +1442,15 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
         else if (currentApp === 'postpartum') { payload.ppExtraData = bookingData.ppExtraData; }
         
         try {
-            // ยิงข้อมูลจองคิวแผนกแรก
             let r = await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(payload) });
             let res = await r.json();
             
-            // 👉 ตรวจสอบว่าผู้ใช้ติ๊กเลือก Cross-Dept (จองแผนกที่สองต่อเนื่อง) หรือไม่
             let chkCross = document.getElementById('chk-cross-dept');
             if ((res.status === 'success' || res.status === 'error_but_done') && chkCross && chkCross.checked && bookingData.crossDeptApp) {
                 let p2 = Object.assign({}, payload);
                 p2.appType = bookingData.crossDeptApp; 
                 p2.time = bookingData.crossDeptTime;
-                
-                // ดึงบริการที่เลือกจาก Dropdown ส่งไป
                 p2.service = bookingData.crossDeptService; 
-                
                 p2.is2Hr = false; 
                 p2.addSteam = false; 
                 p2.staff = "ไม่ระบุ";
@@ -1463,13 +1458,11 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
                 p2.col = 0;
                 p2.totalFee = 0; 
                 p2.note = "✨ จองต่อเนื่องจาก " + (currentApp === 'ttm' ? "แผนไทย" : "แผนจีน");
-                // ยิงข้อมูลจองคิวแผนกที่สองแบบ Auto 
-                await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(p2) });
+                try { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(p2) }); } catch(err) { console.log(err); }
             }
             
             finishPercentageLoader(() => { 
                 if(res.status === 'success' || res.status === 'error_but_done') { 
-                    // ... (ส่วนแจ้งเตือน Alert ของเดิม ไม่เปลี่ยนแปลง)
                     let p = savedProfiles.find(x => x.id === bookingData.idCard); 
                     addOrUpdateProfile(bookingData.idCard, bookingData.fname, bookingData.lname, bookingData.tel, p ? p.label : ''); 
                     closeModal(); 
@@ -1505,22 +1498,24 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
                         
                         let msgText2 = "🕰️ กรุณามาก่อนเวลานัด\nอย่างน้อย 15 นาที\n\n***‼️หากไม่มาติดต่อภายในเวลาที่กำหนด  \nถือว่าท่านสละสิทธิ์ให้คนไข้ท่านอื่น\n\n***‼️การเลื่อนนัดหรือยกเลิกนัด\nโปรดแจ้งล่วงหน้า อย่างน้อย 2 วัน\n\n😷โปรดสวมหน้ากากอนามัยตลอดเวลาเข้ารับบริการ\n📝 อย่าลืมนำบัตรประจำตัวประชาชนมาด้วยนะครับ\n\nขอสงวนสิทธิ์ยกเลิกการจอง กรณีที่ไม่ปฏิบัติตามข้อกำหนด";
 
-                        liff.sendMessages([
-                            { type: 'text', text: msgText1 },
-                            { type: 'text', text: msgText2 }
-                        ])
+                        liff.sendMessages([ { type: 'text', text: msgText1 }, { type: 'text', text: msgText2 } ])
                         .then(() => { setTimeout(() => liff.closeWindow(), 2500); })
                         .catch((err) => { setTimeout(() => liff.closeWindow(), 2500); });
                     }
                 } else { 
-                    let errTitle = _t('swal_error'); let errMsg = res.message || 'Slot unavailable'; let errIcon = 'error'; let btnColor = '#ef4444';
+                    // 🔴 ส่วนแสดง Error แก้ไขให้แสดงผลลัพธ์จาก Backend ตรงๆ
+                    let errTitle = _t('swal_error'); 
+                    let errMsg = res.message || 'เกิดข้อผิดพลาดในการเชื่อมต่อ'; 
+                    let errIcon = 'error'; let btnColor = '#ef4444';
+                    
                     if (res.status === 'error_blocked' && res.reason === 'duplicate_person') {
                         errTitle = currentLang === 'en' ? 'Duplicate Appointment' : 'พบรายการจองซ้ำ';
-                        errMsg = currentLang === 'en' ? `You have an active appointment on<br><b style="color:var(--primary); font-size:1.1rem;">${res.date} at ${res.time}</b>.<br>Please cancel it before booking a new one.` : `คุณมีคิวที่ยังไม่เข้ารับบริการในระบบ<br><b style="color:var(--primary); font-size:1.1rem;">วันที่ ${res.date} เวลา ${res.time} น.</b><br>กรุณากดยกเลิกคิวเดิมก่อนทำรายการใหม่ครับ`;
+                        errMsg = `คุณมีคิวที่ยังไม่เข้ารับบริการ<br><b style="color:var(--primary); font-size:1.1rem;">วันที่ ${res.date} เวลา ${res.time} น.</b><br>กรุณากดยกเลิกคิวเดิมก่อนครับ`;
                         errIcon = 'warning'; btnColor = '#f59e0b';
-                    } else if (errMsg.includes('ระบบทำงานหนัก') || res.status === 'error_occupied') {
-                        errTitle = currentLang === 'en' ? 'Slot Taken' : 'คิวไม่ว่างแล้ว';
-                        errMsg = currentLang === 'en' ? 'This queue was just taken by someone else.<br>Please select another time.' : 'คิวนี้มีคนจองไปก่อนแล้ว<br>กรุณาเลือกรอบเวลาอื่นครับ';
+                    } else if (res.status === 'error_occupied') {
+                        errTitle = currentLang === 'en' ? 'Slot Taken' : 'ไม่สามารถจองได้';
+                        // ใช้ res.message ที่โยนมาจาก Backend ตรงๆ
+                        errMsg = res.message || 'คิวนี้ถูกจองตัดหน้าไปแล้ว กรุณาเลือกรอบเวลาอื่นครับ';
                         errIcon = 'info'; btnColor = '#3b82f6';
                     }
                     Swal.fire({ title: errTitle, html: errMsg, icon: errIcon, confirmButtonColor: btnColor, customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' } });
@@ -1530,7 +1525,7 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
         } catch(e) {
             finishPercentageLoader(() => { 
                 closeModal(); 
-                Swal.fire({ title: _t('swal_error'), text: currentLang === 'en' ? "Connection lost. Booking failed, please try again." : "การเชื่อมต่อขัดข้อง! ข้อมูลส่งไม่ถึงระบบ กรุณากดจองใหม่อีกครั้งครับ", icon: 'error', confirmButtonColor: '#ef4444', customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' } }).then(() => { document.getElementById('btn-final-confirm').disabled = false; fetchData(false); });
+                Swal.fire({ title: _t('swal_error'), text: "การเชื่อมต่อขัดข้อง! ข้อมูลส่งไม่ถึงระบบ กรุณากดจองใหม่อีกครั้งครับ", icon: 'error', confirmButtonColor: '#ef4444', customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' } }).then(() => { document.getElementById('btn-final-confirm').disabled = false; fetchData(false); });
             });
         }
     }
