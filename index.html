@@ -1134,7 +1134,7 @@
         }
     }
 
-    function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGender) {
+function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGender) {
       try {
           let staffs = staffDataEncoded ? JSON.parse(decodeURIComponent(staffDataEncoded)) : [];
           bookingData = { dept: APP_CONFIG[currentApp].title, date: dateFull, sysDate: sysDate, time: time, appType: currentApp, sheetName: globalData[dayIndex].sheetName, ppExtraData: staffDataEncoded };
@@ -1177,8 +1177,19 @@
                       let baseN = s.name; let dN = currentLang === 'en' ? (STAFF_EN_NAMES[baseN] || baseN) : (STAFF_NAME_MAP[baseN] || baseN); 
                       let defaultAppImg = currentApp === 'tcm' ? 'https://github.com/TTMSADAO/ttmed-sadao-queue/blob/PIC/9.png?raw=true' : DEFAULT_IMG; let img = STAFF_IMAGES[baseN] || defaultAppImg; 
                       let badge1Hr = `<span style="background:#dcfce7; color:#16a34a; font-size:0.75rem; padding:4px 8px; border-radius:8px; margin-left:8px; font-weight:800;"><i class="fas fa-clock"></i> 1Hr</span>`;
-                      let badge2Hr = s.can2Hr ? `<span style="background:#fef3c7; color:#d97706; font-size:0.75rem; padding:4px 8px; border-radius:8px; margin-left:6px; font-weight:800;"><i class="fas fa-bolt"></i> 2Hr</span>
-                      function editCurrentLabel() {
+                      let badge2Hr = s.can2Hr ? `<span style="background:#fef3c7; color:#d97706; font-size:0.75rem; padding:4px 8px; border-radius:8px; margin-left:6px; font-weight:800;"><i class="fas fa-bolt"></i> 2Hr</span>` : '';
+                      let div = document.createElement('div'); div.style.cssText = "padding:12px 18px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:12px; cursor:pointer;";
+                      div.innerHTML = `<img src="${img}" class="select-img"><div style="font-weight:800; flex:1; color:#1e293b;">${dN} <div style="margin-top:6px;">${badge1Hr}${badge2Hr}</div></div>`; 
+                      div.onclick = () => selectStaffNew(s, baseN); cCont.appendChild(div);
+                  }); 
+                  setTimeout(updateSteamAddonUI, 100);
+              } else { document.getElementById('group-staff').style.display = 'none'; document.getElementById('inp-staff-val').value = "ไม่ระบุ"; }
+          }
+      } catch(e) {}
+      goToStep1();
+      document.getElementById('bookingModal').classList.add('show');
+    }
+     function editCurrentLabel() {
         let id = document.getElementById('inp-idcard').value;
         let p = savedProfiles.find(x => x.id === id);
         if(!p) return;
