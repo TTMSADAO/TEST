@@ -561,11 +561,12 @@
                             <div style="font-size:1.3rem; font-weight:800; color:#1e293b;">${getMaskedFullName(activeUser.fname, activeUser.lname)}</div>
                         </div>
                         <div class="aps-history">
-                            <div style="font-size:0.95rem; color:#475569; font-weight:800; margin-bottom:12px; display:flex; align-items:center; gap:8px;"><i class="fas fa-calendar-check"></i> ${_t('aps_hist')}</div>
-                            <div id="aps-history-content" style="display:flex; gap:15px; align-items:center;">
-                                <div style="color:var(--accent); font-size:1.5rem;"><i class="fas fa-spinner fa-spin"></i></div><div style="font-size:0.95rem; font-weight:600;">กำลังตรวจสอบคิว...</div>
+                            <div style="font-size:0.95rem; color:#475569; font-weight:800; margin-bottom:12px; display:flex; align-items:center; gap:8px;"><i class="fas fa-calendar-check"></i> ${_t('history_title')}</div>
+                            <div id="aps-history-content" style="display:flex; flex-direction:column; gap:12px;">
+                                <div style="display:flex; gap:15px; align-items:center;">
+                                    <div style="color:var(--accent); font-size:1.5rem;"><i class="fas fa-spinner fa-spin"></i></div><div style="font-size:0.95rem; font-weight:600;">กำลังตรวจสอบคิว...</div>
+                                </div>
                             </div>
-                            <div id="btn-cancel-area"></div>
                         </div>`;
                     fetchPatientHistory(activeUser.id);
                 } else { activeProfileId = null; saveProfilesToStorage(); renderMultiUserCard(); }
@@ -758,7 +759,7 @@
         fetch(FIREBASE_BASE_URL + "patientHistory/" + idCard + ".json?t=" + new Date().getTime(), { cache: 'no-store' })
         .then(r => r.json())
         .then(h => {
-            if (h && !h.error && h.service) { 
+            if (h && !h.error && (h.service || Array.isArray(h))) { 
                 renderHistoryUI(idCard, h); 
             } else {
                 fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'get_my_history', idCard: idCard }) })
@@ -778,7 +779,7 @@
             if(local) {
                 let h = JSON.parse(local);
                 let today = new Date(); today.setHours(0,0,0,0);
-                let bParts = h.sysDate.split('-');
+                let bParts = (h[0] ? h[0].sysDate : h.sysDate).split('-');
                 let bDate = new Date(bParts[0], bParts[1]-1, bParts[2]);
                 if(bDate >= today) { renderHistoryUI(idCard, h); return; } 
                 else { localStorage.removeItem('sdh_history_' + idCard); }
@@ -787,41 +788,63 @@
         renderNoHistory();
     }
 
-    // 🔴 ควบคุม Red Dot ใน History
-    function renderHistoryUI(idCard, h) {
-        if(!h || !h.service) { renderNoHistory(); return; } 
+    let activeBookingList = []; // เก็บรายการคิวทั้งหมด
+
+    function renderHistoryUI(idCard, historyData) {
+        let hList = Array.isArray(historyData) ? historyData : [historyData];
+        if(!hList || hList.length === 0 || !hList[0].service) { renderNoHistory(); return; } 
         
-        let icon = h.service.includes('ฝังเข็ม') ?
-        '<i class="fas fa-yin-yang"></i>' : (h.service.includes('อบ') ? '<i class="fas fa-hot-tub-person"></i>' : '<i class="fas fa-leaf"></i>');
         let apsCont = document.getElementById('aps-history-content');
-        if(apsCont) apsCont.innerHTML = `<div style="background:white; color:var(--primary); width:45px; height:45px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">${icon}</div><div style="flex:1;"><div style="color:#1e293b; font-weight:800; font-size:1.05rem;">${_t(h.service)}</div><div style="color:#475569; font-size:0.85rem; font-weight:600;"><i class="far fa-calendar-alt"></i> ${h.date || h.sysDate} | ${h.time} น.</div></div>`;
-        
-        let btnArea = document.getElementById('btn-cancel-area');
+        if(!apsCont) return;
+
+        let html = '';
+        let hasActive = false;
+        activeBookingList = []; 
+
+        hList.forEach((h, index) => {
+            let icon = h.service.includes('ฝังเข็ม') ? '<i class="fas fa-yin-yang"></i>' : (h.service.includes('อบ') ? '<i class="fas fa-hot-tub-person"></i>' : '<i class="fas fa-leaf"></i>');
+            let btnHtml = '';
+            
+            if(h.status === 'รอรับบริการ' && h.sysDate) { 
+                hasActive = true;
+                activeBookingList.push({ idCard: idCard, service: h.service, date: h.date || h.sysDate, sysDate: h.sysDate, time: h.time, targetIndex: index }); 
+                btnHtml = `<button type="button" class="btn-cancel-q" onclick="reqCancelBooking(${index})" style="margin-top: 10px;"><i class="fas fa-times-circle"></i> ${_t('cancel_q')}</button>`;
+            } else { 
+                let statusColor = (h.status && h.status.includes('ยกเลิก')) ? '#ef4444' : '#4ade80';
+                let statusIcon = (h.status && h.status.includes('ยกเลิก')) ? 'fa-times-circle' : 'fa-check-circle';
+                btnHtml = `<div style="text-align:right; font-size:0.85rem; color:${statusColor}; margin-top:8px; font-weight:800;"><i class="fas ${statusIcon}"></i> ${h.status || 'เสร็จสิ้น'}</div>`; 
+            }
+
+            html += `
+            <div style="background: #ffffff; border-radius: 16px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; margin-bottom: 10px;">
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <div style="background:var(--bg-color); color:var(--primary); width:45px; height:45px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.3rem;">${icon}</div>
+                    <div style="flex:1;">
+                        <div style="color:#1e293b; font-weight:800; font-size:1.05rem;">${_t(h.service)}</div>
+                        <div style="color:#475569; font-size:0.85rem; font-weight:600;"><i class="far fa-calendar-alt"></i> ${h.date || h.sysDate} | ${h.time} น.</div>
+                    </div>
+                </div>
+                ${btnHtml}
+            </div>`;
+        });
+
+        apsCont.innerHTML = html;
+
         let navBadge = document.getElementById('nav-badge');
-        
-        if(h.status === 'รอรับบริการ' && h.sysDate && btnArea) { 
-            activeBookingObj = { idCard: idCard, service: h.service, date: h.date || h.sysDate, sysDate: h.sysDate, time: h.time }; 
-            btnArea.innerHTML = `<button type="button" class="btn-cancel-q" onclick="reqCancelBooking()"><i class="fas fa-times-circle"></i> ${_t('cancel_q')}</button>`;
-            if(navBadge) navBadge.classList.remove('hidden'); // แสดงจุดสีแดง
-        } else if(btnArea) { 
-            let statusColor = (h.status && h.status.includes('ยกเลิก')) ? '#ef4444' : '#4ade80';
-            let statusIcon = (h.status && h.status.includes('ยกเลิก')) ? 'fa-times-circle' : 'fa-check-circle';
-            btnArea.innerHTML = `<div style="text-align:right; font-size:0.85rem; color:${statusColor}; margin-top:8px; font-weight:800;"><i class="fas ${statusIcon}"></i> ${h.status || 'เสร็จสิ้น'}</div>`; 
-            activeBookingObj = null;
-            if(navBadge) navBadge.classList.add('hidden'); // ซ่อนจุดสีแดง
-        }
+        if(hasActive && navBadge) navBadge.classList.remove('hidden');
+        else if(!hasActive && navBadge) navBadge.classList.add('hidden');
     }
 
     function renderNoHistory() {
         let apsCont = document.getElementById('aps-history-content');
         if(apsCont) apsCont.innerHTML = `<div style="color:#94a3b8; font-size:0.9rem; font-weight:600; width:100%; text-align:center; padding:15px 0;">ไม่มีประวัติการจองเร็วๆ นี้</div>`; 
-        if(document.getElementById('btn-cancel-area')) document.getElementById('btn-cancel-area').innerHTML = '';
         
         let navBadge = document.getElementById('nav-badge');
-        if(navBadge) navBadge.classList.add('hidden'); // ซ่อนจุดสีแดง
+        if(navBadge) navBadge.classList.add('hidden');
     }
 
-    function reqCancelBooking() {
+    function reqCancelBooking(index) {
+        activeBookingObj = activeBookingList.find(b => b.targetIndex === index);
         if(!activeBookingObj) return;
         let warnMsg = _t('swal_cancel_warn3');
         Swal.fire({ title: _t('swal_cancel_title'), text: warnMsg, icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#cbd5e1', confirmButtonText: _t('btn_yes_cancel'), cancelButtonText: _t('btn_cancel'), customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' } }).then((result) => { if (result.isConfirmed) executeCancelBooking(); });
@@ -837,7 +860,6 @@
         .then(async response => { let resText = await response.text(); try { return JSON.parse(resText); } catch(err) { return { status: 'success', penaltyDays: 0 }; } })
         .then(res => { 
             if(res.status === 'success' || res.status === 'error_but_done') { 
-                localStorage.removeItem('sdh_history_' + activeBookingObj.idCard); 
                 Swal.fire({ title:_t('swal_success'), text: "กำลังส่งข้อความยกเลิกเข้าแชท...", icon:'success', showConfirmButton: false, allowOutsideClick: false, timer: 3000, timerProgressBar: true, customClass:{popup:'swal-3d-popup'} });
                 
                 if (liff.isInClient()) {
@@ -1472,12 +1494,30 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
                     }).then(() => {
                         switchMainTab('profile');
                         fetchData(true); 
+                        
                         setTimeout(() => {
-                            let instantHistory = { service: fSvc, date: bookingData.date, sysDate: bookingData.sysDate, time: bookingData.time, status: "รอรับบริการ" };
-                            localStorage.setItem('sdh_history_' + bookingData.idCard, JSON.stringify(instantHistory));
-                            renderHistoryUI(bookingData.idCard, instantHistory);
+                            let historyArray = [];
+                            try { 
+                                let stored = JSON.parse(localStorage.getItem('sdh_history_' + bookingData.idCard)); 
+                                if(Array.isArray(stored)) historyArray = stored;
+                                else if(stored) historyArray.push(stored);
+                            } catch(e) {}
+                            
+                            // นำคิวแรกใส่
+                            historyArray.push({ service: fSvc, date: bookingData.date, sysDate: bookingData.sysDate, time: bookingData.time, status: "รอรับบริการ" });
+
+                            // ถ้าเป็นการจอง 2 แผนก ให้นำคิวที่สองใส่ด้วย
+                            let chkCross = document.getElementById('chk-cross-dept');
+                            if (chkCross && chkCross.checked && bookingData.crossDeptApp) {
+                                let crossName = (bookingData.crossDeptApp === 'tcm') ? "ฝังเข็มเพื่อการรักษา" : "นวดและประคบเพื่อการรักษา";
+                                historyArray.push({ service: crossName, date: bookingData.date, sysDate: bookingData.sysDate, time: bookingData.crossDeptTime, status: "รอรับบริการ" });
+                            }
+
+                            localStorage.setItem('sdh_history_' + bookingData.idCard, JSON.stringify(historyArray));
+                            renderHistoryUI(bookingData.idCard, historyArray); // โชว์การ์ดเรียงกัน
                         }, 200);
                     });
+// ... (ส่วนแจ้งเตือน LINE ด้านล่างคงเดิม)
                     
                     if (liff.isInClient()) {
                         let mName = getMaskedFullName(bookingData.fname, bookingData.lname); let mTel = getMaskedTel(bookingData.tel); let pNote = bookingData.note ? bookingData.note : "-";
