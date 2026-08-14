@@ -318,16 +318,21 @@
                   </div>
               </div>
 
-              <!-- 🔴 เพิ่ม UI ข้ามแผนก (Cross-Booking) -->
+             <!-- 🔴 เพิ่ม UI ข้ามแผนก (Cross-Booking) แบบมี Dropdown -->
               <div id="cross-dept-container" style="margin-top: 20px; padding: 20px; background: white; border-radius: 24px; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.1); border: 1px solid #fde68a; display: none;">
                   <div style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 800; color: #d97706; font-size: 1.1rem;" onclick="document.getElementById('chk-cross-dept').click()">
-                      <input type="checkbox" id="chk-cross-dept" style="width: 24px; height: 24px; accent-color: #d97706;">
+                      <input type="checkbox" id="chk-cross-dept" style="width: 24px; height: 24px; accent-color: #d97706;" onchange="toggleCrossDeptDetails()">
                       <span id="t-cross-title">✨ รับบริการข้ามแผนกต่อเนื่อง</span>
                   </div>
-                  <div id="cross-dept-info" style="margin-top: 15px; background: #fef3c7; padding: 10px 15px; border-radius: 12px; font-size: 0.9rem; color: #b45309; font-weight: 700;">
+                  <div id="cross-dept-details" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #fde68a; animation: fadeIn 0.3s;">
+                      <div id="cross-dept-info" style="background: #fef3c7; padding: 10px 15px; border-radius: 12px; font-size: 0.9rem; color: #b45309; font-weight: 700; margin-bottom: 15px;">
+                      </div>
+                      <div class="form-group" style="margin-bottom:0;">
+                          <label class="form-label" style="font-size:0.9rem; color:#b45309;">เลือกหัตถการที่ต้องการทำต่อ</label>
+                          <select id="inp-cross-service" class="form-control" style="background:#fffbeb; border:1px solid #fde68a;" onchange="updatePriceDisplay()"></select>
+                      </div>
                   </div>
               </div>
-          </div>
 
           <div id="postpartum-fields" class="hidden" style="margin-top:20px;">
               <div class="form-group"><label class="form-label" id="t-birthdate">วันคลอด</label><input type="date" id="inp-birth-date" class="form-control"></div>
@@ -1023,6 +1028,13 @@
     }
 
     // 🔴 ฟังก์ชันแสดงตัวเลือกการจองข้ามแผนกอัจฉริยะ (Cross-Dept)
+   function toggleCrossDeptDetails() {
+        let chk = document.getElementById('chk-cross-dept');
+        document.getElementById('cross-dept-details').style.display = chk.checked ? 'block' : 'none';
+        updatePriceDisplay();
+    }
+
+    // 🔴 ฟังก์ชันแสดงตัวเลือกการจองข้ามแผนกอัจฉริยะ พร้อมโหลด Dropdown
     function updateCrossDeptUI() {
         let cont = document.getElementById('cross-dept-container');
         let info = document.getElementById('cross-dept-info');
@@ -1043,7 +1055,7 @@
 
         let targetDept = currentApp === 'ttm' ? 'tcm' : 'ttm';
 
-        if(!fullFirebaseData || !fullFirebaseData[targetDept]) { cont.style.display = 'none'; chk.checked = false; return; }
+        if(!fullFirebaseData || !fullFirebaseData[targetDept]) { cont.style.display = 'none'; chk.checked = false; toggleCrossDeptDetails(); return; }
 
         let dayData = fullFirebaseData[targetDept].find(d => d.sysDate === bookingData.sysDate);
         let crossSlot = dayData ? dayData.slots.find(s => s.time === targetTime) : null;
@@ -1054,13 +1066,21 @@
             document.getElementById('t-cross-title').innerText = `✨ รับบริการ ${deptName} ต่อเนื่อง`;
             info.innerHTML = `<i class="fas fa-clock"></i> รอบเวลา ${targetTime} น. | ว่าง ${crossSlot.count} คิว`;
             
+            // โหลดตัวเลือกบริการลง Dropdown
+            let selCross = document.getElementById('inp-cross-service');
+            if (selCross.options.length === 0 || bookingData.crossDeptApp !== targetDept) {
+                selCross.innerHTML = '';
+                SERVICE_OPTIONS[targetDept].forEach(s => { 
+                    let o = document.createElement('option'); o.value = s; o.innerText = _t(s); selCross.appendChild(o); 
+                });
+            }
+
             bookingData.crossDeptTime = targetTime;
             bookingData.crossDeptApp = targetDept;
         } else {
-            cont.style.display = 'none'; chk.checked = false;
+            cont.style.display = 'none'; chk.checked = false; toggleCrossDeptDetails();
         }
     }
-
     // 🔴 ป้องกันผู้ใช้ติดแบน ก่อนเข้าสู่หน้าฟอร์ม
     async function checkIDCardInput() {
         if(isForeigner) document.getElementById('inp-idcard').value = document.getElementById('inp-idcard-foreigner').value;
@@ -1255,15 +1275,24 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
     
       let isSelfPayOnly = (currentApp === 'tcm' && (bookingData.service.includes("ครอบแก้ว") || bookingData.service.includes("ฝังเข็มใบหน้า") || bookingData.service.includes("เม็ดผักกาด"))) || (currentApp === 'ttm' && bookingData.service.includes("ชำระเงินเอง"));
 
-      if (currentApp === 'tcm' && bookingData.service.includes("ปรึกษา")) { 
+      // เช็คข้อมูล Cross-Booking
+      let chkCross = document.getElementById('chk-cross-dept');
+      let hasCross = chkCross && chkCross.checked;
+      let crossSvc = hasCross ? document.getElementById('inp-cross-service').value : "";
+      
+      let isCrossSelfPay = false;
+      if (hasCross) {
+          isCrossSelfPay = (bookingData.crossDeptApp === 'tcm' && (crossSvc.includes("ครอบแก้ว") || crossSvc.includes("ฝังเข็มใบหน้า") || crossSvc.includes("เม็ดผักกาด"))) || (bookingData.crossDeptApp === 'ttm' && crossSvc.includes("ชำระเงินเอง"));
+      }
+
+      if (currentApp === 'tcm' && bookingData.service.includes("ปรึกษา") && !hasCross) { 
           bookingData.rightName = (currentLang === 'en') ? "Free Consultation" : "ไม่มีค่าใช้จ่าย (ปรึกษาฟรี)"; buildSummaryAndShow('FREE'); 
-      } else if (isSelfPayOnly) {
+      } else if (isSelfPayOnly && (!hasCross || isCrossSelfPay)) {
           bookingData.rightName = (currentLang === 'en') ? "Social Security / Self-Pay" : "สิทธิประกันสังคม / ชำระเงินเอง"; buildSummaryAndShow('5'); 
       } else { 
           promptRightSelection();
       }
     }
-
     function promptRightSelection() {
         Swal.fire({
             title: _t('right_title'),
@@ -1300,20 +1329,6 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
             let endTimeStr = (eH < 10 ? '0' : '') + eH + ':' + (eM < 10 ? '0' : '') + eM;
             displayTime = bookingData.time + " - " + endTimeStr + " น.";
         }
-
-        let infoH = `
-            <div style="display:flex; gap:15px; align-items:center; margin-bottom:20px; background:white; padding:15px; border-radius:20px; box-shadow:0 4px 15px rgba(0,0,0,0.05); border:1px solid #f1f5f9;">
-                <div style="width:55px; height:55px; border-radius:16px; background:linear-gradient(135deg, #f59e0b, #d97706); display:flex; justify-content:center; align-items:center; font-size:1.8rem; color:white; box-shadow:0 4px 10px rgba(245,158,11,0.3);"><i class="fas fa-user"></i></div>
-                <div>
-                     <div style="font-weight:800; font-size:1.15rem; color:#1e293b;">${pLabel} <span style="font-size:0.85rem; font-weight:500; color:#64748b;">(${mN})</span></div>
-                    <div style="color:#16a34a; font-size:0.95rem; font-weight:700; margin-top:4px;"><i class="fas fa-phone-alt"></i> ${getMaskedTel(t)}</div>
-                </div>
-            </div>
-            <div style="background:white; border-radius:20px; padding:20px; margin-bottom:20px; box-shadow:0 4px 15px rgba(0,0,0,0.05); border:1px solid #f1f5f9;">
-                <div style="margin-bottom:12px; font-size:1.05rem; display:flex; align-items:center; gap:8px;"><b>${currentLang==='en'?'Service':'บริการ'}:</b> <span style="color:#f59e0b; font-weight:800;">${displayService}</span></div>
-                <div style="font-size:1.05rem; display:flex; align-items:center; gap:8px;"><b>${currentLang==='en'?'Time':'เวลา'}:</b> ${bookingData.date} <span style="background:#16a34a; color:white; padding:4px 12px; border-radius:10px; font-size:0.95rem; font-weight:800; box-shadow:0 2px 8px rgba(22,163,74,0.3);">${displayTime}</span></div>
-                ${(currentApp === 'ttm' || currentApp === 'tcm') ? `<div style="margin-top:12px; font-size:1.05rem; display:flex; align-items:center; gap:8px;"><b>${currentLang==='en'?'Provider':'ผู้ให้บริการ'}:</b> <span style="color:#1e293b; font-weight:700;">${dS}</span></div>` : ''}
-            </div>`;
         
         let brk = []; let total = 0; let rName = bookingData.rightName || ""; 
         if (rV === '1') rName = _t('right_uc30'); else if (rV === '2') rName = _t('right_uc_free'); else if (rV === '3') rName = _t('right_gov'); else if (rV === '4') rName = _t('right_enterprise'); else if (rV === '5') rName = _t('right_ss');
@@ -1341,6 +1356,57 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
             if (bookingData.isOOH) { brk.push(`<div style="display:flex; justify-content:space-between; color:#ea580c; margin-bottom:6px;"><span>${_t('bill_ooh')}</span><b>60 ${_t('baht')}</b></div>`); total += 60; }
         }
 
+        // 🔴 คำนวณราคา Cross-Dept
+        let chkCross = document.getElementById('chk-cross-dept');
+        let crossDisplayStr = "";
+        if (chkCross && chkCross.checked && bookingData.crossDeptApp) {
+            let crossSvc = document.getElementById('inp-cross-service').value.split(' (')[0];
+            bookingData.crossDeptService = crossSvc;
+            
+            let crossBase = 0;
+            if (bookingData.crossDeptApp === 'ttm') {
+                if (crossSvc.includes("นวดและประคบ")) {
+                    if (rV === '3') crossBase = 0;
+                    else if (rV === '1' || rV === '2') crossBase = 100;
+                    else crossBase = 250;
+                } else { crossBase = 250; }
+            } else if (bookingData.crossDeptApp === 'tcm') {
+                if (crossSvc.includes("ฝังเข็มเพื่อการรักษา")) crossBase = (rV === '3') ? 0 : 200; 
+                else if (crossSvc.includes("ครอบแก้ว")) crossBase = 150; 
+                else if (crossSvc.includes("ฝังเข็มใบหน้า")) crossBase = 300; 
+                else if (crossSvc.includes("เม็ดผักกาด")) crossBase = 100; 
+                else if (crossSvc.includes("ปรึกษา")) crossBase = 0;
+            }
+            
+            let crossDeptNameStr = bookingData.crossDeptApp === 'tcm' ? 'แผนจีน:' : 'แผนไทย:';
+            brk.push(`<div style="display:flex; justify-content:space-between; color:#d97706; margin-bottom:6px;"><span>✨ ${crossDeptNameStr} ${crossSvc}</span><b>${crossBase} ${_t('baht')}</b></div>`);
+            total += crossBase;
+
+            if (bookingData.isOOH && !crossSvc.includes("ปรึกษา")) { 
+                brk.push(`<div style="display:flex; justify-content:space-between; color:#ea580c; margin-bottom:6px;"><span>${_t('bill_ooh')} (${crossDeptNameStr})</span><b>60 ${_t('baht')}</b></div>`); 
+                total += 60; 
+            }
+
+            crossDisplayStr = `<div style="margin-top:12px; font-size:0.95rem; color:#b45309; font-weight:800; background:#fef3c7; padding:10px; border-radius:12px;"><i class="fas fa-plus-circle"></i> ทำต่อเนื่อง: ${crossDeptNameStr} ${crossSvc} (${bookingData.crossDeptTime} น.)</div>`;
+        } else {
+            bookingData.crossDeptService = null;
+        }
+
+        let infoH = `
+            <div style="display:flex; gap:15px; align-items:center; margin-bottom:20px; background:white; padding:15px; border-radius:20px; box-shadow:0 4px 15px rgba(0,0,0,0.05); border:1px solid #f1f5f9;">
+                <div style="width:55px; height:55px; border-radius:16px; background:linear-gradient(135deg, #f59e0b, #d97706); display:flex; justify-content:center; align-items:center; font-size:1.8rem; color:white; box-shadow:0 4px 10px rgba(245,158,11,0.3);"><i class="fas fa-user"></i></div>
+                <div>
+                     <div style="font-weight:800; font-size:1.15rem; color:#1e293b;">${pLabel} <span style="font-size:0.85rem; font-weight:500; color:#64748b;">(${mN})</span></div>
+                    <div style="color:#16a34a; font-size:0.95rem; font-weight:700; margin-top:4px;"><i class="fas fa-phone-alt"></i> ${getMaskedTel(t)}</div>
+                </div>
+            </div>
+            <div style="background:white; border-radius:20px; padding:20px; margin-bottom:20px; box-shadow:0 4px 15px rgba(0,0,0,0.05); border:1px solid #f1f5f9;">
+                <div style="margin-bottom:12px; font-size:1.05rem; display:flex; align-items:center; gap:8px;"><b>${currentLang==='en'?'Service':'บริการ'}:</b> <span style="color:#f59e0b; font-weight:800;">${displayService}</span></div>
+                <div style="font-size:1.05rem; display:flex; align-items:center; gap:8px;"><b>${currentLang==='en'?'Time':'เวลา'}:</b> ${bookingData.date} <span style="background:#16a34a; color:white; padding:4px 12px; border-radius:10px; font-size:0.95rem; font-weight:800; box-shadow:0 2px 8px rgba(22,163,74,0.3);">${displayTime}</span></div>
+                ${(currentApp === 'ttm' || currentApp === 'tcm') ? `<div style="margin-top:12px; font-size:1.05rem; display:flex; align-items:center; gap:8px;"><b>${currentLang==='en'?'Provider':'ผู้ให้บริการ'}:</b> <span style="color:#1e293b; font-weight:700;">${dS}</span></div>` : ''}
+                ${crossDisplayStr}
+            </div>`;
+            
         bookingData.rightName = rName; bookingData.totalFee = total; bookingData.breakdownLines = brk;
         let totalC = total > 0 ? "price-red" : "price-green";
         let noteBill = rV === '4' ? `<div style="font-size:0.8rem; color:#dc2626; margin-top:12px; font-weight:700; text-align:center;">${_t('bill_enterprise_note')}</div>` : '';
@@ -1355,9 +1421,8 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
         document.getElementById('summary-content').innerHTML = infoH + billH + nH; 
         goToStep3();
     }
-
     // 🔴 ปรับการจองแบบ Cross-Dept ให้เสร็จสมบูรณ์
-    async function confirmBooking() {
+   async function confirmBooking() {
         document.getElementById('btn-final-confirm').disabled = true;
         showPercentageLoader(); 
         let fCombined = (bookingData.fname + " " + (bookingData.lname || "")).trim();
@@ -1388,20 +1453,24 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
                 let p2 = Object.assign({}, payload);
                 p2.appType = bookingData.crossDeptApp; 
                 p2.time = bookingData.crossDeptTime;
-                p2.service = (p2.appType === 'tcm') ? "ฝังเข็มเพื่อการรักษา" : "นวดและประคบเพื่อการรักษา"; 
+                
+                // ดึงบริการที่เลือกจาก Dropdown ส่งไป
+                p2.service = bookingData.crossDeptService; 
+                
                 p2.is2Hr = false; 
                 p2.addSteam = false; 
                 p2.staff = "ไม่ระบุ";
                 p2.row = 0; 
                 p2.col = 0;
-                p2.totalFee = 0; // Cross-dept
-                p2.note = "จองต่อเนื่องจาก " + (currentApp === 'ttm' ? "แผนไทย" : "แผนจีน");
+                p2.totalFee = 0; 
+                p2.note = "✨ จองต่อเนื่องจาก " + (currentApp === 'ttm' ? "แผนไทย" : "แผนจีน");
                 // ยิงข้อมูลจองคิวแผนกที่สองแบบ Auto 
                 await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(p2) });
             }
             
             finishPercentageLoader(() => { 
                 if(res.status === 'success' || res.status === 'error_but_done') { 
+                    // ... (ส่วนแจ้งเตือน Alert ของเดิม ไม่เปลี่ยนแปลง)
                     let p = savedProfiles.find(x => x.id === bookingData.idCard); 
                     addOrUpdateProfile(bookingData.idCard, bookingData.fname, bookingData.lname, bookingData.tel, p ? p.label : ''); 
                     closeModal(); 
