@@ -1455,57 +1455,49 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
         let chkCross = document.getElementById('chk-cross-dept');
         let hasCross = chkCross && chkCross.checked && bookingData.crossDeptApp;
 
-        // 🔴 จัดการรันเลขลำดับชื่อ (เช่น ชื่อ 1, ชื่อ 2, ชื่อ 3) ตามหลักการที่คุณต้องการ
-        let name1 = rawFullName;
-        let name2 = rawFullName;
-        let name3 = rawFullName;
+        // 🔴 จัดการรันเลขลำดับชื่อ (ป้องกันเลขซ้ำซ้อนกับ Backend)
+        let nameDept1 = rawFullName;
+        let nameDept2 = rawFullName;
 
-        if (bookingData.is2Hr && hasCross) {
-            // กรณี: นวด 2 ชม. (ลง 2 รอบ) + ต่อด้วยข้ามแผนก (รอบที่ 3)
-            name1 = rawFullName + " 1";
-            name2 = rawFullName + " 2";
-            name3 = rawFullName + " 3";
-            bookingData.is2HrForPayload = true; // บอกแผนกแรกให้รู้ว่าจอง 2 ชม.
-        } else if (bookingData.is2Hr && !hasCross) {
-            // กรณี: นวด 2 ชม. อย่างเดียว (ลง 2 รอบ)
-            name1 = rawFullName + " 1";
-            name2 = rawFullName + " 2";
-            bookingData.is2HrForPayload = true;
-        } else if (!bookingData.is2Hr && hasCross) {
-            // กรณี: นวด 1 ชม. (รอบ 1) + ต่อด้วยข้ามแผนก (รอบที่ 2)
-            name1 = rawFullName + " 1";
-            name3 = rawFullName + " 2"; // ใช้เป็นชื่อสำหรับแผนกที่สอง
-            bookingData.is2HrForPayload = false;
+        if (hasCross) {
+            if (bookingData.is2Hr) {
+                // แผนกแรกจอง 2 ชม. (Backend จะจัดการเติม 1 และ 2 ให้เอง)
+                nameDept1 = rawFullName;
+                // แผนกที่สอง จองต่อเป็นชั่วโมงที่ 3 
+                nameDept2 = rawFullName + " 3";
+            } else {
+                // แผนกแรกจอง 1 ชม. และแผนกที่สอง 1 ชม. (เติมเลขเองเพราะ Backend ไม่เติมให้)
+                nameDept1 = rawFullName + " 1";
+                nameDept2 = rawFullName + " 2";
+            }
         } else {
-            // กรณี: จองรอบเดียวปกติ
-            name1 = rawFullName;
-            bookingData.is2HrForPayload = false;
+            // จองแผนกเดียว (ถ้า 2 ชม. Backend ก็เติม 1,2 ให้ ถ้า 1 ชม. ก็ไม่มีเลข)
+            nameDept1 = rawFullName;
         }
 
-        // Payload สำหรับแผนกแรก
         let payload = { 
             lineUid: currentLineUid, staff: displayStaffName, appType: bookingData.appType, sheetName: bookingData.sheetName, idCard: bookingData.idCard, 
-            fname: bookingData.fname, lname: bookingData.lname, fullName: name1, tel: bookingData.tel, service: fSvc, 
+            fname: bookingData.fname, lname: bookingData.lname, fullName: nameDept1, tel: bookingData.tel, service: fSvc, 
             note: (bookingData.extraInfo + " | " + (bookingData.note || "")), time: bookingData.time, date: bookingData.date, sysDate: bookingData.sysDate, 
-            is2Hr: bookingData.is2HrForPayload, addSteam: bookingData.addSteam, steamTime: bookingData.steamTime, steamGender: bookingData.steamGender, right: bookingData.rightName, totalFee: bookingData.totalFee 
+            is2Hr: bookingData.is2Hr, addSteam: bookingData.addSteam, steamTime: bookingData.steamTime, steamGender: bookingData.steamGender, right: bookingData.rightName, totalFee: bookingData.totalFee 
         };
         
         if ((currentApp === 'ttm' || currentApp === 'tcm') && selectedSlotData) { payload.row = selectedSlotData.row; payload.col = selectedSlotData.col; } 
-        else if (currentApp === 'steam') { payload.gender = document.getElementById('inp-gender').value; payload.patients = [{name: name1, tel: bookingData.tel}]; } 
+        else if (currentApp === 'steam') { payload.gender = document.getElementById('inp-gender').value; payload.patients = [{name: nameDept1, tel: bookingData.tel}]; } 
         else if (currentApp === 'postpartum') { payload.ppExtraData = bookingData.ppExtraData; }
         
         try {
-            // ยิงจองแผนกแรก
+            // ยิงข้อมูลจองคิวแผนกแรก
             let r = await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(payload) });
             let res = await r.json();
             
-            // 👉 ถ้ารับบริการข้ามแผนกต่อ ยิงจองแผนกที่สองพร้อมรันเลขต่อทันที
+            // 👉 ถ้ารับบริการข้ามแผนกต่อ ยิงจองแผนกที่สองพร้อมใช้ชื่อที่มีเลขกำกับแล้ว
             if ((res.status === 'success' || res.status === 'error_but_done') && hasCross) {
                 let p2 = Object.assign({}, payload);
                 p2.appType = bookingData.crossDeptApp; 
                 p2.time = bookingData.crossDeptTime;
                 p2.service = bookingData.crossDeptService; 
-                p2.fullName = bookingData.is2Hr ? name3 : name3; // ใช้เลขต่อท้ายที่ถูกต้อง (เช่น 3 หรือ 2)
+                p2.fullName = nameDept2; // 👈 ใช้ชื่อพร้อมเลขลำดับ เช่น "ชื่อ 3" หรือ "ชื่อ 2"
                 p2.is2Hr = false; 
                 p2.addSteam = false; 
                 p2.staff = "ไม่ระบุ";
@@ -1513,7 +1505,6 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
                 p2.col = 0;
                 p2.totalFee = 0; 
                 p2.note = "✨ จองต่อเนื่องจาก " + (currentApp === 'ttm' ? "แผนไทย" : "แผนจีน");
-                
                 try { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(p2) }); } catch(err) { console.log(err); }
             }
             
@@ -1537,26 +1528,38 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
                                 else if(stored) historyArray.push(stored);
                             } catch(e) {}
                             
+                            // นำคิวแรกใส่
                             historyArray.push({ service: fSvc, date: bookingData.date, sysDate: bookingData.sysDate, time: bookingData.time, status: "รอรับบริการ" });
 
+                            // ถ้าเป็นการจอง 2 แผนก ให้นำคิวที่สองใส่ด้วย
                             if (hasCross) {
                                 let crossName = bookingData.crossDeptService;
                                 historyArray.push({ service: crossName, date: bookingData.date, sysDate: bookingData.sysDate, time: bookingData.crossDeptTime, status: "รอรับบริการ" });
                             }
 
                             localStorage.setItem('sdh_history_' + bookingData.idCard, JSON.stringify(historyArray));
-                            renderHistoryUI(bookingData.idCard, historyArray); 
+                            renderHistoryUI(bookingData.idCard, historyArray); // โชว์การ์ดเรียงกัน
                         }, 200);
                     });
                     
                     if (liff.isInClient()) {
                         let mName = getMaskedFullName(bookingData.fname, bookingData.lname); let mTel = getMaskedTel(bookingData.tel); let pNote = bookingData.note ? bookingData.note : "-";
                         let displayTime = bookingData.time + " น.";
-                        let msgText1 = currentLang === 'en' ?
-                        `🖥️ [Auto] New Booking ✅\n👤 Name: ${mName}\n📞 Tel: ${mTel}\n🩺 Service: ${fSvc}\n📅 Date: ${bookingData.date}\n⏰ Time: ${displayTime}\n💰 Total: ${bookingData.totalFee} THB` : 
-                        `🖥️ [ระบบอัตโนมัติ] แจ้งทำรายการนัดหมายสำเร็จ ✅\n👤 ชื่อ: ${mName}\n📞 โทร: ${mTel}\n🩺 บริการ: ${fSvc}\n📅 วันที่: ${bookingData.date}\n⏰ เวลา: ${displayTime}\n💰 ยอดชำระ: ${bookingData.totalFee} บาท`;
+                        if (bookingData.time) {
+                            let tParts = bookingData.time.split(":"); let totalMins = (parseInt(tParts[0]) * 60) + parseInt(tParts[1]);
+                            if (bookingData.is2Hr) { totalMins += 120; } else { totalMins += 60; }
+                            if (bookingData.addSteam) { totalMins += 30; }
+                            let eH = Math.floor(totalMins / 60); let eM = totalMins % 60;
+                            let endTimeStr = (eH < 10 ? '0' : '') + eH + ':' + (eM < 10 ? '0' : '') + eM;
+                            displayTime = bookingData.time + " - " + endTimeStr + " น.";
+                        }
+                        let fExtra = bookingData.extraInfo ? ` (${bookingData.extraInfo})` : "";
                         
-                        let msgText2 = "🕰️ กรุณามาก่อนเวลานัด\nอย่างน้อย 15 นาที\n\n***‼️หากไม่มาติดต่อภายในเวลาที่กำหนด ถือว่าท่านสละสิทธิ์\n😷 อย่าลืมนำบัตรประจำตัวประชาชนมาด้วยนะครับ";
+                        let msgText1 = currentLang === 'en' ?
+                        `🖥️ [Auto] New Booking ✅\n👤 Name: ${mName}\n📞 Tel: ${mTel}\n🩺 Service: ${fSvc}${fExtra}\n📅 Date: ${bookingData.date}\n⏰ Time: ${displayTime}\n👨‍⚕️ Provider: ${displayStaffName}\n📝 Note: ${pNote}\n💰 Total: ${bookingData.totalFee} THB` : 
+                        `🖥️ [ระบบอัตโนมัติ] แจ้งทำรายการนัดหมายสำเร็จ ✅\n👤 ชื่อ: ${mName}\n📞 โทร: ${mTel}\n🩺 บริการ: ${fSvc}${fExtra}\n📅 วันที่: ${bookingData.date}\n⏰ เวลา: ${displayTime}\n👨‍⚕️ ผู้ให้บริการ: ${displayStaffName}\n📝 หมายเหตุ: ${pNote}\n💰 ยอดชำระ: ${bookingData.totalFee} บาท`;
+                        
+                        let msgText2 = "🕰️ กรุณามาก่อนเวลานัด\nอย่างน้อย 15 นาที\n\n***‼️หากไม่มาติดต่อภายในเวลาที่กำหนด  \nถือว่าท่านสละสิทธิ์ให้คนไข้ท่านอื่น\n\n***‼️การเลื่อนนัดหรือยกเลิกนัด\nโปรดแจ้งล่วงหน้า อย่างน้อย 2 วัน\n\n😷โปรดสวมหน้ากากอนามัยตลอดเวลาเข้ารับบริการ\n📝 อย่าลืมนำบัตรประจำตัวประชาชนมาด้วยนะครับ\n\nขอสงวนสิทธิ์ยกเลิกการจอง กรณีที่ไม่ปฏิบัติตามข้อกำหนด";
 
                         liff.sendMessages([ { type: 'text', text: msgText1 }, { type: 'text', text: msgText2 } ])
                         .then(() => { setTimeout(() => liff.closeWindow(), 2500); })
