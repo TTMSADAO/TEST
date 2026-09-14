@@ -1138,7 +1138,6 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
                       div.innerHTML = `<img src="${img}" class="select-img"><div style="font-weight:800; flex:1; color:#1e293b;">${dN} <div style="margin-top:6px;">${badge1Hr}${badge2Hr}</div></div>`; 
                       div.onclick = () => selectStaffNew(s, baseN); cCont.appendChild(div);
                   }); 
-                  setTimeout(updateSteamAddonUI, 100);
               } else { document.getElementById('group-staff').style.display = 'none'; document.getElementById('inp-staff-val').value = "ไม่ระบุ"; }
           }
       } catch(e) {}
