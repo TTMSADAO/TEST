@@ -1403,12 +1403,11 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
             if (bookingData.isOOH) { brk.push(`<div style="display:flex; justify-content:space-between; color:#ea580c; margin-bottom:6px;"><span>${_t('bill_ooh')}</span><b>60 ${_t('baht')}</b></div>`); total += 60; }
         }
 
-        // 🔴 คำนวณราคา Cross-Dept
-        let chkCross = document.getElementById('chk-cross-dept');
+       // 🔴 คำนวณราคา Cross-Dept
         let crossDisplayStr = "";
-        if (chkCross && chkCross.checked && bookingData.crossDeptApp) {
-            let crossSvc = document.getElementById('inp-cross-service').value.split(' (')[0];
-            bookingData.crossDeptService = crossSvc;
+        // เปลี่ยนมาเช็คตัวแปรจาก Pop-up โดยตรง เพราะไม่มี Checkbox ใน HTML แล้ว
+        if (bookingData.crossDeptApp && bookingData.crossDeptService) {
+            let crossSvc = bookingData.crossDeptService;
             
             let crossBase = 0;
             if (bookingData.crossDeptApp === 'ttm') {
@@ -1478,8 +1477,8 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
         let sN = bookingData.staff || "ไม่ระบุ"; 
         let displayStaffName = currentLang === 'en' ? (STAFF_EN_NAMES[sN] || sN) : (STAFF_NAME_MAP[sN] || sN);
         
-        let chkCross = document.getElementById('chk-cross-dept');
-        let hasCross = chkCross && chkCross.checked && bookingData.crossDeptApp;
+        // 🔴 ตัดการหา Element Checkbox ออก ใช้ตัวแปรแทน
+        let hasCross = bookingData.crossDeptApp ? true : false;
 
         let nameDept1 = rawFullName; let nameDept2 = rawFullName;
         if (hasCross) {
