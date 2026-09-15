@@ -823,9 +823,7 @@
         Swal.fire({ title: _t('swal_cancel_title'), text: warnMsg, icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#cbd5e1', confirmButtonText: _t('btn_yes_cancel'), cancelButtonText: _t('btn_cancel'), customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' } }).then((result) => { if (result.isConfirmed) executeCancelBooking(); });
     }
 
-    // 🔴 ปรับจังหวะการส่งข้อความยกเลิก (แบบไม่เสียโควต้า) ให้รอป๊อปอัปจบก่อน
-    // 🔴 อัปเดตลอจิกการยกเลิก: เช็คสถานะการส่ง LINE ให้ชัวร์ก่อนขึ้น 100%
-    // 🔴 อัปเดตลอจิกการยกเลิก: เช็คสถานะการส่ง LINE ให้ชัวร์ก่อนขึ้น 100%
+    // 🔴 ปรับกระบวนการยกเลิกให้รวดเร็วแบบพื้นหลัง (Fast Background Cancel)
     function executeCancelBooking() {
         Swal.fire({ title: _t('swal_processing'), allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }, customClass: { popup: 'swal-3d-popup' } });
         let bParts = activeBookingObj.sysDate.split('-'); let sheetN = parseInt(bParts[2]) + "/" + parseInt(bParts[1]); let sDept = 'ttm'; if(activeBookingObj.service.includes('ฝังเข็ม')||activeBookingObj.service.includes('ครอบแก้ว')) sDept='tcm';
@@ -836,30 +834,24 @@
         .then(async response => { let resText = await response.text(); try { return JSON.parse(resText); } catch(err) { return { status: 'success', penaltyDays: 0 }; } })
         .then(res => { 
             if(res.status === 'success' || res.status === 'error_but_done') { 
-                
+                // ซิงค์ข้อมูลในพื้นหลัง ไม่ต้องรอ
                 fetchPatientHistory(activeBookingObj.idCard);
-                fetch(API_ENDPOINT, {method:'POST', body:JSON.stringify({action:'background_sync', dept:sDept})}); 
+                fetch(API_ENDPOINT, {method:'POST', body:JSON.stringify({action:'background_sync', dept:sDept})}).catch(()=>{}); 
 
                 if (liff.isInClient()) {
                     let p = savedProfiles.find(x => x.id === activeBookingObj.idCard);
                     let cName = p ? getMaskedFullName(p.fname, p.lname) : "-";
                     let cTel = p ? getMaskedTel(p.tel) : "-";
-                    let msgText = currentLang === 'en' ?
-                    `🖥️ [Auto] Cancel Booking ❌\n👤 Name: ${cName}\n📞 Tel: ${cTel}\n🩺 Service: ${activeBookingObj.service}\n📅 Date: ${activeBookingObj.sysDate}\n⏰ Time: ${activeBookingObj.time} น.` : 
-                    `🖥️ [ระบบอัตโนมัติ] แจ้งทำรายการยกเลิกนัดหมาย ❌\n👤 ชื่อ: ${cName}\n📞 โทร: ${cTel}\n🩺 บริการ: ${activeBookingObj.service}\n📅 วันที่: ${activeBookingObj.sysDate}\n⏰ รอบเวลา: ${activeBookingObj.time} น.`;
+                    let msgText = `🖥️ [ระบบอัตโนมัติ] แจ้งทำรายการยกเลิกนัดหมาย ❌\n👤 ชื่อ: ${cName}\n📞 โทร: ${cTel}\n🩺 บริการ: ${activeBookingObj.service}\n📅 วันที่: ${activeBookingObj.sysDate}\n⏰ รอบเวลา: ${activeBookingObj.time} น.`;
                     
-                    // 👉 รอ LINE ส่งสำเร็จ ค่อยโชว์ป๊อปอัปให้กดปิด
-                    liff.sendMessages([{ type: 'text', text: msgText }])
-                        .then(() => { 
-                            Swal.fire({ title: 'ยกเลิกคิวสำเร็จ!', text: "ส่งข้อความยืนยันเข้าแชทแล้ว", icon: 'success', confirmButtonText: 'ปิดหน้าต่าง', confirmButtonColor: '#ef4444', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'} })
-                            .then(() => liff.closeWindow());
-                        })
-                        .catch(() => { 
-                            Swal.fire({ title: 'ยกเลิกคิวสำเร็จ!', text: "ระบบยกเลิกคิวแล้ว แต่ไม่สามารถส่งข้อความเข้าแชทได้ (อินเทอร์เน็ตขัดข้อง)", icon: 'info', confirmButtonText: 'รับทราบ', confirmButtonColor: '#f59e0b', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'} })
-                            .then(() => liff.closeWindow());
-                        });
+                    // ปล่อยคำสั่งส่ง LINE ไปในพื้นหลัง (Fire and Forget)
+                    liff.sendMessages([{ type: 'text', text: msgText }]).catch(()=>{});
+                    
+                    // ปิดหน้าต่างทันที (Fast UX)
+                    Swal.fire({ title: 'ยกเลิกคิวสำเร็จ!', text: "ระบบดำเนินการเรียบร้อยแล้ว", icon: 'success', timer: 1800, showConfirmButton: false, customClass:{popup:'swal-3d-popup'} })
+                    .then(() => liff.closeWindow());
                 } else {
-                    Swal.fire({ title:_t('swal_success'), text: "ยกเลิกคิวเรียบร้อยแล้ว", icon:'success', confirmButtonColor: '#ef4444', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'} });
+                    Swal.fire({ title:_t('swal_success'), text: "ยกเลิกคิวเรียบร้อยแล้ว", icon:'success', timer: 1800, showConfirmButton: false, customClass:{popup:'swal-3d-popup'} });
                 }
             } else {
                 Swal.fire({title:_t('swal_error'), text:(res.message || 'Error occurred'), icon:'error', customClass:{popup:'swal-3d-popup', confirmButton:'swal-3d-btn'}});
@@ -1218,30 +1210,28 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
     function checkAvailableAddons() {
         let optionsHtml = '';
         
-        // 1. เช็คคิว 2 ชม. (ถ้าเตียง/หมอชั่วโมงถัดไปว่าง)
         if (selectedSlotData && selectedSlotData.can2Hr) {
             let txt2Hr = currentApp === 'tcm' ? '🪡 ฝังเข็ม + ครอบแก้ว (2 ชม.)' : '💆 นวดต่อเนื่อง 2 ชม. (+250 บาท)';
             optionsHtml += `<button class="btn btn-confirm" style="width:100%; margin-bottom:10px; text-align:left; background:linear-gradient(135deg, #f59e0b, #d97706);" onclick="selectAddon('2hr')">${txt2Hr}</button>`;
         }
 
-        // 2. คำนวณเวลาถัดไปเพื่อเช็คคิว
         let startParts = bookingData.time.split(":");
         let totalMins = (parseInt(startParts[0]) * 60) + parseInt(startParts[1]) + 60;
         let endH = Math.floor(totalMins / 60); let endM = totalMins % 60;
         let targetTime = (endH < 10 ? '0' : '') + endH + ':' + (endM < 10 ? '0' : '') + endM;
 
-        // 3. เช็คข้ามแผนก (แพทย์แผนจีน <-> แพทย์แผนไทย)
         let targetDept = currentApp === 'ttm' ? 'tcm' : 'ttm';
         let crossName = targetDept === 'tcm' ? '🪡 รับบริการแพทย์แผนจีนต่อ' : '💆 รับบริการนวดแผนไทยต่อ';
         if(fullFirebaseData && fullFirebaseData[targetDept]) {
             let dayData = fullFirebaseData[targetDept].find(d => d.sysDate === bookingData.sysDate);
             let crossSlot = dayData ? dayData.slots.find(s => s.time === targetTime) : null;
             if(crossSlot && crossSlot.count > 0 && !crossSlot.val.includes('เต็ม')) {
-                optionsHtml += `<button class="btn btn-confirm" style="width:100%; margin-bottom:10px; text-align:left; background:linear-gradient(135deg, #10b981, #059669);" onclick="selectAddon('cross', '${targetTime}', '${targetDept}')">✨ ${crossName}</button>`;
+                // แพ็ครายชื่อหมอที่ว่าง (ดักเงื่อนไข Walk-in/ลา มาจากหลังบ้านแล้ว) ส่งไป Pop-up
+                let encodedStaff = encodeURIComponent(JSON.stringify(crossSlot.staff || []));
+                optionsHtml += `<button class="btn btn-confirm" style="width:100%; margin-bottom:10px; text-align:left; background:linear-gradient(135deg, #10b981, #059669);" onclick="selectAddon('cross', '${targetTime}', '${targetDept}', '${encodedStaff}')">✨ ${crossName}</button>`;
             }
         }
 
-        // 4. เช็คอบไอน้ำ (เฉพาะถ้าเริ่มจากแผนกแพทย์แผนไทย)
         if(currentApp === 'ttm' && fullFirebaseData && fullFirebaseData.steam) {
             let allowedSteamTime = STEAM_NEXT_1HR[bookingData.time];
             if (allowedSteamTime) {
@@ -1254,73 +1244,83 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
             }
         }
 
-        // 5. แสดงผล Pop-up
         if (optionsHtml !== '') {
             optionsHtml += `<button class="btn btn-cancel" style="width:100%; text-align:left; margin-top:10px;" onclick="selectAddon('none')">⏭️ ไม่ต้องการ (ดำเนินการต่อ)</button>`;
             Swal.fire({
                 title: 'ต้องการรับบริการต่อเนื่องไหม?',
                 html: `<div style="text-align:left; font-size:0.95rem; margin-top:15px;">${optionsHtml}</div>`,
-                showConfirmButton: false,
-                showCancelButton: false,
-                customClass: { popup: 'swal-3d-popup' }
+                showConfirmButton: false, showCancelButton: false, animation: false, customClass: { popup: 'swal-3d-popup' }
             });
         } else {
-            checkRightAndProceed(); // ถ้าไม่มีคิวว่างเลย ก็ให้ข้ามไปหน้าบิลปกติ
+            checkRightAndProceed();
         }
     }
 
-    // 🔴 ฟังก์ชันรับค่าจากการกดปุ่ม Pop-up
-    window.selectAddon = function(type, param1, param2) {
+    // 🔴 ฟังก์ชันรับค่าจากการกดปุ่ม Pop-up (เพิ่มระบบเลือกหมอข้ามแผนก)
+    window.selectAddon = function(type, param1, param2, param3) {
         Swal.close();
-        if (type === '2hr') {
-            bookingData.is2Hr = true;
-            checkRightAndProceed();
-        } else if (type === 'steam') {
+        if (type === '2hr') { bookingData.is2Hr = true; checkRightAndProceed(); } 
+        else if (type === 'steam') {
             if (param2 === "" || param2 === null || param2 === undefined) {
                 Swal.fire({
-                    title: 'ระบุเพศสำหรับเข้าห้องอบ',
-                    input: 'select',
-                    inputOptions: { 'หญิง': 'หญิง (Female)', 'ชาย': 'ชาย (Male)' },
-                    showCancelButton: true,
-                    confirmButtonText: 'ยืนยัน',
-                    cancelButtonText: 'ยกเลิก',
-                    customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' }
+                    title: 'ระบุเพศสำหรับเข้าห้องอบ', input: 'select', inputOptions: { 'หญิง': 'หญิง (Female)', 'ชาย': 'ชาย (Male)' },
+                    showCancelButton: true, confirmButtonText: 'ยืนยัน', cancelButtonText: 'ยกเลิก', customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' }
                 }).then((r) => {
-                    if (r.isConfirmed) {
-                        bookingData.addSteam = true; bookingData.steamTime = param1; bookingData.steamGender = r.value;
-                        checkRightAndProceed();
-                    } else { checkRightAndProceed(); } // ถ้ายกเลิก ให้ไปต่อแบบไม่เอาอบไอน้ำ
+                    if (r.isConfirmed) { bookingData.addSteam = true; bookingData.steamTime = param1; bookingData.steamGender = r.value; checkRightAndProceed(); } 
+                    else { checkRightAndProceed(); } 
                 });
             } else {
-                bookingData.addSteam = true; bookingData.steamTime = param1; bookingData.steamGender = param2 === "ช" ? "ชาย" : "หญิง";
-                checkRightAndProceed();
+                bookingData.addSteam = true; bookingData.steamTime = param1; bookingData.steamGender = param2 === "ช" ? "ชาย" : "หญิง"; checkRightAndProceed();
             }
         } else if (type === 'cross') {
             bookingData.crossDeptApp = param2; bookingData.crossDeptTime = param1;
-            let svcs = {}; SERVICE_OPTIONS[param2].forEach(s => { svcs[s] = s; });
+            let staffs = param3 ? JSON.parse(decodeURIComponent(param3)) : [];
+            let svcs = ''; SERVICE_OPTIONS[param2].forEach(s => { svcs += `<option value="${s}">${_t(s)}</option>`; });
+            
+            // สร้าง Dropdown เลือกหมอ (เฉพาะถ้าเป้าหมายคือแผนไทย และมีหมอว่าง)
+            let staffSelectHtml = '';
+            let hasStaff = param2 === 'ttm' && staffs.length > 0;
+            if (hasStaff) {
+                let uniqueStaffs = []; let map = {};
+                staffs.forEach(s => { if(!map[s.name]) { map[s.name]=s; uniqueStaffs.push(s); } });
+                let stfOpts = '';
+                uniqueStaffs.forEach(s => {
+                    let dN = currentLang === 'en' ? (STAFF_EN_NAMES[s.name] || s.name) : (STAFF_NAME_MAP[s.name] || s.name);
+                    stfOpts += `<option value='${JSON.stringify({name: s.name, row: s.row, col: s.col})}'>${dN}</option>`;
+                });
+                staffSelectHtml = `<label class="form-label" style="color:#16a34a; font-size:0.9rem; margin-top:15px;">ผู้ให้บริการ (แผนไทย)</label><select id="swal-cross-staff" class="form-control" style="background:#f0fdf4; border:1px solid #bbf7d0;">${stfOpts}</select>`;
+            }
 
             Swal.fire({
-                title: 'เลือกหัตถการที่ต้องการทำต่อ',
-                input: 'select',
-                inputOptions: svcs,
-                showCancelButton: true,
-                confirmButtonText: 'ยืนยัน',
-                cancelButtonText: 'ไม่ต้องการแล้ว',
-                customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' }
+                title: 'เลือกรายละเอียด',
+                html: `<div style="text-align:left;"><label class="form-label" style="color:#b45309; font-size:0.9rem;">หัตถการที่ต้องการทำต่อ</label><select id="swal-cross-svc" class="form-control" style="background:#fffbeb; border:1px solid #fde68a;">${svcs}</select>${staffSelectHtml}</div>`,
+                showCancelButton: true, confirmButtonText: 'ยืนยัน', cancelButtonText: 'ไม่ต้องการแล้ว', customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' },
+                preConfirm: () => {
+                    let svc = document.getElementById('swal-cross-svc').value;
+                    let stf = hasStaff ? document.getElementById('swal-cross-staff').value : null;
+                    return { svc: svc, staff: stf ? JSON.parse(stf) : null };
+                }
             }).then((r) => {
                 if(r.isConfirmed) {
-                    bookingData.crossDeptService = r.value;
+                    bookingData.crossDeptService = r.value.svc;
+                    if(r.value.staff) { 
+                        bookingData.crossDeptStaffName = r.value.staff.name; 
+                        bookingData.crossDeptRow = r.value.staff.row; 
+                        bookingData.crossDeptCol = r.value.staff.col; 
+                    } else { 
+                        bookingData.crossDeptStaffName = "ไม่ระบุ"; 
+                        bookingData.crossDeptRow = 0; 
+                        bookingData.crossDeptCol = param2 === 'tcm' ? 30 : 14; 
+                    }
                     checkRightAndProceed();
                 } else {
-                    bookingData.crossDeptApp = null; // ยอมแพ้ไม่เอาข้ามแผนก
-                    checkRightAndProceed();
+                    bookingData.crossDeptApp = null; checkRightAndProceed();
                 }
             });
         } else {
             checkRightAndProceed();
         }
     };
-
     // 🔴 ฟังก์ชันตรวจสอบสิทธิก่อนประมวลผลบิล
     function checkRightAndProceed() {
       let isSelfPayOnly = (currentApp === 'tcm' && (bookingData.service.includes("ครอบแก้ว") || bookingData.service.includes("ฝังเข็มใบหน้า") || bookingData.service.includes("เม็ดผักกาด"))) || (currentApp === 'ttm' && bookingData.service.includes("ชำระเงินเอง"));
@@ -1466,7 +1466,7 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
         document.getElementById('summary-content').innerHTML = infoH + billH + nH; 
         goToStep3();
     }
-   // 🔴 อัปเดตลอจิกการจอง: ดันวงแหวน 100% หลังจาก LINE ทำงานเสร็จเท่านั้น
+   // 🔴 ปรับกระบวนการให้รวดเร็ว (Fast Background Processing)
     async function confirmBooking() {
         document.getElementById('btn-final-confirm').disabled = true;
         showPercentageLoader(); 
@@ -1476,14 +1476,12 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
         let sN = bookingData.staff || "ไม่ระบุ"; 
         let displayStaffName = currentLang === 'en' ? (STAFF_EN_NAMES[sN] || sN) : (STAFF_NAME_MAP[sN] || sN);
         
-        // 🔴 ตัดการหา Element Checkbox ออก ใช้ตัวแปรแทน
         let hasCross = bookingData.crossDeptApp ? true : false;
-
         let nameDept1 = rawFullName; let nameDept2 = rawFullName;
         if (hasCross) {
             if (bookingData.is2Hr) { nameDept1 = rawFullName; nameDept2 = rawFullName + " 3"; } 
             else { nameDept1 = rawFullName + " 1"; nameDept2 = rawFullName + " 2"; }
-        } else { nameDept1 = rawFullName; }
+        }
 
         let payload = { 
             lineUid: currentLineUid, staff: displayStaffName, appType: bookingData.appType, sheetName: bookingData.sheetName, idCard: bookingData.idCard, 
@@ -1497,79 +1495,60 @@ function openBooking(time, dateFull, sysDate, dayIndex, staffDataEncoded, slotGe
         else if (currentApp === 'postpartum') { payload.ppExtraData = bookingData.ppExtraData; }
         
         try {
-            // 👉 1. ยิงข้อมูลจองคิวลง Database (Google Sheets / MySQL)
+            // 👉 1. ยิงข้อมูลคิวแรกลง Database (ต้องรอคอนเฟิร์มว่าเตียงไม่ชน)
             let r = await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(payload) });
             let res = await r.json();
             
-            // 👉 2. ถ้ารับบริการข้ามแผนกต่อ ยิงจองแผนกที่สอง
-            if ((res.status === 'success' || res.status === 'error_but_done') && hasCross) {
-                let p2 = Object.assign({}, payload);
-                p2.appType = bookingData.crossDeptApp; p2.time = bookingData.crossDeptTime; p2.service = bookingData.crossDeptService; p2.fullName = nameDept2; p2.is2Hr = false; p2.addSteam = false; p2.staff = "ไม่ระบุ"; p2.row = 0; p2.col = 0; p2.totalFee = 0; p2.note = "✨ จองต่อเนื่องจาก " + (currentApp === 'ttm' ? "แผนไทย" : "แผนจีน");
-                try { await fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(p2) }); } catch(err) { console.log(err); }
-            }
-            
-            // 👉 3. Database เซฟสำเร็จ! เตรียมจัดการ LINE และ UI
             if(res.status === 'success' || res.status === 'error_but_done') { 
+                // 👉 2. ยิงคิวต่อเนื่องข้ามแผนกในพื้นหลัง (Fire and Forget) ไม่ต้องรอ!
+                if (hasCross) {
+                    let p2 = Object.assign({}, payload);
+                    p2.appType = bookingData.crossDeptApp; p2.time = bookingData.crossDeptTime; p2.service = bookingData.crossDeptService; p2.fullName = nameDept2; p2.is2Hr = false; p2.addSteam = false; 
+                    p2.staff = bookingData.crossDeptStaffName || "ไม่ระบุ"; p2.row = bookingData.crossDeptRow || 0; p2.col = bookingData.crossDeptCol || (bookingData.crossDeptApp === 'tcm' ? 30 : 14);
+                    p2.totalFee = 0; p2.note = "✨ จองต่อเนื่องจาก " + (currentApp === 'ttm' ? "แผนไทย" : "แผนจีน");
+                    fetch(API_ENDPOINT, { method: 'POST', body: JSON.stringify(p2) }).catch(()=>{});
+                }
+                
+                // 👉 3. ประมวลผล Local Storage อัตโนมัติ ปิดจอไว
                 let p = savedProfiles.find(x => x.id === bookingData.idCard); 
                 addOrUpdateProfile(bookingData.idCard, bookingData.fname, bookingData.lname, bookingData.tel, p ? p.label : ''); 
-                closeModal(); 
+                closeModal(); switchMainTab('profile'); 
+                fetchData(false); // ซิงค์ background
                 
-                switchMainTab('profile');
-                fetchData(true); 
-                
-                let historyArray = [];
-                try { 
-                    let stored = JSON.parse(localStorage.getItem('sdh_history_' + bookingData.idCard)); 
-                    if(Array.isArray(stored)) historyArray = stored; else if(stored) historyArray.push(stored);
-                } catch(e) {}
-                
+                let historyArray = JSON.parse(localStorage.getItem('sdh_history_' + bookingData.idCard)) || [];
+                if(!Array.isArray(historyArray)) historyArray = [historyArray];
                 historyArray.push({ service: fSvc, date: bookingData.date, sysDate: bookingData.sysDate, time: bookingData.time, status: "รอรับบริการ" });
                 if (hasCross) { historyArray.push({ service: bookingData.crossDeptService, date: bookingData.date, sysDate: bookingData.sysDate, time: bookingData.crossDeptTime, status: "รอรับบริการ" }); }
                 localStorage.setItem('sdh_history_' + bookingData.idCard, JSON.stringify(historyArray));
                 renderHistoryUI(bookingData.idCard, historyArray);
 
+                // 👉 4. ส่งข้อความ LINE ในพื้นหลัง (ไม่รอคำตอบ)
                 if (liff.isInClient()) {
                     let mName = getMaskedFullName(bookingData.fname, bookingData.lname); let mTel = getMaskedTel(bookingData.tel); let pNote = bookingData.note ? bookingData.note : "-";
                     let displayTime = bookingData.time + " น.";
                     if (bookingData.time) {
                         let tParts = bookingData.time.split(":"); let totalMins = (parseInt(tParts[0]) * 60) + parseInt(tParts[1]);
-                        if (bookingData.is2Hr) totalMins += 120; else totalMins += 60;
+                        totalMins += bookingData.is2Hr ? 120 : 60;
                         if (bookingData.addSteam) totalMins += 30;
                         if (hasCross) totalMins += 60; 
                         let eH = Math.floor(totalMins / 60); let eM = totalMins % 60;
                         let endTimeStr = (eH < 10 ? '0' : '') + eH + ':' + (eM < 10 ? '0' : '') + eM;
                         displayTime = bookingData.time + " - " + endTimeStr + " น.";
                     }
-                    
                     let finalSvc = fSvc; let fExtra = bookingData.extraInfo ? ` (${bookingData.extraInfo})` : "";
                     if (hasCross) finalSvc += `\n✨ ต่อเนื่อง: ${bookingData.crossDeptService}`;
-                    
-                    let msgText1 = currentLang === 'en' ?
-                    `🖥️ [Auto] New Booking ✅\n👤 Name: ${mName}\n📞 Tel: ${mTel}\n🩺 Service: ${finalSvc}${fExtra}\n📅 Date: ${bookingData.date}\n⏰ Time: ${displayTime}\n👨‍⚕️ Provider: ${displayStaffName}\n📝 Note: ${pNote}\n💰 Total: ${bookingData.totalFee} THB` : 
-                    `🖥️ [ระบบอัตโนมัติ] แจ้งทำรายการนัดหมายสำเร็จ ✅\n👤 ชื่อ: ${mName}\n📞 โทร: ${mTel}\n🩺 บริการ: ${finalSvc}${fExtra}\n📅 วันที่: ${bookingData.date}\n⏰ เวลา: ${displayTime}\n👨‍⚕️ ผู้ให้บริการ: ${displayStaffName}\n📝 หมายเหตุ: ${pNote}\n💰 ยอดชำระ: ${bookingData.totalFee} บาท`;
+                    let msgText1 = `🖥️ [ระบบอัตโนมัติ] แจ้งทำรายการนัดหมายสำเร็จ ✅\n👤 ชื่อ: ${mName}\n📞 โทร: ${mTel}\n🩺 บริการ: ${finalSvc}${fExtra}\n📅 วันที่: ${bookingData.date}\n⏰ เวลา: ${displayTime}\n👨‍⚕️ ผู้ให้บริการ: ${displayStaffName}\n📝 หมายเหตุ: ${pNote}\n💰 ยอดชำระ: ${bookingData.totalFee} บาท`;
                     let msgText2 = "🕰️ กรุณามาก่อนเวลานัดอย่างน้อย 15 นาที\n\n***‼️หากไม่มาติดต่อภายในเวลาที่กำหนด ถือว่าท่านสละสิทธิ์ให้คนไข้ท่านอื่น\n\n***‼️การเลื่อนนัดหรือยกเลิกนัด โปรดแจ้งล่วงหน้า อย่างน้อย 2 วัน\n\n😷โปรดสวมหน้ากากอนามัยตลอดเวลาเข้ารับบริการ\n📝 อย่าลืมนำบัตรประจำตัวประชาชนมาด้วยนะครับ";
-
-                    // 👉 4. ส่ง LINE และดันหลอด 100% ตามผลลัพธ์การส่ง
-                    liff.sendMessages([ { type: 'text', text: msgText1 }, { type: 'text', text: msgText2 } ])
-                    .then(() => { 
-                        // กรณีที่ 1: ส่ง LINE ผ่าน
-                        finishPercentageLoader(() => { 
-                            Swal.fire({ title: 'จองคิวสำเร็จ!', text: "ระบบได้ส่งใบเสร็จเข้าแชท LINE ให้เรียบร้อยแล้ว", icon: 'success', confirmButtonText: 'ปิดหน้าต่าง', confirmButtonColor: '#10b981', customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' } 
-                            }).then(() => liff.closeWindow());
-                        });
-                    }) 
-                    .catch((err) => { 
-                        // กรณีที่ 2: ส่ง LINE ไม่ผ่าน (อินเทอร์เน็ตหลุด)
-                        finishPercentageLoader(() => { 
-                            Swal.fire({ title: "จองคิวลงระบบสำเร็จ!", html: "<div style='text-align:left; line-height:1.6;'>ระบบได้ล็อกคิวให้ท่านเรียบร้อยแล้ว<br><b style='color:#dc2626;'>แต่ไม่สามารถส่งใบเสร็จเข้าแชท LINE ได้เนื่องจากสัญญาณขัดข้อง</b><br><br><span style='color:#0ea5e9; font-weight:800;'><i class='fas fa-camera'></i> กรุณาแคปหน้าจอนี้ไว้เป็นหลักฐาน:</span><br><br>• บริการ: " + finalSvc + "<br>• วันที่: " + bookingData.date + "<br>• เวลา: <span style='color:#16a34a; font-weight:800;'>" + displayTime + "</span></div>", icon: 'info', confirmButtonText: 'แคปหน้าจอแล้ว (ปิดหน้าต่าง)', confirmButtonColor: '#f59e0b', customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' } 
-                            }).then(() => liff.closeWindow());
-                        });
-                    });
-                } else {
-                    finishPercentageLoader(() => { Swal.fire({ title: _t('swal_book_success'), text: "บันทึกคิวลงระบบสำเร็จ", icon: 'success', confirmButtonColor: '#10b981', customClass: { popup: 'swal-3d-popup', confirmButton: 'swal-3d-btn' } }); });
+                    
+                    liff.sendMessages([ { type: 'text', text: msgText1 }, { type: 'text', text: msgText2 } ]).catch(()=>{});
                 }
+                
+                // 👉 5. แสดงหน้าต่างสำเร็จ และปิดหน้าเว็บอัตโนมัติ (Fast UX)
+                finishPercentageLoader(() => {
+                    Swal.fire({ title: 'จองคิวสำเร็จ!', text: "คิวของคุณถูกบันทึกเรียบร้อยแล้ว", icon: 'success', timer: 1800, showConfirmButton: false, customClass: { popup: 'swal-3d-popup' } })
+                    .then(() => { if(liff.isInClient()) liff.closeWindow(); });
+                });
             } else { 
-                // Error จาก Database
                 finishPercentageLoader(() => { 
                     let errTitle = _t('swal_error'); let errMsg = res.message || 'เกิดข้อผิดพลาดในการเชื่อมต่อ'; let errIcon = 'error'; let btnColor = '#ef4444';
                     if (res.status === 'error_blocked' && res.reason === 'duplicate_person') { errTitle = currentLang === 'en' ? 'Duplicate Appointment' : 'พบรายการจองซ้ำ'; errMsg = `คุณมีคิวที่ยังไม่เข้ารับบริการ<br><b style="color:var(--primary); font-size:1.1rem;">วันที่ ${res.date} เวลา ${res.time} น.</b><br>กรุณากดยกเลิกคิวเดิมก่อนครับ`; errIcon = 'warning'; btnColor = '#f59e0b'; } else if (res.status === 'error_occupied') { errTitle = currentLang === 'en' ? 'Slot Taken' : 'ไม่สามารถจองได้'; errMsg = res.message || 'คิวนี้ถูกจองตัดหน้าไปแล้ว กรุณาเลือกรอบเวลาอื่นครับ'; errIcon = 'info'; btnColor = '#3b82f6'; }
